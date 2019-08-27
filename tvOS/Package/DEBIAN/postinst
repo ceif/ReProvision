@@ -2,7 +2,7 @@
 
 # Reload application cache
 echo "Reloading application cache"
-uicache
+#uicache
 
 # Handle the daemon
 echo "(Re)-loading daemon..."

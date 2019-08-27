@@ -15,6 +15,7 @@
 		32B7799F2314D6A600828355 /* RPVAccountTeamIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779992314D6A600828355 /* RPVAccountTeamIDViewController.m */; };
 		32B779A02314D6A600828355 /* RPVAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B7799B2314D6A600828355 /* RPVAccountViewController.m */; };
 		32B779A52314DD8100828355 /* RPVTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779A42314DD8100828355 /* RPVTabBarController.m */; };
+		32B779A92315066500828355 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779A82315066500828355 /* UIViewController+Additions.m */; };
 		A26601C23E41FF5D32A6DF6C /* libPods-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0BF9DAD92CB745EF24C11FC /* libPods-iOS.a */; };
 		C90AD51E20697F23008B2F2B /* RPVNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AD51D20697F23008B2F2B /* RPVNotificationManager.m */; };
 		C90AD5212069968E008B2F2B /* RPVBackgroundSigningManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AD5202069968E008B2F2B /* RPVBackgroundSigningManager.m */; };
@@ -305,6 +306,8 @@
 		32B779A12314D7F900828355 /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
 		32B779A32314DD8100828355 /* RPVTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPVTabBarController.h; sourceTree = "<group>"; };
 		32B779A42314DD8100828355 /* RPVTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPVTabBarController.m; sourceTree = "<group>"; };
+		32B779A72315066500828355 /* UIViewController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Additions.h"; sourceTree = "<group>"; };
+		32B779A82315066500828355 /* UIViewController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Additions.m"; sourceTree = "<group>"; };
 		56C208AF9B386EA848EA9D18 /* libPods-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		70CCF3D795CC8B7FFCF520E7 /* Pods-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tvOS/Pods-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		9ACE7579004DA34002E4DEEE /* Pods-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-tvOS/Pods-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -702,6 +705,15 @@
 			path = "Root Controllers";
 			sourceTree = "<group>";
 		};
+		32B779A62315066500828355 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				32B779A72315066500828355 /* UIViewController+Additions.h */,
+				32B779A82315066500828355 /* UIViewController+Additions.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		C90C2218200533B300255B08 /* Installed Pane */ = {
 			isa = PBXGroup;
 			children = (
@@ -861,6 +873,7 @@
 				C96CCE3F211A2839008A249A /* Assets.xcassets */,
 				C96CCE3C211A2838008A249A /* Main.storyboard */,
 				32B779912314D6A600828355 /* Account */,
+				32B779A62315066500828355 /* Categories */,
 				32B779A22314DD8100828355 /* Root Controllers */,
 				C9630A11211AE17E00FEEB61 /* Application Detail Pane */,
 				C96CCEA1211A3738008A249A /* Notifications */,
@@ -1868,6 +1881,7 @@
 				C96CCE7B211A3482008A249A /* node_list.c in Sources */,
 				C96CCE7C211A3482008A249A /* Node.cpp in Sources */,
 				32B7799F2314D6A600828355 /* RPVAccountTeamIDViewController.m in Sources */,
+				32B779A92315066500828355 /* UIViewController+Additions.m in Sources */,
 				C96CCE7D211A3482008A249A /* plist.c in Sources */,
 				C96CCE7E211A3482008A249A /* ptrarray.c in Sources */,
 				C96CCE7F211A3482008A249A /* Real.cpp in Sources */,

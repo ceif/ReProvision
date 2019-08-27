@@ -9,7 +9,7 @@
 #ifdef __OBJC__
 
 #import "PureLayout.h"
-
+#import "UIViewController+Additions.h"
 #define DLog(format, ...) CFShow((__bridge CFStringRef)[NSString stringWithFormat:format, ## __VA_ARGS__])
 #define LOG_SELF        NSLog(@"%@ %@", self, NSStringFromSelector(_cmd))
 

@@ -6,15 +6,15 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		CIaSShDmOH/vRQNQ4a6U5RocBgQ=
+		8/U9U+nqkO3vxzw6GqYGOUjrGWE=
 		</data>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
 		<data>
-		krlIRB/fp5SOMqbRqenFbwHZR+I=
+		S2zKqnnBbLJwTcpl1JYgRo+908o=
 		</data>
 		<key>Base.lproj/Main.storyboardc/9pv-A4-QxB-view-tsR-hK-woN.nib</key>
 		<data>
-		q+e4ICRMXt2y4c9SF8vJoBGtflU=
+		fFEWJ2wLBv66tsXDT7uR4PK91UU=
 		</data>
 		<key>Base.lproj/Main.storyboardc/Info.plist</key>
 		<data>
@@ -22,19 +22,15 @@
 		</data>
 		<key>Base.lproj/Main.storyboardc/UITabBarController-49e-Tb-3d3.nib</key>
 		<data>
-		Q87aXO1kNSFmRJU8Q9b0G2IWH1g=
+		s4YN7yB0gMTi3bv25L92WJHcLGI=
 		</data>
 		<key>Base.lproj/Main.storyboardc/fGQ-JB-Prd-view-WT8-De-ETN.nib</key>
 		<data>
-		iNSGMHbE5d+ob0OoMa5+BTM+Ag4=
-		</data>
-		<key>Frameworks/MarqueeLabel.framework/Info.plist</key>
-		<data>
-		kHtql86JnK+bgqKs4YSy+YgIVUo=
+		NUqpA9pPTC0+ooKWkCdVpQ0xBkk=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		LaAYvWxTRdklQeM3iXd4trfhA5U=
+		Hlpz2+ekoJVP0C5lJ4WwU3I6Q2o=
 		</data>
 		<key>PackageVersion.plist</key>
 		<data>
@@ -55,33 +51,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			CIaSShDmOH/vRQNQ4a6U5RocBgQ=
+			8/U9U+nqkO3vxzw6GqYGOUjrGWE=
 			</data>
 			<key>hash2</key>
 			<data>
-			ms+uloPJ8HHeVsVM7Q/OPeLlXTb0FVdTag/Xc+OzD3g=
+			ohKvLxl7XvHMrmvgc8gdkGEzbeA3kEbEc/HO33D1bzg=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			krlIRB/fp5SOMqbRqenFbwHZR+I=
+			S2zKqnnBbLJwTcpl1JYgRo+908o=
 			</data>
 			<key>hash2</key>
 			<data>
-			5auEgJt3/xAXkHipHdX9FkTH3s5akVsV49Vm+unk5e4=
+			7s4C1DEbl6n1joNueA8eVk3OiM8wTXGlJz/pULRYazo=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/9pv-A4-QxB-view-tsR-hK-woN.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			q+e4ICRMXt2y4c9SF8vJoBGtflU=
+			fFEWJ2wLBv66tsXDT7uR4PK91UU=
 			</data>
 			<key>hash2</key>
 			<data>
-			uVXOCB/0A6VZ4hjRF7Xn0R+eM+L9UDrdQmGGx+AoQq4=
+			Z1EdEqbQHliKq2uEi3RoXQ7NRajjyxX+8wMxmw76vNc=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/Info.plist</key>
@@ -99,33 +95,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Q87aXO1kNSFmRJU8Q9b0G2IWH1g=
+			s4YN7yB0gMTi3bv25L92WJHcLGI=
 			</data>
 			<key>hash2</key>
 			<data>
-			oMo8pjnO3Yzh1yKD6ayJHOiYXJI9AbDtIoLTKaLPCeI=
+			KDce0QIszm26aFDyX2ldo7SX7RZuwSIXp8s682hOkAE=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/fGQ-JB-Prd-view-WT8-De-ETN.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			iNSGMHbE5d+ob0OoMa5+BTM+Ag4=
+			NUqpA9pPTC0+ooKWkCdVpQ0xBkk=
 			</data>
 			<key>hash2</key>
 			<data>
-			t+5TBS6vCW0j54cb8TKJM92kICDTyupyVq6yRNrKKDA=
-			</data>
-		</dict>
-		<key>Frameworks/MarqueeLabel.framework/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			kHtql86JnK+bgqKs4YSy+YgIVUo=
-			</data>
-			<key>hash2</key>
-			<data>
-			XI/rV0tgc48GVFAEbJOm4bKsaIrdpKAyRJ7Ki7AuHcU=
+			GlV29UfpBcYuulhgPCGG8QaOgSAYlKbAqqSML90OPnk=
 			</data>
 		</dict>
 		<key>PackageVersion.plist</key>
