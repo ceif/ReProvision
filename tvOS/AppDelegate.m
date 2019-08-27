@@ -141,6 +141,14 @@
     }
 }
 
+- (void)requestDebuggingBackgroundSigning {
+    //[[self.daemonConnection remoteObjectProxy] applicationRequestsDebuggingBackgroundSigning];
+}
+
+- (void)requestPreferencesUpdate {
+    //[[self.daemonConnection remoteObjectProxy] applicationRequestsPreferencesUpdate];
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Automatic application signing
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

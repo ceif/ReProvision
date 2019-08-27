@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		8/U9U+nqkO3vxzw6GqYGOUjrGWE=
+		URPfmTOaKsV+Fwt+YhnzIx3m+U4=
 		</data>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		Hlpz2+ekoJVP0C5lJ4WwU3I6Q2o=
+		LaAYvWxTRdklQeM3iXd4trfhA5U=
 		</data>
 		<key>PackageVersion.plist</key>
 		<data>
@@ -40,9 +40,21 @@
 		<data>
 		n57qDP4tZfLD1rCS43W0B4LQjzE=
 		</data>
+		<key>RMessageDesign.json</key>
+		<data>
+		V9MZeRwe2ggxzNBcH5vgCrhuzAE=
+		</data>
+		<key>apple-ios.pem</key>
+		<data>
+		eUCuuUuN61/imxyl0wLiU4LyAqU=
+		</data>
 		<key>embedded.mobileprovision</key>
 		<data>
 		Os41idYn7W9HIPO7deojl2EHubs=
+		</data>
+		<key>root.pem</key>
+		<data>
+		Cw+MT4CSJSoYxV3yxs622Xa8iRA=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -51,11 +63,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			8/U9U+nqkO3vxzw6GqYGOUjrGWE=
+			URPfmTOaKsV+Fwt+YhnzIx3m+U4=
 			</data>
 			<key>hash2</key>
 			<data>
-			ohKvLxl7XvHMrmvgc8gdkGEzbeA3kEbEc/HO33D1bzg=
+			TLG+HrBvwGv4Bt+sxZJypV0EawcEJt9rhAULz+euu8Q=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
@@ -124,6 +136,28 @@
 			QXRyYbROQXcdohPHFUz/5cjcymX9zFDecx5C9kh/f+s=
 			</data>
 		</dict>
+		<key>RMessageDesign.json</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			V9MZeRwe2ggxzNBcH5vgCrhuzAE=
+			</data>
+			<key>hash2</key>
+			<data>
+			PcXssg4b8aYrhkFrlJkpSFihjVKNq6a9sLplw/RJNgM=
+			</data>
+		</dict>
+		<key>apple-ios.pem</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			eUCuuUuN61/imxyl0wLiU4LyAqU=
+			</data>
+			<key>hash2</key>
+			<data>
+			TnzfS/vn2SvV5dtr+DyFUwxILg8UFfkNuENxB5Php70=
+			</data>
+		</dict>
 		<key>embedded.mobileprovision</key>
 		<dict>
 			<key>hash</key>
@@ -133,6 +167,17 @@
 			<key>hash2</key>
 			<data>
 			M4ZEq+pSbzt4leAuH7sHzkUfC3b92TwsipuFVlOgDSk=
+			</data>
+		</dict>
+		<key>root.pem</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Cw+MT4CSJSoYxV3yxs622Xa8iRA=
+			</data>
+			<key>hash2</key>
+			<data>
+			9Ha1yOvmRoCUmB+2qYbj2TD9Ag9vN5JIAAOVoahUwSU=
 			</data>
 		</dict>
 	</dict>

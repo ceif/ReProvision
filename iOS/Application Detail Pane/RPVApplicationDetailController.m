@@ -14,7 +14,10 @@
 #import "RPVResources.h"
 
 #import <MarqueeLabel.h>
+
+#if !TARGET_OS_TV
 #import <MBCircularProgressBarView.h>
+#endif
 
 #define IS_IPAD UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 
@@ -40,8 +43,9 @@
 @property (nonatomic, strong) RPVCalendarController *calendarController;
 
 @property (nonatomic, strong) MarqueeLabel *percentCompleteLabel;
+#if !TARGET_OS_TV
 @property (nonatomic, strong) MBCircularProgressBarView *progressBar;
-
+#endif
 @property (nonatomic, strong) UIButton *signingButton;
 
 // Exit controls
@@ -66,6 +70,8 @@
 }
 
 - (instancetype)initWithApplication:(RPVApplication*)application {
+    
+    LOG_SELF;
     self = [super init];
     
     if (self) {
@@ -224,8 +230,11 @@
 }
 
 - (void)_addMajorButtonComponent {
+#if !TARGET_OS_TV
     self.signingButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    
+#else
+    self.signingButton = [UIButton buttonWithType:UIButtonTypeSystem];
+#endif
     [self.signingButton setTitle:@"BTN" forState:UIControlStateNormal];
     self.signingButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     
@@ -245,11 +254,22 @@
     
     [self.signingButton.layer insertSublayer:gradient atIndex:0];
     
+    NSUInteger controlState = UIControlStateHighlighted;
+    NSUInteger controlEvent = UIControlEventTouchUpInside;
+    
     // Button colouration
     [self.signingButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.signingButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     
-    [self.signingButton addTarget:self action:@selector(_userDidTapMajorButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+#if TARGET_OS_TV
+    controlState = UIControlStateFocused;
+    controlEvent = UIControlEventPrimaryActionTriggered;
+#else
+    [self.signingButton setTitleColor:[UIColor whiteColor] forState:controlState];
+
+#endif
+
+    [self.signingButton addTarget:self action:@selector(_userDidTapMajorButton:) forControlEvents:controlEvent];
     
     [self.contentView addSubview:self.signingButton];
 }
@@ -269,19 +289,52 @@
 }
 
 - (void)_addCloseControls {
+
+    NSUInteger controlEvent = UIControlEventTouchUpInside;
+#if !TARGET_OS_TV
     self.closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.closeButton.alpha = 0.5;
     self.closeButton.clipsToBounds = YES;
     
     // Button image (cross)
     [self.closeButton setImage:[UIImage imageNamed:@"buttonClose"] forState:UIControlStateNormal];
+#else
+    self.closeButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.closeButton setTitle:@"Close" forState:UIControlStateNormal];
+    [self.closeButton setTitle:@"Close" forState:UIControlStateFocused];
+    controlEvent = UIControlEventPrimaryActionTriggered;
+    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     
-    [self.closeButton addTarget:self action:@selector(_userDidTapCloseButton:) forControlEvents:UIControlEventTouchUpInside];
+    self.closeButton.layer.cornerRadius = 14.0;
+    //self.closeButton.backgroundColor = [UIColor whiteColor];
+    
+    // Add gradient
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.closeButton.bounds;
+    gradient.cornerRadius = self.closeButton.layer.cornerRadius;
+    
+    UIColor *startColor = [UIColor colorWithRed:147.0/255.0 green:99.0/255.0 blue:207.0/255.0 alpha:1.0];
+    UIColor *endColor = [UIColor colorWithRed:116.0/255.0 green:158.0/255.0 blue:201.0/255.0 alpha:1.0];
+    gradient.colors = @[(id)startColor.CGColor, (id)endColor.CGColor];
+    gradient.startPoint = CGPointMake(1.0, 0.5);
+    gradient.endPoint = CGPointMake(0.0, 0.5);
+    
+    [self.closeButton.layer insertSublayer:gradient atIndex:0];
+    
+    // Button colouration
+    [self.closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+#endif
+
+    
+    [self.closeButton addTarget:self action:@selector(_userDidTapCloseButton:) forControlEvents:controlEvent];
     
     self.closeGestureRecogniser = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(_userDidTapToClose:)];
     [self.backgroundView.contentView addGestureRecognizer:self.closeGestureRecogniser];
-    
+#if !TARGET_OS_TV
     [self.view addSubview:self.closeButton];
+#else
+    [self.contentView addSubview:self.closeButton];
+#endif
 }
 
 - (void)_addProgressComponents {
@@ -296,7 +349,7 @@
     self.percentCompleteLabel.trailingBuffer = 10.0;
     
     [self.contentView addSubview:self.percentCompleteLabel];
-    
+    #if !TARGET_OS_TV
     self.progressBar = [[MBCircularProgressBarView alloc] initWithFrame:CGRectZero];
     
     self.progressBar.value = 0.0;
@@ -314,6 +367,7 @@
     self.progressBar.hidden = YES;
     
     [self.contentView addSubview:self.progressBar];
+#endif
 }
 
 - (void)viewDidLayoutSubviews {
@@ -332,7 +386,12 @@
     CGFloat y = itemInsetX; // Ends up being used for contentView height.
     CGFloat contentViewWidth = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIScreen mainScreen].bounds.size.width * 0.5 : [UIScreen mainScreen].bounds.size.width * 0.95;
     
+#if TARGET_OS_TV
+    self.applicationIconView.frame=  CGRectMake(15, y, 210, 160);
+#else
     self.applicationIconView.frame = CGRectMake(15, y, 60, 60);
+#endif
+    
     
     // Signing button.
     [self.signingButton sizeToFit];
@@ -342,6 +401,20 @@
         layer.frame = self.signingButton.bounds;
     }
     
+#if TARGET_OS_TV
+    
+    // Close button.
+    [self.closeButton sizeToFit];
+    CGFloat closeButtonX = self.signingButton.frame.origin.x;
+    CGFloat closeButtonY = (y + self.signingButton.frame.size.height + self.applicationIconView.frame.size.height/2);
+    self.closeButton.frame = CGRectMake(closeButtonX, closeButtonY, self.signingButton.frame.size.width, 28);
+    
+    for (CALayer *layer in self.closeButton.layer.sublayers) {
+        layer.frame = self.closeButton.bounds;
+    }
+    
+#endif
+    
     // Name and bundle ID are same height?
     CGFloat insetAfterIcon = self.applicationIconView.frame.origin.x + self.applicationIconView.frame.size.width + itemInsetX;
     self.applicationNameLabel.frame = CGRectMake(insetAfterIcon, y + 5, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, 30);
@@ -349,10 +422,11 @@
     // Bundle ID.
     self.applicationBundleIdentifierLabel.frame = CGRectMake(insetAfterIcon, y + 35, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, 20);
     
+#if !TARGET_OS_TV
     // Progress bar and label.
     self.progressBar.frame = CGRectMake(self.applicationBundleIdentifierLabel.frame.origin.x, self.applicationBundleIdentifierLabel.frame.origin.y, 20, 20);
     self.percentCompleteLabel.frame = CGRectMake(self.applicationBundleIdentifierLabel.frame.origin.x + self.progressBar.frame.size.width + 5, self.applicationBundleIdentifierLabel.frame.origin.y, self.applicationBundleIdentifierLabel.frame.size.width - 5 - self.progressBar.frame.size.width, 20);
-    
+#endif
     y += 60 + itemInsetY;
     
     // Verison label
@@ -378,9 +452,14 @@
 
     self.contentView.frame = CGRectMake(self.view.frame.size.width/2 - contentViewWidth/2, self.view.frame.size.height/2 - y/2, contentViewWidth, y);
     
+#if !TARGET_OS_TV
     // Close button.
     self.closeButton.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y - 35, 30, 30);
     self.closeButton.layer.cornerRadius = self.closeButton.frame.size.width/2.0;
+#else
+    
+#endif
+    
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -473,6 +552,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 - (void)_userDidTapToClose:(id)sender {
+    
+    NSLog(@"user tapped close");
     [self _userDidTapCloseButton:nil];
 }
 
@@ -501,8 +582,9 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         if (percent > 0) {
             self.percentCompleteLabel.hidden = NO;
+#if !TARGET_OS_TV
             self.progressBar.hidden = NO;
-            
+#endif
             self.signingButton.alpha = 0.5;
             self.signingButton.enabled = NO;
             
@@ -517,13 +599,16 @@
         
         // Update progess bar!
         [UIView animateWithDuration:percent == 0 ? 0.0 : 0.35 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+#if !TARGET_OS_TV
             self.progressBar.value = percent;
+#endif
             self.percentCompleteLabel.text = [NSString stringWithFormat:@"%d%% complete", percent];
         } completion:^(BOOL finished) {
             if (finished && percent == 100) {
                 self.percentCompleteLabel.hidden = YES;
+#if !TARGET_OS_TV
                 self.progressBar.hidden = YES;
-                
+#endif
                 self.signingButton.alpha = 1.0;
                 self.signingButton.enabled = YES;
                 

@@ -16,6 +16,12 @@
 		32B779A02314D6A600828355 /* RPVAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B7799B2314D6A600828355 /* RPVAccountViewController.m */; };
 		32B779A52314DD8100828355 /* RPVTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779A42314DD8100828355 /* RPVTabBarController.m */; };
 		32B779A92315066500828355 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779A82315066500828355 /* UIViewController+Additions.m */; };
+		32B779AA23151E8100828355 /* RPVApplicationDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E952C220FA97A900E850B6 /* RPVApplicationDetailController.m */; };
+		32B779AB23151E8400828355 /* RPVCalendarController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C90B1D20FCA7F1001258C3 /* RPVCalendarController.m */; };
+		32B779AC23151E8700828355 /* RPVCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C90B2020FCA8D9001258C3 /* RPVCalendarCell.m */; };
+		32B779AD23154C8100828355 /* root.pem in Resources */ = {isa = PBXBuildFile; fileRef = C9A9446C2215FADC00F5C556 /* root.pem */; };
+		32B779AE23154C8400828355 /* apple-ios.pem in Resources */ = {isa = PBXBuildFile; fileRef = C9C6EA7D2004280A00211FDD /* apple-ios.pem */; };
+		32B779AF23154CAC00828355 /* RMessageDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = C97EF5B920F6AA3B005CB1DB /* RMessageDesign.json */; };
 		A26601C23E41FF5D32A6DF6C /* libPods-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0BF9DAD92CB745EF24C11FC /* libPods-iOS.a */; };
 		C90AD51E20697F23008B2F2B /* RPVNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AD51D20697F23008B2F2B /* RPVNotificationManager.m */; };
 		C90AD5212069968E008B2F2B /* RPVBackgroundSigningManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AD5202069968E008B2F2B /* RPVBackgroundSigningManager.m */; };
@@ -36,7 +42,6 @@
 		C9630A04211ADFE800FEEB61 /* RPVInstalledSectionHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C96309FC211ADFE800FEEB61 /* RPVInstalledSectionHeaderViewController.m */; };
 		C9630A05211ADFE800FEEB61 /* RPVInstalledMainHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C96309FD211ADFE800FEEB61 /* RPVInstalledMainHeaderView.m */; };
 		C9630A06211ADFE800FEEB61 /* RPVInstalledCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9630A02211ADFE800FEEB61 /* RPVInstalledCollectionViewCell.m */; };
-		C9630A14211AE19D00FEEB61 /* RPVApplicationDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9630A13211AE19D00FEEB61 /* RPVApplicationDetailController.m */; };
 		C964EA1521207FE100AC98E6 /* RPVDaemonListener.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D5BACD20EE3D54000D5970 /* RPVDaemonListener.m */; };
 		C964EA1621207FE100AC98E6 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E7C2C620EE296500FDF3B0 /* main.mm */; };
 		C964EA1B21207FE100AC98E6 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F3FA6820EE6A48002AD7B9 /* CoreFoundation.framework */; };
@@ -1569,9 +1574,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B779AF23154CAC00828355 /* RMessageDesign.json in Resources */,
+				32B779AD23154C8100828355 /* root.pem in Resources */,
 				C96CCE40211A2839008A249A /* Assets.xcassets in Resources */,
 				C96CCE3E211A2838008A249A /* Main.storyboard in Resources */,
 				C964EA302120874E00AC98E6 /* PackageVersion.plist in Resources */,
+				32B779AE23154C8400828355 /* apple-ios.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1758,7 +1766,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo $SDKROOT\n\nBASE_SDK=`basename $SDKROOT`\n\nif [[ $BASE_SDK == *\"Simulator\"* ]]\nthen\nexit 0\nfi\n\necho \"Copying application into Package\"\n\n# Clean out existing .app\nrm -rf \"${PROJECT_DIR}/tvOS/Package/Applications/${CONTENTS_FOLDER_PATH}\"\n\nbuiltpath=\"${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${CONTENTS_FOLDER_PATH}\"\ncp -R $builtpath \"${PROJECT_DIR}/tvOS/Package/Applications/\"\n\n# Sign with entitlements\necho \"Signing with entitlements.xml...\"\nif type \"${iOSOpenDevPath}/bin/ldid2\" > /dev/null;\nthen\n${iOSOpenDevPath}/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"/usr/bin/ldid2\" > /dev/null;\nthen\n/usr/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"/usr/local/bin/ldid2\" > /dev/null;\nthen\n/usr/local/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"ldid2\" > /dev/null;\nthen\nldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelse\necho \"Could not find ldid2 on your system (searched /usr/bin, /usr/local/bin, ${iOSOpenDevPath}/bin/)\"\nexit 1\nfi\n\n# Build package!\n${iOSOpenDevPath}/bin/iosod build -p \"${PROJECT_DIR}/tvOS/PackageVersion.plist\" \"${PROJECT_DIR}/tvOS/Package\" \"${PROJECT_DIR}/tvOS/NitoPackages\"\n";
+			shellScript = "echo $SDKROOT\n\nBASE_SDK=`basename $SDKROOT`\n\nif [[ $BASE_SDK == *\"Simulator\"* ]]\nthen\nexit 0\nfi\n\necho \"Copying application into Package\"\n\n# Clean out existing .app\nrm -rf \"${PROJECT_DIR}/tvOS/Package/Applications/${CONTENTS_FOLDER_PATH}\"\n\nbuiltpath=\"${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${CONTENTS_FOLDER_PATH}\"\ncp -R $builtpath \"${PROJECT_DIR}/tvOS/Package/Applications/\"\n\n# Sign with entitlements\necho \"Signing with entitlements.xml...\"\nif type \"${iOSOpenDevPath}/bin/ldid2\" > /dev/null;\nthen\n${iOSOpenDevPath}/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"/usr/bin/ldid2\" > /dev/null;\nthen\n/usr/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"/usr/local/bin/ldid2\" > /dev/null;\nthen\n/usr/local/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"ldid2\" > /dev/null;\nthen\nldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelse\necho \"Could not find ldid2 on your system (searched /usr/bin, /usr/local/bin, ${iOSOpenDevPath}/bin/)\"\nexit 1\nfi\n\noutput=\"${PROJECT_DIR}/tvOS/PackageVersion.plist\" \"${PROJECT_DIR}/tvOS/Package\" \"${PROJECT_DIR}/tvOS/NitoPackages\"\n\n# Build package!\n${iOSOpenDevPath}/bin/iosod build -p \"${PROJECT_DIR}/tvOS/PackageVersion.plist\" \"${PROJECT_DIR}/tvOS/Package\" \"${PROJECT_DIR}/tvOS/NitoPackages\"\n";
 		};
 		D5BECAC2D5666F9D213C0BB4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1873,6 +1881,7 @@
 				C96CCE74211A3482008A249A /* hashtable.c in Sources */,
 				C96CCE75211A3482008A249A /* Integer.cpp in Sources */,
 				C96CCE76211A3482008A249A /* Key.cpp in Sources */,
+				32B779AB23151E8400828355 /* RPVCalendarController.m in Sources */,
 				C96CCE77211A3482008A249A /* iterator.c in Sources */,
 				C96CCE78211A3482008A249A /* list.c in Sources */,
 				C96CCE79211A3482008A249A /* node.c in Sources */,
@@ -1890,8 +1899,8 @@
 				C96CCE82211A3482008A249A /* time64.c in Sources */,
 				32B7799C2314D6A600828355 /* RPVAccount2FAViewController.m in Sources */,
 				C96CCE83211A3482008A249A /* Uid.cpp in Sources */,
-				C9630A14211AE19D00FEEB61 /* RPVApplicationDetailController.m in Sources */,
 				C96CCE84211A3482008A249A /* xplist.c in Sources */,
+				32B779AC23151E8700828355 /* RPVCalendarCell.m in Sources */,
 				C96CCEA0211A3736008A249A /* RPVNotificationManager.m in Sources */,
 				C96CCE85211A3482008A249A /* EEProvisioning.mm in Sources */,
 				C96CCE86211A3482008A249A /* SAMKeychainQuery.m in Sources */,
@@ -1922,6 +1931,7 @@
 				32B779A02314D6A600828355 /* RPVAccountViewController.m in Sources */,
 				C96CCE3B211A2838008A249A /* RPVSettingsNavigationViewController.m in Sources */,
 				C96CCE35211A2838008A249A /* AppDelegate.m in Sources */,
+				32B779AA23151E8100828355 /* RPVApplicationDetailController.m in Sources */,
 				C96CCE55211A2C9B008A249A /* RPVAdvancedController.m in Sources */,
 				C96CCE54211A2C9B008A249A /* RPVSettingsController.m in Sources */,
 				C9C5921D21206E1000DF2E19 /* RPVInstalledViewController.m in Sources */,

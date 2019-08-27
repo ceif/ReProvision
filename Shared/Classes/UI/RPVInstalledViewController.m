@@ -25,7 +25,7 @@
 #endif
 
 // Fake data source stuff...
-#if TARGET_OS_TV
+#if TARGET_OS_SIMULATOR
 #define USE_FAKE_DATA 1
 #else
 #define USE_FAKE_DATA 0
