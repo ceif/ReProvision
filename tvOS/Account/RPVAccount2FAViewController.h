@@ -16,7 +16,6 @@
 
 @property (strong, nonatomic) UITextField *passwordTextField;
 @property (strong, nonatomic) UIBarButtonItem *confirmBarButtonItem;
-@property (strong, nonatomic) UIButton *confirmButton;
 @property (strong, nonatomic) UIButton *cbutton;
 
 - (void)setupWithEmailAddress:(NSString*)emailAddress;

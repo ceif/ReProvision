@@ -36,29 +36,20 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     
     if (textField.text.length > 0){
-        self.confirmButton.enabled = true;
         self.confirmBarButtonItem.enabled = true;
     } else {
-        self.confirmButton.enabled = false;
         self.confirmBarButtonItem.enabled = false;
     }
-    
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     if ([self darkMode]){
-        
         self.titleLabel.textColor = [UIColor whiteColor];
-        
     } else {
-        
         self.titleLabel.textColor = [UIColor blackColor];
-        
     }
     
 }
-
 
 - (void)buildView {
     
@@ -113,18 +104,6 @@
     self.passwordTextField.placeholder = @"Password";
     [self.passwordTextField autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.subtitleLabel withOffset:40];
     
-    /*
-     self.confirmButton = [UIButton buttonWithType:UIButtonTypeSystem];
-     [self.view  addSubview:self.confirmButton];
-     [self.confirmButton autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.passwordTextField];
-    [self.confirmButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
-    [self.confirmButton setTitle:@"Confirm" forState:UIControlStateNormal];
-    [self.confirmButton setTitle:@"Confirm" forState:UIControlStateFocused];
-    self.confirmButton.enabled = false;
-    [self.confirmButton autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.passwordTextField withOffset:30];
-    [self.confirmButton addTarget:self action:@selector(didTapConfirmButton:) forControlEvents:UIControlEventPrimaryActionTriggered];
-*/
-    
     [self.appleOnlyLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.passwordTextField withOffset:40];
 }
 
@@ -164,8 +143,6 @@
             [self.navigationController pushViewController:teamidController animated:true];
             
         });
-        
-        //[self performSegueWithIdentifier:@"presentTeamIDController" sender:nil];
     }
 }
 
@@ -176,7 +153,6 @@
     NSString *password = self.passwordTextField.text;
     
     RPVAccountFinalController *finalController = [RPVAccountFinalController new];
-    
     [finalController setupWithUsername:username password:password andTeamID:teamID];
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -185,7 +161,6 @@
         
     });
     
-    //[self performSegueWithIdentifier:@"presentFinalController" sender:nil];
 }
 
 - (IBAction)didTapConfirmButton:(id)sender {
@@ -242,34 +217,9 @@
 
 - (void)textFieldDidChange:(id)sender {
     if (self.passwordTextField.text.length > 0) {
-        self.confirmButton.enabled = YES;
         self.confirmBarButtonItem.enabled = YES;
     } else {
-        self.confirmButton.enabled = NO;
         self.confirmBarButtonItem.enabled = YES;
-    }
-}
-
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[[segue destinationViewController] class] isEqual:[RPVAccountTeamIDViewController class]]) {
-        // If Team ID controller, pass through the interim team ID array.
-        RPVAccountTeamIDViewController *teamidController = (RPVAccountTeamIDViewController*)[segue destinationViewController];
-        
-        [teamidController setupWithDataSource:self._interimTeamIDArray username:self.emailAddress andPassword:self.passwordTextField.text];
-    } else if ([[[segue destinationViewController] class] isEqual:[RPVAccountFinalController class]]) {
-        // or if the final controller, send everything through!
-        
-        NSString *teamID = [[self._interimTeamIDArray firstObject] objectForKey:@"teamId"];
-        NSString *username = self.emailAddress;
-        NSString *password = self.passwordTextField.text;
-        
-        RPVAccountFinalController *finalController = (RPVAccountFinalController*)[segue destinationViewController];
-        
-        [finalController setupWithUsername:username password:password andTeamID:teamID];
     }
 }
 

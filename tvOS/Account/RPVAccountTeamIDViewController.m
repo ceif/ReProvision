@@ -35,8 +35,6 @@
     self.tableView.tableHeaderView = nil;
     self.tableView.tableFooterView = nil;
     
-    //self.tableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.8];
-    
     [self.tableView reloadData];
 }
 
@@ -44,7 +42,6 @@
 
     return self.cbutton;
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -73,7 +70,6 @@
     
     self.nextButton = [[UIBarButtonItem alloc] initWithCustomView:self.cbutton];
     
-    //self.nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(presentFinalController)];
     self.nextButton.enabled = FALSE;
     
     self.navigationItem.rightBarButtonItem = self.nextButton;
@@ -107,9 +103,7 @@
     } else {
         self.tableView.backgroundColor = [UIColor clearColor];
     }
-    //self.tableView.backgroundView = nil;
-    //self.tableView.maskView = nil;
-    //self.view.backgroundColor = [UIColor clearColor];
+
     [self.view  addSubview:self.tableView];
     [self.tableView autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.view];
     [self.tableView autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.subtitleLabel withOffset:10];
@@ -117,37 +111,17 @@
     [self.tableView autoPinEdgeToSuperviewEdge:ALEdgeBottom];
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"teamid.cell"];
-  /*
-   
-   self.confirmButton = [UIButton buttonWithType:UIButtonTypeSystem];
-   
-   
-    [self.view  addSubview:self.confirmButton];
-    
-    [self.confirmButton autoMatchDimension:ALDimensionWidth toDimension:ALDimensionWidth ofView:self.view withMultiplier:.50];
-    
-    [self.confirmButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
-    [self.confirmButton setTitle:@"Confirm" forState:UIControlStateNormal];
-    [self.confirmButton setTitle:@"Confirm" forState:UIControlStateFocused];
-    self.confirmButton.enabled = false;
-    
-    [self.confirmButton addTarget:self action:@selector(didTapConfirmButton:) forControlEvents:UIControlEventPrimaryActionTriggered];
-   */
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
-    if ([self darkMode]){
-        
-        self.titleLabel.textColor = [UIColor whiteColor];
-        self.tableView.backgroundColor = [UIColor clearColor];
-    } else {
-        
-        self.titleLabel.textColor = [UIColor blackColor];
-        self.tableView.backgroundColor = [UIColor clearColor];
-        
-    }
+    self.tableView.backgroundColor = [UIColor clearColor];
     
+    if ([self darkMode]){
+        self.titleLabel.textColor = [UIColor whiteColor];
+    } else {
+        self.titleLabel.textColor = [UIColor blackColor];
+    }
 }
 
 #pragma mark - Table view delegate
@@ -172,8 +146,7 @@
     teamID = [data objectForKey:@"teamId"];
     membershipName = [[[data objectForKey:@"memberships"] firstObject] objectForKey:@"name"];
     teamName = [NSString stringWithFormat:@"%@ (%@)", [data objectForKey:@"name"], [data objectForKey:@"type"]];
-    //cell.backgroundColor = nil;
-    //cell.backgroundView = nil;
+
     cell.textLabel.text = teamName;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ | %@", teamID, membershipName];
     
@@ -210,14 +183,12 @@
     return 1.0;
 }
 
-
 - (void)presentFinalController {
     
     NSString *teamID = self.selectedTeamID;
     NSString *username = self.username;
     NSString *password = self.password;
     RPVAccountFinalController *finalController = [RPVAccountFinalController new];
-    
     [finalController setupWithUsername:username password:password andTeamID:teamID];
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -226,24 +197,6 @@
         
     });
     
-    //[self performSegueWithIdentifier:@"presentFinalController" sender:nil];
-}
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([[[segue destinationViewController] class] isEqual:[RPVAccountFinalController class]]) {
-        // if the final controller, send everything through!
-        
-        NSString *teamID = self.selectedTeamID;
-        NSString *username = self.username;
-        NSString *password = self.password;
-        
-        RPVAccountFinalController *finalController = (RPVAccountFinalController*)[segue destinationViewController];
-        
-        [finalController setupWithUsername:username password:password andTeamID:teamID];
-    }
 }
 
 

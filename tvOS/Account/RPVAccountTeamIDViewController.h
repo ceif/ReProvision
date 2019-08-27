@@ -15,7 +15,6 @@
 @property (strong, nonatomic) UILabel *appleOnlyLabel;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) UIBarButtonItem *nextButton;
-@property (strong, nonatomic) UIButton *confirmButton;
 @property (strong, nonatomic) UIButton *cbutton;
 
 - (void)setupWithDataSource:(NSArray*)dataSource username:(NSString*)username andPassword:(NSString*)password;
