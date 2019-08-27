@@ -51,18 +51,18 @@
     NSDictionary<NSString *, NSString *> *appleHeaders = [self.authentication appleIDHeadersForRequest:request];
     AKDevice* currentDevice = [AKDevice currentDevice];
     NSDictionary<NSString *, NSString *> *httpHeaders = @{
-        @"Content-Type": @"text/x-xml-plist",
-        @"User-Agent": @"Xcode",
-        @"Accept": @"text/x-xml-plist",
-        @"Accept-Language": @"en-us",
-        @"Connection": @"keep-alive",
-        @"X-Xcode-Version": @"11.2 (11B52)",
-        @"X-Apple-I-Identity-Id": [[self.credentials user] componentsSeparatedByString:@"|"][0],
-        @"X-Apple-GS-Token": [self.credentials password],
-        @"X-Apple-App-Info": @"com.apple.gs.xcode.auth",
-        @"X-Mme-Device-Id": [currentDevice uniqueDeviceIdentifier],
-        @"X-MMe-Client-Info":[currentDevice serverFriendlyDescription]
-    };
+                                                          @"Content-Type": @"text/x-xml-plist",
+                                                          @"User-Agent": @"Xcode",
+                                                          @"Accept": @"text/x-xml-plist",
+                                                          @"Accept-Language": @"en-us",
+                                                          @"Connection": @"keep-alive",
+                                                          @"X-Xcode-Version": @"11.2 (11B52)",
+                                                          @"X-Apple-I-Identity-Id": [[self.credentials user] componentsSeparatedByString:@"|"][0],
+                                                          @"X-Apple-GS-Token": [self.credentials password],
+                                                          @"X-Apple-App-Info": @"com.apple.gs.xcode.auth",
+                                                          @"X-Mme-Device-Id": [currentDevice uniqueDeviceIdentifier],
+                                                          @"X-MMe-Client-Info":[currentDevice serverFriendlyDescription]
+                                                          };
     
     [httpHeaders enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop) {
         [request setValue:value forHTTPHeaderField:key];
@@ -77,14 +77,12 @@
 
 - (void)_doActionWithName:(NSString*)action systemType:(EESystemType)systemType extraDictionary:(NSDictionary*)extra andCompletionHandler:(void (^)(NSError*, NSDictionary *))completionHandler {
     
-    NSString *os = @"";
+    // watchOS is treated as iOS
+    // this check is not necessary, if tvos is in that URL it doesn't work
+    NSString *os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios" : @"tvos";
+    NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@/%@?clientId=XABBG36SBA", @"ios", action];
     
-    if (systemType != EESystemTypeUndefined)
-        os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios/" : @"tvos/";
-    
-    NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@%@?clientId=XABBG36SBA", os,action];
-    
-    NSLog(@"Request to URL: %@", urlStr);
+    DDLogInfo(@"Request to URL: %@", urlStr);
     
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlStr]];
     request.HTTPMethod = @"POST";
@@ -106,6 +104,7 @@
      * ios
      * tvos
      * watchos
+     *
      */
     switch (systemType) {
         case EESystemTypeiOS:

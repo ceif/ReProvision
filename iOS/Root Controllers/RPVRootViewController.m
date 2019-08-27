@@ -41,12 +41,12 @@
     // Update status bar style.
     [self setNeedsStatusBarAppearanceUpdate];
 }
-
+    
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+    
 - (void)_setupSplitController:(UISplitViewController*)splitController {
     // Setup master-detail link.
     
@@ -62,20 +62,20 @@
     [detailController presentSelectedItem:kItemApplications];
     [masterController.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
-
+    
 - (UIStatusBarStyle)preferredStatusBarStyle {
     // Only ever have one child at any time.
     return self.childViewControllers.count > 0 ? [[self.childViewControllers objectAtIndex:0] preferredStatusBarStyle] : UIStatusBarStyleDefault;
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-@end
+    
+    /*
+     #pragma mark - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+     // Get the new view controller using [segue destinationViewController].
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
+    @end

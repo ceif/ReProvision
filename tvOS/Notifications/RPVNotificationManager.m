@@ -13,6 +13,7 @@
 #import "RPVNotificationManager.h"
 #import "RPVResources.h"
 
+
 @implementation RPVNotificationManager
 
 + (instancetype)sharedInstance {
@@ -34,15 +35,28 @@
 }
 
 - (void)sendNotificationWithTitle:(NSString*)title body:(NSString*)body isDebugMessage:(BOOL)isDebug isUrgentMessage:(BOOL)isUrgent andNotificationID:(NSString*)identifier {
+   
     if (isDebug && ![RPVResources shouldShowDebugAlerts]) {
         return;
     }
-    
     if (!isUrgent && ![RPVResources shouldShowNonUrgentAlerts]) {
         return;
     }
     
-    // TODO: Display notification via in-app library
+     // TODO: Display notification via in-app library < -- do this properly.
+ 
+    DDLogInfo(@"send notification with title: %@", title);
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    dict[@"message"] = body;
+    dict[@"title"] = title;
+    dict[@"timeout"] = @2;
+    UIImage *image = [UIImage imageNamed:@"notifIcon"];
+    NSData *imageData = UIImagePNGRepresentation(image);;
+    if (imageData){
+        dict[@"imageData"] = imageData;
+    }
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.nito.bulletinh4x/displayBulletin" object:nil userInfo:dict];
+   
 }
 
 - (void)_updateBadge {
@@ -69,7 +83,7 @@
         
         [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
             if (error) {
-                NSLog(@"Error: %@", error.localizedDescription);
+                DDLogInfo(@"Error: %@", error.localizedDescription);
             }
             
         }];

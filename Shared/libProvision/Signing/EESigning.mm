@@ -50,7 +50,7 @@ static auto dummy([](double) {});
     
     NSMutableDictionary* plist = [NSMutableDictionary dictionary];
     
-    NSLog(@"Loading entitlements for: '%@'", binaryLocation);
+    DDLogInfo(@"Loading entitlements for: '%@'", binaryLocation);
     
     // Make sure to pass in the entitlements already present, updating as needed.
     NSData *binaryData = [NSData dataWithContentsOfFile:binaryLocation];
@@ -72,8 +72,13 @@ static auto dummy([](double) {});
         NSPropertyListFormat format;
         plist = [[NSPropertyListSerialization propertyListWithData:plistData options:0 format:&format error:&error] mutableCopy];
     }
+    DDLogInfo(@"og plist: %@", plist);
+    DDLogInfo(@"bundleId: %@", bundleIdentifier);
+    //com.apple.developer.ubiquity-kvstore-identifier
+    NSString *teamBundleId = [NSString stringWithFormat:@"%@.%@", teamid, bundleIdentifier];
     
-    [plist setValue:[NSString stringWithFormat:@"%@.%@", teamid, bundleIdentifier] forKey:@"application-identifier"];
+    [plist setValue:teamBundleId forKey:@"application-identifier"];
+    [plist setValue:teamBundleId forKey:@"com.apple.developer.ubiquity-kvstore-identifier"];
     [plist setValue:teamid forKey:@"com.apple.developer.team-identifier"];
     
     NSMutableArray *keychainAccessGroups = [NSMutableArray array];
@@ -82,6 +87,9 @@ static auto dummy([](double) {});
     [keychainAccessGroups addObject:applicationident];
     
     [plist setValue:keychainAccessGroups forKey:@"keychain-access-groups"];
+    [plist removeObjectForKey:@"get-task-allow"];
+    [plist removeObjectForKey:@"com.apple.developer.icloud-container-identifiers"];
+    DDLogInfo(@"new plist: %@", plist);
     //[plist setValue:@YES forKey:@"get-task-allow"];
     
     return plist;
@@ -109,6 +117,7 @@ static auto dummy([](double) {});
 
     ldid::DiskFolder folder([[absolutePath copy] cStringUsingEncoding:NSUTF8StringEncoding]);
     ldid::Bundle outputBundle = Sign("", folder, _PKCS12, requirementsString, ldid::fun([&](const std::string &, const std::string &) -> std::string { return entitlementsString; }), ldid::fun([&](const std::string &) {}), ldid::fun(dummy));
+    
     
     // TODO: Handle errors!
     

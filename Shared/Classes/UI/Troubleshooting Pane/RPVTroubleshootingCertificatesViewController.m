@@ -278,7 +278,17 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.section == 0 ? 55.0 : UITableViewAutomaticDimension;
+    
+    NSInteger section = indexPath.section;
+    if (section == 0){
+#if TARGET_OS_TV
+        return 100;
+#else
+        return 55;
+#endif
+    }
+    return UITableViewAutomaticDimension;
+    //return indexPath.section == 0 ? 55.0 : UITableViewAutomaticDimension;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {

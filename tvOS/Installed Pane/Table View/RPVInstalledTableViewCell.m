@@ -45,7 +45,7 @@ static CGFloat inset = 20;
     NSString *bundleIdentifier = [[notification userInfo] objectForKey:@"bundleIdentifier"];
     int percent = [[[notification userInfo] objectForKey:@"percent"] intValue];
     
-    NSLog(@"**** Signing update: %@", [notification userInfo]);
+    DDLogInfo(@"**** Signing update: %@", [notification userInfo]);
     
     if ([bundleIdentifier isEqualToString:self.bundleIdentifier]) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -109,9 +109,36 @@ static CGFloat inset = 20;
         //self.progressBar.frame = CGRectMake(self.bundleIdentifierLabel.frame.origin.x, self.bundleIdentifierLabel.frame.origin.y, bundleIdentifierHeight, bundleIdentifierHeight);
         self.percentCompleteLabel.frame = CGRectMake(self.bundleIdentifierLabel.frame.origin.x + bundleIdentifierHeight + 7, self.bundleIdentifierLabel.frame.origin.y, self.bundleIdentifierLabel.frame.size.width - bundleIdentifierHeight - 7, bundleIdentifierHeight);
         
+        [self updateForCurrentMode];
+        
         self.notificationView.frame = self.contentView.bounds;
     } else {
         self.displayNameLabel.frame = self.contentView.bounds;
+    }
+}
+
+//
+
+- (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
+    
+    [super didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
+    
+    [coordinator addCoordinatedAnimations:^{
+        
+        [self updateForCurrentMode];
+        
+    } completion:^{
+        
+    }];
+}
+
+
+- (void)updateForCurrentMode {
+    
+    if ([self darkMode] && ![self isFocused]){
+        self.displayNameLabel.textColor = [UIColor whiteColor];
+    } else {
+        self.displayNameLabel.textColor = [UIColor blackColor];
     }
 }
 
@@ -241,7 +268,7 @@ static CGFloat inset = 20;
     //self.selectedBackgroundView.clipsToBounds = YES;
     self.notificationView.layer.cornerRadius = 12.5;
     self.notificationView.clipsToBounds = YES;
-    
+    [self updateForCurrentMode];
     //self.backgroundColor = [UIColor whiteColor];
     //self.contentView.backgroundColor = [UIColor whiteColor];
 }

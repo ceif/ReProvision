@@ -19,5 +19,9 @@
 	<true/>
 	<key>KeepAlive</key>
 	<true/>
+	<key>StandardOutPath</key>
+	<string>/var/mobile/Library/Logs/reprovisiond.log</string>
+	<key>StandardErrorPath</key>
+	<string>/var/mobile/Library/Logs/reprovisiond-Error.log</string>
 </dict>
 </plist>

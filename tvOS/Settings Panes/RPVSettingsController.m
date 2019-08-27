@@ -9,6 +9,29 @@
 #import "RPVSettingsController.h"
 #import "RPVAdvancedController.h"
 #import "RPVResources.h"
+#import <objc/runtime.h>
+
+
+
+@implementation RPVListItemsController
+
+
+- (void)viewWillAppear:(bool)arg1 {
+ 
+    [super viewWillAppear:arg1];
+    
+    //if ([self darkMode]){
+     
+      //  [self.view printRecursiveDescription];
+        UITableView *table = [self table];
+        table.backgroundColor = [UIColor clearColor];
+        self.view.backgroundColor = [UIColor clearColor];
+    //}
+    
+    
+}
+
+@end
 
 @interface PSSpecifier (Private)
 - (void)setButtonAction:(SEL)arg1;
@@ -25,6 +48,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //id object = [RPVListLoader new];
+    //DDLogInfo(@"obj: %@", object);
     self.view.tintColor = [UIApplication sharedApplication].delegate.window.tintColor;
     [[self navigationItem] setTitle:@"Settings"];
     
@@ -106,7 +131,7 @@
     
     [array addObject:resign];
     
-    PSSpecifier *threshold = [PSSpecifier preferenceSpecifierNamed:@"Re-sign Applications When:" target:self set:@selector(setPreferenceValue:specifier:) get:@selector(readPreferenceValue:) detail:NSClassFromString(@"PSListItemsController") cell:PSLinkListCell edit:nil];
+    PSSpecifier *threshold = [PSSpecifier preferenceSpecifierNamed:@"Re-sign Applications When:" target:self set:@selector(setPreferenceValue:specifier:) get:@selector(readPreferenceValue:) detail:NSClassFromString(@"RPVListItemsController") cell:PSLinkListCell edit:nil];
     [threshold setProperty:@YES forKey:@"enabled"];
     [threshold setProperty:@2 forKey:@"default"];
     threshold.values = [NSArray arrayWithObjects:@1, @2, @3, @4, @5, @6, nil];
@@ -173,6 +198,22 @@
     
     [array addObject:designer];
     
+#if TARGET_OS_TV
+    PSSpecifier* nito = [PSSpecifier preferenceSpecifierNamed:@"nito"
+                                                           target:self
+                                                              set:nil
+                                                              get:nil
+                                                           detail:nil
+                                                             cell:PSLinkCell
+                                                             edit:nil];
+    
+    [array addObject:nito];
+    
+    
+    
+#endif
+    
+    
     PSSpecifier *openSourceLicenses = [PSSpecifier preferenceSpecifierNamed:@"Third-party Licenses"
                                                                      target:self
                                                                         set:nil
@@ -215,7 +256,7 @@
         return cell;
     }
     
-    if (indexPath.section == 4 && indexPath.row < 2) {
+    if (indexPath.section == 4 && indexPath.row < 3) {
         static NSString *cellIdentifier = @"credits.cell";
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -223,9 +264,28 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
         }
         
-        cell.textLabel.text = indexPath.row == 0 ? @"Matchstic" : @"Aesign";
-        cell.detailTextLabel.text = indexPath.row == 0 ? @"Developer" : @"Designer";
-        cell.imageView.image = [UIImage imageNamed:indexPath.row == 0 ? @"author" : @"designer"];
+        switch (indexPath.row) {
+            case 0:
+                cell.textLabel.text = @"Matchstic";
+                cell.detailTextLabel.text = @"Developer";
+                cell.imageView.image = [UIImage imageNamed:@"author"];
+                break;
+                
+            case 1:
+                cell.textLabel.text =  @"Aesign";
+                cell.detailTextLabel.text = @"Designer";
+                cell.imageView.image = [UIImage imageNamed:@"designer"];
+                break;
+                
+            case 2:
+                cell.textLabel.text =  @"nitoTV";
+                cell.detailTextLabel.text = @"tvOS Developer";
+                cell.imageView.image = [UIImage imageNamed:@"nito"];
+                break;
+                
+            default:
+                break;
+        }
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -314,7 +374,10 @@
     _hasCachedUser = hasCachedUser;
     
     // Update "Apple ID: XXX"
-    NSString *title = [NSString stringWithFormat:@"Apple ID: %@", username];
+    NSString *realName = [username componentsSeparatedByString:@"|"].count > 1 ? [username componentsSeparatedByString:@"|"][1] : username;
+    NSString *title = [NSString stringWithFormat:@"Apple ID: %@", realName];
+
+    //NSString *title = [NSString stringWithFormat:@"Apple ID: %@", username];
     [_loggedInSpec setName:title];
     [_loggedInSpec setProperty:title forKey:@"label"];
     

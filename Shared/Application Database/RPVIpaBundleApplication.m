@@ -7,6 +7,9 @@
 //
 
 #import "RPVIpaBundleApplication.h"
+#import <Foundation/Foundation.h>
+#import "CoreUI.h"
+#import "CARExporter.h"
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -20,6 +23,10 @@
 @property (nonatomic, strong) NSURL *cachedURL;
 @property (nonatomic, strong) UIImage *cachedIconImage;
 @property (nonatomic, strong) NSNumber *uncompressedSize;
+
+#if TARGET_OS_TV
+@property (nonatomic, strong) NSString *iconName;
+#endif
 
 @property (nonatomic, strong) NSString *_tmp_zipFileRequested;
 @property (nonatomic, readwrite) BOOL _tmp_zipUncompressedSizeRequested;
@@ -37,6 +44,9 @@
         self.cachedInfoPlist = [self _loadInfoPlistFromURL:url];
         self.cachedIconImage = [self _loadApplicationIconFromURL:url withInfoPlist:self.cachedInfoPlist];
         self.uncompressedSize = [self _loadUncompressedFileSizeFromURL:url];
+#if TARGET_OS_TV
+        
+#endif
         
         self.cachedURL = url;
     }
@@ -82,9 +92,18 @@
             } else
                 icons = [infoPlist objectForKey:@"CFBundleIcons"];
         }
-        
+
+#if TARGET_OS_TV
+         NSString *iconFileName = [icons objectForKey:@"CFBundlePrimaryIcon"];
+        self.iconName = iconFileName;
+        DDLogInfo(@"iconFileName: %@", self.iconName);
+        return [self _loadTVOSIconFromCAR:@"Payload/*/Assets.car" fromIPA:url multipleCandiateChooser:^NSString *(NSArray *candidates) {
+            return [candidates firstObject];
+        }];
+
+#else
         NSString *iconFileName = [[[icons objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"] lastObject];
-        
+#endif
         // Add suffix as needed.
         
         // Now load this from the .ipa file
@@ -212,6 +231,86 @@
     
     return [UIImage imageWithCGImage:masked];
 }
+
+#if TARGET_OS_TV
+
+- (UIImage *)_loadTVOSIconFromCAR:(NSString*)fileFormat fromIPA:(NSURL*)url  multipleCandiateChooser:(NSString * (^)(NSArray *candidates))candidateChooser{
+    
+    NSString *destinationPath = NSTemporaryDirectory();
+    if (!destinationPath)
+        destinationPath = @"/tmp";
+    
+    NSString *uniquePath = [[NSUUID UUID] UUIDString];
+    
+    destinationPath = [destinationPath stringByAppendingString:uniquePath];
+    
+    // Load this file only from the zip.
+    self._tmp_zipFileRequested = fileFormat;
+    BOOL success = [SSZipArchive unzipFileAtPath:[url path] toDestination:destinationPath delegate:self];
+    self._tmp_zipFileRequested = nil;
+    
+    if (success) {
+        // Extracted the Info.plist file.
+        for (NSString *pathComponent in [fileFormat pathComponents]) {
+            if ([pathComponent isEqualToString:@"*"]) {
+                // Expand the wildcard directory out.
+                NSString *wildcardDirectory = nil;
+                NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:destinationPath error:nil];
+                for (NSString *file in contents) {
+                    if (![file isEqualToString:@".DS_Store"]) {
+                        wildcardDirectory = file;
+                        break;
+                    }
+                }
+                
+                destinationPath = [destinationPath stringByAppendingFormat:@"/%@", wildcardDirectory];
+            } else {
+                destinationPath = [destinationPath stringByAppendingFormat:@"/%@", pathComponent];
+            }
+        }
+        
+        // We now have a fully qualified path. However, we also allow the usage of prefixes as the final path component.
+        // In that situation, return the last file.
+        
+        NSArray *destinationContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[destinationPath stringByDeletingLastPathComponent] error:nil];
+        
+        if (destinationContents.count > 1) {
+            destinationPath = [NSString stringWithFormat:@"%@/%@", [destinationPath stringByDeletingLastPathComponent], candidateChooser(destinationContents)];
+        } else {
+            destinationPath = [NSString stringWithFormat:@"%@/%@", [destinationPath stringByDeletingLastPathComponent], [destinationContents lastObject]];
+        }
+        DDLogInfo(@"destination path: %@", destinationPath);
+        //destinationPath
+        NSError *error = nil;
+        int facet = [NSClassFromString(@"CUIThemeFacet") themeWithContentsOfURL:[NSURL fileURLWithPath:destinationPath] error:&error];
+        CUICatalog *catalog = [[CUICatalog alloc] init];
+        /* Override CUICatalog to point to a file rather than a bundle */
+        [catalog setValue:[NSNumber numberWithInt:facet] forKey:@"_storageRef"];
+    
+        //NSArray *imageNames = [[catalog _themeStore] allImageNames];
+        //DDLogInfo(@"all image names: %@", imageNames);
+        NSArray *assets = [[catalog _themeStore] imagesWithName: self.iconName];
+        
+        if (assets.count > 1){ //first is a layered image i cant use
+            CUINamedImage *asset = assets[1];
+            DDLogInfo(@"image %@ from name: %@", asset, self.iconName);
+            
+            UIImage *image = [UIImage imageWithCGImage:asset.image];
+            DDLogInfo(@"image: %@", image);
+            self.cachedIconImage = image;
+            return image;
+        }
+        
+        //NSString *docs = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        //DDLogInfo(@"docs: %@", docs);
+        //[exporter exportToDirectory:docs];
+    }
+    
+   
+    return nil;
+}
+
+#endif
 
 - (NSData*)_loadFileWithFormat:(NSString*)fileFormat fromIPA:(NSURL*)url multipleCandiateChooser:(NSString * (^)(NSArray *candidates))candidateChooser {
     NSString *destinationPath = NSTemporaryDirectory();

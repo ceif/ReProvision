@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <Preferences/Preferences.h>
 
+@interface RPVListItemsController: PSListItemsController
+
+@end
+
 @interface RPVSettingsController : PSListController {
     NSArray *_loggedInAppleSpecifiers;
     NSArray *_loggedOutAppleSpecifiers;

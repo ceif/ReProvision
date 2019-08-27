@@ -13,6 +13,17 @@
 #import <TORoundedTableView/TORoundedTableView.h>
 #import <TORoundedTableView/TORoundedTableViewCell.h>
 #import <TORoundedTableView/TORoundedTableViewCapCell.h>
+
+#else
+
+//@interface SFAirDropSharingViewControllerTV : UIViewController
+@interface UIViewController (SFAirDropSharingViewControllerTV)
+-(id)initWithSharingItems:(id)arg1;
+-(void)setCompletionHandler:(void (^)(NSError *error))arg1;
+@end
+
+#import "LogViewController.h"
+
 #endif
 
 #import "RPVTroubleshootingCertificatesViewController.h"
@@ -36,6 +47,7 @@
     
 #if TARGET_OS_TV
     self.view.backgroundColor = [UIColor clearColor];
+    self.tableView.remembersLastFocusedIndexPath = false;
     [(UITableView*)self.tableView setBackgroundColor:[UIColor clearColor]];
 #else
     if (@available(iOS 11.0, *)) {
@@ -111,7 +123,14 @@
     [archive addObject:@"This error may occur when an IPA is signed, but not repackaged correctly.\n\nTo resolve, simply try again another time."];
     
     [items addObject:archive];
+#if TARGET_OS_TV
+    NSMutableArray *logs = [NSMutableArray array];
+    [logs addObject:@"View App Log"];
+    [logs addObject:@"View Daemon Log"];
+    [logs addObject:@"AirDrop Logs"];
     
+    [items addObject:logs];
+#endif
     self.dataSource = items;
 }
 
@@ -160,7 +179,7 @@
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     
     // Also handle if a link cell.
-    if (indexPath.row == 2) {
+    if (indexPath.row == 2 || indexPath.section == 5) {
         cell.textLabel.textColor = [UIApplication sharedApplication].delegate.window.tintColor;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
@@ -236,11 +255,19 @@
     
     CGFloat extra = 24;
     
+#if TARGET_OS_TV
+    // We also need to add an additional 20pt for each instance of "\n\n" in the string.
+        NSArray *split = [str componentsSeparatedByString:@"\n\n"];
+        extra += (split.count - 1) * 20;
+#else
     // We also need to add an additional 20pt for each instance of "\n\n" in the string.
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         NSArray *split = [str componentsSeparatedByString:@"\n\n"];
         extra += (split.count - 1) * 20;
     }
+#endif
+    
+   
     
     return [self boundedRectForFont:font andText:str width:self.tableView.contentSize.width].size.height + extra;
 }
@@ -250,9 +277,92 @@
     return NO;
 }
 
+- (void)airDropLogs:(NSArray *)logs {
+    
+    UIViewController *sharingView = [[NSClassFromString(@"SFAirDropSharingViewControllerTV") alloc] initWithSharingItems:logs];
+    [sharingView setCompletionHandler:^(NSError *error) {
+        
+        DDLogInfo(@"complete with error: %@", error);
+        [self dismissViewControllerAnimated:true completion:nil];
+    }];
+    DDLogInfo(@"sharing view: %@", sharingView);
+    [self presentViewController:sharingView animated:true completion:nil];
+    
+}
+
++ (NSString *)returnForProcess:(NSString *)call
+{
+    if (call==nil)
+        return 0;
+    char line[200];
+    NSLog(@"running process: %@", call);
+    FILE* fp = popen([call UTF8String], "r");
+    NSMutableArray *lines = [[NSMutableArray alloc]init];
+    if (fp)
+    {
+        while (fgets(line, sizeof line, fp))
+        {
+            NSString *s = [NSString stringWithCString:line encoding:NSUTF8StringEncoding];
+            s = [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            [lines addObject:s];
+        }
+    }
+    pclose(fp);
+    return [lines componentsJoinedByString:@""];
+}
+
 // Selection.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSLog(@"index path section: %lu row: %lu",  indexPath.section, indexPath.row);
+    
+#if TARGET_OS_TV
+    if (indexPath.section == 5){
+        
+        LogViewController *lvc = nil;
+        
+        switch (indexPath.row) {
+                
+            case 0: //app log
+                ///var/mobile/Library/Caches/com.nito.ReProvision/Logs
+                lvc = [[LogViewController alloc] initWithCommand:@"-f \"`/bin/ls -1td /var/mobile/Library/Caches/com.nito.ReProvision/Logs/*| /usr/bin/head -n1`\""];
+                
+                lvc.title = @"App Log";
+                break;
+                
+            case 1: //daemon log
+                
+                lvc = [[LogViewController alloc] initWithCommand:@"-f /var/mobile/Library/Logs/reprovisiond-Error.log"];
+                lvc.title = @"Daemon Log";
+                break;
+                
+            case 2: //AirDrop Logs
+            {
+                NSMutableArray *logs = [NSMutableArray new];
+                NSURL *url = [NSURL fileURLWithPath:@"/var/mobile/Library/Logs/reprovisiond-Error.log"];
+                [logs addObject:url];
+                NSString *latestLog = [RPVTroubleshootingController returnForProcess:@"/bin/ls -1td /var/mobile/Library/Caches/com.nito.ReProvision/Logs/*| /usr/bin/head -n1"];
+                if (latestLog){
+                    DDLogInfo(@"latest: %@", latestLog);
+                    [logs addObject:[NSURL fileURLWithPath:latestLog]];
+                }
+                [self airDropLogs:logs];
+            }
+                
+            default:
+                break;
+        }
+        
+        if (lvc){
+            
+            [self presentViewController:lvc animated:true completion:nil];
+            
+        }
+        
+    }
+    
+#endif
     
     if (indexPath.row == 2) {
         // This is a link.

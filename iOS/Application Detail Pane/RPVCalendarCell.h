@@ -8,8 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+#if !TARGET_OS_TV
+
 #define CELL_WIDTH 40
 #define CELL_HEIGHT 65
+
+#else
+
+#define CELL_WIDTH 60
+#define CELL_HEIGHT 85
+
+#endif
+
+
 
 @interface RPVCalendarCell : UIView
 

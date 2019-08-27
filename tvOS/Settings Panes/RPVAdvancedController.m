@@ -61,7 +61,7 @@
     
     [array addObject:resign];
     
-    PSSpecifier *threshold = [PSSpecifier preferenceSpecifierNamed:@"Check Expiry Times:" target:self set:@selector(setPreferenceValue:specifier:) get:@selector(readPreferenceValue:) detail:NSClassFromString(@"PSListItemsController") cell:PSLinkListCell edit:nil];
+    PSSpecifier *threshold = [PSSpecifier preferenceSpecifierNamed:@"Check Expiry Times:" target:self set:@selector(setPreferenceValue:specifier:) get:@selector(readPreferenceValue:) detail:NSClassFromString(@"RPVListItemsController") cell:PSLinkListCell edit:nil];
     [threshold setProperty:@YES forKey:@"enabled"];
     [threshold setProperty:@2 forKey:@"default"];
     threshold.values = [NSArray arrayWithObjects:@1, @2, @6, @12, @24, @48, nil];

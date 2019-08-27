@@ -78,7 +78,7 @@
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:spinner]];
     
     [[RPVAccountChecker sharedInstance] checkUsername:self.emailTextField.text withPassword:self.passwordTextField.text andCompletionHandler:^(NSString *failureReason, NSString *resultCode, NSArray *teamIDArray, NSURLCredential* credentials) {
-       
+        
         if (teamIDArray) {
             // Handle the Team ID array. If one element, no worries. Otherwise we need to ask the user
             // which team to use.

@@ -32,7 +32,7 @@
     AKAppleIDAuthenticationController* controller = [[AKAppleIDAuthenticationController alloc] initWithIdentifier:nil daemonXPCEndpoint:nil];
     
     [controller authenticateWithContext:context completion:^(id result, id error) {
-        NSLog(@"AUTHENTICATE WITH CONTEXT arg1: %@, arg2: %@", result, error);
+        DDLogInfo(@"AUTHENTICATE WITH CONTEXT arg1: %@, arg2: %@", result, error);
         
         if (error) {
             completion(error, nil, nil);

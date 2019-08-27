@@ -7,15 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		87BDA6FD237821CA00EA4540 /* AuthKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 87BDA6FC237821CA00EA4540 /* AuthKit.h */; };
-		87BDA6FE237821CA00EA4540 /* AuthKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 87BDA6FC237821CA00EA4540 /* AuthKit.h */; };
-		87BDA7032378223700EA4540 /* AuthKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 87BDA7022378222400EA4540 /* AuthKit.tbd */; };
-		87BDA7052378225300EA4540 /* AuthKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 87BDA7022378222400EA4540 /* AuthKit.tbd */; };
-		87BDA7062378225300EA4540 /* AuthKitUI.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 87BDA7012378222400EA4540 /* AuthKitUI.tbd */; };
-		87BDA7072378225F00EA4540 /* AuthKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 87BDA7022378222400EA4540 /* AuthKit.tbd */; };
-		87BDA7082378225F00EA4540 /* AuthKitUI.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 87BDA7012378222400EA4540 /* AuthKitUI.tbd */; };
-		87BDA7092378226C00EA4540 /* AuthKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 87BDA7022378222400EA4540 /* AuthKit.tbd */; };
-		87BDA70A2378226C00EA4540 /* AuthKitUI.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 87BDA7012378222400EA4540 /* AuthKitUI.tbd */; };
+		324843FC231D1F10002CF343 /* Sharing.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 324843FB231D1F10002CF343 /* Sharing.tbd */; };
+		324843FE231D4550002CF343 /* CoreUI.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 324843FD231D4550002CF343 /* CoreUI.tbd */; };
+		32484425231D47D8002CF343 /* CARExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3248440B231D47D7002CF343 /* CARExporter.m */; };
+		32484428231D480A002CF343 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32484427231D480A002CF343 /* CoreServices.framework */; };
+		329EE77D23166925004E9461 /* Preferences.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C96CCE56211A33B0008A249A /* Preferences.tbd */; };
+		32B7798A2314617C00828355 /* RPVResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779882314617B00828355 /* RPVResources.m */; };
+		32B7799C2314D6A600828355 /* RPVAccount2FAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779932314D6A600828355 /* RPVAccount2FAViewController.m */; };
+		32B7799D2314D6A600828355 /* RPVAccountFinalController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779952314D6A600828355 /* RPVAccountFinalController.m */; };
+		32B7799E2314D6A600828355 /* RPVAccountPrivacyPolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779972314D6A600828355 /* RPVAccountPrivacyPolicyViewController.m */; };
+		32B7799F2314D6A600828355 /* RPVAccountTeamIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779992314D6A600828355 /* RPVAccountTeamIDViewController.m */; };
+		32B779A02314D6A600828355 /* RPVAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B7799B2314D6A600828355 /* RPVAccountViewController.m */; };
+		32B779A52314DD8100828355 /* RPVTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779A42314DD8100828355 /* RPVTabBarController.m */; };
+		32B779A92315066500828355 /* UIViewController+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779A82315066500828355 /* UIViewController+Additions.m */; };
+		32B779AA23151E8100828355 /* RPVApplicationDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9E952C220FA97A900E850B6 /* RPVApplicationDetailController.m */; };
+		32B779AB23151E8400828355 /* RPVCalendarController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C90B1D20FCA7F1001258C3 /* RPVCalendarController.m */; };
+		32B779AC23151E8700828355 /* RPVCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9C90B2020FCA8D9001258C3 /* RPVCalendarCell.m */; };
+		32B779AD23154C8100828355 /* root.pem in Resources */ = {isa = PBXBuildFile; fileRef = C9A9446C2215FADC00F5C556 /* root.pem */; };
+		32B779AE23154C8400828355 /* apple-ios.pem in Resources */ = {isa = PBXBuildFile; fileRef = C9C6EA7D2004280A00211FDD /* apple-ios.pem */; };
+		32B779AF23154CAC00828355 /* RMessageDesign.json in Resources */ = {isa = PBXBuildFile; fileRef = C97EF5B920F6AA3B005CB1DB /* RMessageDesign.json */; };
+		32D2EB79237A918100B836F3 /* RPVAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = C99722A4237A145F009822FC /* RPVAuthentication.m */; };
+		32D2EB7A237A919B00B836F3 /* RPVAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = C99722A4237A145F009822FC /* RPVAuthentication.m */; };
+		32D2EB7B237A929700B836F3 /* AuthKitUI.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 87BDA7012378222400EA4540 /* AuthKitUI.tbd */; };
+		32D2EB7E237A929F00B836F3 /* AuthKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 87BDA7022378222400EA4540 /* AuthKit.tbd */; };
+		32D2EB83237A92F500B836F3 /* AuthKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D2EB81237A92F400B836F3 /* AuthKit.tbd */; };
+		32D2EB84237A92F500B836F3 /* AuthKitUI.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 32D2EB82237A92F400B836F3 /* AuthKitUI.tbd */; };
+		32D9CF77237D1C1800497D45 /* Preferences.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C9313C042005277E000AD4C3 /* Preferences.tbd */; };
+		32DA7AD4231922170009D558 /* UIView+RecursiveFind.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DA7AD3231922170009D558 /* UIView+RecursiveFind.m */; };
+		32DA7AD8231926420009D558 /* LogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32DA7AD6231926420009D558 /* LogViewController.m */; };
 		A26601C23E41FF5D32A6DF6C /* libPods-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0BF9DAD92CB745EF24C11FC /* libPods-iOS.a */; };
 		C90AD51E20697F23008B2F2B /* RPVNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AD51D20697F23008B2F2B /* RPVNotificationManager.m */; };
 		C90AD5212069968E008B2F2B /* RPVBackgroundSigningManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AD5202069968E008B2F2B /* RPVBackgroundSigningManager.m */; };
@@ -27,17 +46,14 @@
 		C92D374D20502E3900F9F152 /* RPVTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = C92D374C20502E3900F9F152 /* RPVTabBarController.m */; };
 		C92D3750205036F300F9F152 /* RPVAccountChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = C92D374F205036F300F9F152 /* RPVAccountChecker.m */; };
 		C92D3753205096DB00F9F152 /* RPVAccountTeamIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C92D3752205096DB00F9F152 /* RPVAccountTeamIDViewController.m */; };
-		C9313C052005277E000AD4C3 /* Preferences.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C9313C042005277E000AD4C3 /* Preferences.tbd */; };
 		C9313C1B2005292F000AD4C3 /* RPVSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9313C182005292F000AD4C3 /* RPVSettingsController.m */; };
 		C9313C1C2005292F000AD4C3 /* RPVAdvancedController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9313C192005292F000AD4C3 /* RPVAdvancedController.m */; };
-		C9313C1F20052B13000AD4C3 /* RPVResources.m in Sources */ = {isa = PBXBuildFile; fileRef = C9313C1E20052B13000AD4C3 /* RPVResources.m */; };
 		C938D396200842F7003802FF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C938D395200842F7003802FF /* MobileCoreServices.framework */; };
 		C93F3B6C20F21C9000B573E6 /* HookUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = C93F3B6920F21C9000B573E6 /* HookUtil.c */; };
 		C9630A03211ADFE800FEEB61 /* RPVInstalledTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C96309F9211ADFE700FEEB61 /* RPVInstalledTableViewCell.m */; };
 		C9630A04211ADFE800FEEB61 /* RPVInstalledSectionHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C96309FC211ADFE800FEEB61 /* RPVInstalledSectionHeaderViewController.m */; };
 		C9630A05211ADFE800FEEB61 /* RPVInstalledMainHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C96309FD211ADFE800FEEB61 /* RPVInstalledMainHeaderView.m */; };
 		C9630A06211ADFE800FEEB61 /* RPVInstalledCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C9630A02211ADFE800FEEB61 /* RPVInstalledCollectionViewCell.m */; };
-		C9630A14211AE19D00FEEB61 /* RPVApplicationDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9630A13211AE19D00FEEB61 /* RPVApplicationDetailController.m */; };
 		C964EA1521207FE100AC98E6 /* RPVDaemonListener.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D5BACD20EE3D54000D5970 /* RPVDaemonListener.m */; };
 		C964EA1621207FE100AC98E6 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E7C2C620EE296500FDF3B0 /* main.mm */; };
 		C964EA1B21207FE100AC98E6 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9F3FA6820EE6A48002AD7B9 /* CoreFoundation.framework */; };
@@ -63,7 +79,6 @@
 		C96CCE43211A2839008A249A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C96CCE42211A2839008A249A /* main.m */; };
 		C96CCE54211A2C9B008A249A /* RPVSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C96CCE50211A2C9B008A249A /* RPVSettingsController.m */; };
 		C96CCE55211A2C9B008A249A /* RPVAdvancedController.m in Sources */ = {isa = PBXBuildFile; fileRef = C96CCE51211A2C9B008A249A /* RPVAdvancedController.m */; };
-		C96CCE57211A33B0008A249A /* Preferences.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C96CCE56211A33B0008A249A /* Preferences.tbd */; };
 		C96CCE62211A3482008A249A /* RPVApplicationSigning.m in Sources */ = {isa = PBXBuildFile; fileRef = C96B0CDA2005782A00F713AF /* RPVApplicationSigning.m */; };
 		C96CCE63211A3482008A249A /* RPVBackgroundSigningManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AD5202069968E008B2F2B /* RPVBackgroundSigningManager.m */; };
 		C96CCE64211A3482008A249A /* RPVApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = C96B0CD42005704F00F713AF /* RPVApplication.m */; };
@@ -133,7 +148,6 @@
 		C99722A5237A145F009822FC /* RPVAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = C99722A4237A145F009822FC /* RPVAuthentication.m */; };
 		C9A9446D2215FADD00F5C556 /* root.pem in Resources */ = {isa = PBXBuildFile; fileRef = C9A9446C2215FADC00F5C556 /* root.pem */; };
 		C9C5921D21206E1000DF2E19 /* RPVInstalledViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C96FBFE120EB9DF0007E2EC3 /* RPVInstalledViewController.m */; };
-		C9C5921E21206E1300DF2E19 /* RPVResources.m in Sources */ = {isa = PBXBuildFile; fileRef = C9313C1E20052B13000AD4C3 /* RPVResources.m */; };
 		C9C5922221206F0300DF2E19 /* AssertionServices.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C5921F21206F0200DF2E19 /* AssertionServices.tbd */; };
 		C9C5922321206F0300DF2E19 /* BackBoardServices.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C5922021206F0300DF2E19 /* BackBoardServices.tbd */; };
 		C9C5922421206F0300DF2E19 /* SpringBoardServices.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C9C5922121206F0300DF2E19 /* SpringBoardServices.tbd */; };
@@ -294,11 +308,73 @@
 /* Begin PBXFileReference section */
 		1BED720855DAA03FC578B695 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		1C46832E058CCB73D45E85EB /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		324843FB231D1F10002CF343 /* Sharing.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; path = Sharing.tbd; sourceTree = "<group>"; };
+		324843FD231D4550002CF343 /* CoreUI.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; path = CoreUI.tbd; sourceTree = "<group>"; };
+		32484400231D47D7002CF343 /* _CSIRenditionBlockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CSIRenditionBlockData.h; sourceTree = "<group>"; };
+		32484401231D47D7002CF343 /* _CUIExternalLinkRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIExternalLinkRendition.h; sourceTree = "<group>"; };
+		32484402231D47D7002CF343 /* _CUIInternalLinkRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIInternalLinkRendition.h; sourceTree = "<group>"; };
+		32484403231D47D7002CF343 /* _CUILayerStackRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUILayerStackRendition.h; sourceTree = "<group>"; };
+		32484404231D47D7002CF343 /* _CUIPDFRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIPDFRendition.h; sourceTree = "<group>"; };
+		32484405231D47D7002CF343 /* _CUIRawDataRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIRawDataRendition.h; sourceTree = "<group>"; };
+		32484406231D47D7002CF343 /* _CUIRawPixelRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIRawPixelRendition.h; sourceTree = "<group>"; };
+		32484407231D47D7002CF343 /* _CUIThemeEffectRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIThemeEffectRendition.h; sourceTree = "<group>"; };
+		32484408231D47D7002CF343 /* _CUIThemeGradientRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIThemeGradientRendition.h; sourceTree = "<group>"; };
+		32484409231D47D7002CF343 /* _CUIThemePixelRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIThemePixelRendition.h; sourceTree = "<group>"; };
+		3248440A231D47D7002CF343 /* CARExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARExporter.h; sourceTree = "<group>"; };
+		3248440B231D47D7002CF343 /* CARExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CARExporter.m; sourceTree = "<group>"; };
+		3248440C231D47D7002CF343 /* CDStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDStructures.h; sourceTree = "<group>"; };
+		3248440D231D47D7002CF343 /* CGImage+Export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGImage+Export.h"; sourceTree = "<group>"; };
+		3248440E231D47D7002CF343 /* CoreUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreUI.h; sourceTree = "<group>"; };
+		3248440F231D47D7002CF343 /* CUICatalog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICatalog.h; sourceTree = "<group>"; };
+		32484410231D47D7002CF343 /* CUICommonAssetStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICommonAssetStorage.h; sourceTree = "<group>"; };
+		32484411231D47D7002CF343 /* CUIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIImage.h; sourceTree = "<group>"; };
+		32484412231D47D7002CF343 /* CUINamedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedData.h; sourceTree = "<group>"; };
+		32484413231D47D7002CF343 /* CUINamedExternalLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedExternalLink.h; sourceTree = "<group>"; };
+		32484414231D47D7002CF343 /* CUINamedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedImage.h; sourceTree = "<group>"; };
+		32484415231D47D7002CF343 /* CUINamedImageAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedImageAtlas.h; sourceTree = "<group>"; };
+		32484416231D47D7002CF343 /* CUINamedImageDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedImageDescription.h; sourceTree = "<group>"; };
+		32484417231D47D7002CF343 /* CUINamedLayerImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedLayerImage.h; sourceTree = "<group>"; };
+		32484418231D47D7002CF343 /* CUINamedLayerStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedLayerStack.h; sourceTree = "<group>"; };
+		32484419231D47D7002CF343 /* CUINamedLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedLookup.h; sourceTree = "<group>"; };
+		3248441A231D47D7002CF343 /* CUIRenditionKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIRenditionKey.h; sourceTree = "<group>"; };
+		3248441B231D47D7002CF343 /* CUIRenditionLayerReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIRenditionLayerReference.h; sourceTree = "<group>"; };
+		3248441C231D47D7002CF343 /* CUIRenditionMetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIRenditionMetrics.h; sourceTree = "<group>"; };
+		3248441D231D47D7002CF343 /* CUIRenditionSliceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIRenditionSliceInformation.h; sourceTree = "<group>"; };
+		3248441E231D47D7002CF343 /* CUIStructuredThemeStorage-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUIStructuredThemeStorage-Protocol.h"; sourceTree = "<group>"; };
+		3248441F231D47D7002CF343 /* CUIStructuredThemeStorage2-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUIStructuredThemeStorage2-Protocol.h"; sourceTree = "<group>"; };
+		32484420231D47D7002CF343 /* CUIStructuredThemeStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIStructuredThemeStore.h; sourceTree = "<group>"; };
+		32484421231D47D7002CF343 /* CUIThemeFacet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIThemeFacet.h; sourceTree = "<group>"; };
+		32484422231D47D7002CF343 /* CUIThemeImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIThemeImageSource.h; sourceTree = "<group>"; };
+		32484423231D47D7002CF343 /* CUIThemeRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIThemeRendition.h; sourceTree = "<group>"; };
+		32484424231D47D7002CF343 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		32484427231D480A002CF343 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.1.sdk/System/Library/Frameworks/CoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		32B779872314617B00828355 /* RPVResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RPVResources.h; path = iOS/RPVResources.h; sourceTree = SOURCE_ROOT; };
+		32B779882314617B00828355 /* RPVResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RPVResources.m; path = iOS/RPVResources.m; sourceTree = SOURCE_ROOT; };
+		32B779922314D6A600828355 /* RPVAccount2FAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPVAccount2FAViewController.h; sourceTree = "<group>"; };
+		32B779932314D6A600828355 /* RPVAccount2FAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPVAccount2FAViewController.m; sourceTree = "<group>"; };
+		32B779942314D6A600828355 /* RPVAccountFinalController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPVAccountFinalController.h; sourceTree = "<group>"; };
+		32B779952314D6A600828355 /* RPVAccountFinalController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPVAccountFinalController.m; sourceTree = "<group>"; };
+		32B779962314D6A600828355 /* RPVAccountPrivacyPolicyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPVAccountPrivacyPolicyViewController.h; sourceTree = "<group>"; };
+		32B779972314D6A600828355 /* RPVAccountPrivacyPolicyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPVAccountPrivacyPolicyViewController.m; sourceTree = "<group>"; };
+		32B779982314D6A600828355 /* RPVAccountTeamIDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPVAccountTeamIDViewController.h; sourceTree = "<group>"; };
+		32B779992314D6A600828355 /* RPVAccountTeamIDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPVAccountTeamIDViewController.m; sourceTree = "<group>"; };
+		32B7799A2314D6A600828355 /* RPVAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPVAccountViewController.h; sourceTree = "<group>"; };
+		32B7799B2314D6A600828355 /* RPVAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPVAccountViewController.m; sourceTree = "<group>"; };
+		32B779A12314D7F900828355 /* Defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
+		32B779A32314DD8100828355 /* RPVTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPVTabBarController.h; sourceTree = "<group>"; };
+		32B779A42314DD8100828355 /* RPVTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPVTabBarController.m; sourceTree = "<group>"; };
+		32B779A72315066500828355 /* UIViewController+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Additions.h"; sourceTree = "<group>"; };
+		32B779A82315066500828355 /* UIViewController+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Additions.m"; sourceTree = "<group>"; };
+		32D2EB81237A92F400B836F3 /* AuthKit.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; path = AuthKit.tbd; sourceTree = "<group>"; };
+		32D2EB82237A92F400B836F3 /* AuthKitUI.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; path = AuthKitUI.tbd; sourceTree = "<group>"; };
+		32DA7AD2231922170009D558 /* UIView+RecursiveFind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+RecursiveFind.h"; sourceTree = "<group>"; };
+		32DA7AD3231922170009D558 /* UIView+RecursiveFind.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RecursiveFind.m"; sourceTree = "<group>"; };
+		32DA7AD6231926420009D558 /* LogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogViewController.m; sourceTree = "<group>"; };
+		32DA7AD7231926420009D558 /* LogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogViewController.h; sourceTree = "<group>"; };
+		32DA7AD9231929070009D558 /* NSTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTask.h; path = tvOS/NSTask.h; sourceTree = SOURCE_ROOT; };
 		56C208AF9B386EA848EA9D18 /* libPods-macOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-macOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		70CCF3D795CC8B7FFCF520E7 /* Pods-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tvOS/Pods-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		87BDA6FC237821CA00EA4540 /* AuthKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AuthKit.h; sourceTree = "<group>"; };
-		87BDA6FF237821FD00EA4540 /* AuthKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = AuthKit.tbd; path = Shared/libProvision/AuthKit.tbd; sourceTree = "<group>"; };
-		87BDA700237821FD00EA4540 /* AuthKitUI.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = AuthKitUI.tbd; path = Shared/libProvision/AuthKitUI.tbd; sourceTree = "<group>"; };
 		87BDA7012378222400EA4540 /* AuthKitUI.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = AuthKitUI.tbd; path = Shared/AuthKitUI.tbd; sourceTree = "<group>"; };
 		87BDA7022378222400EA4540 /* AuthKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = AuthKit.tbd; path = Shared/AuthKit.tbd; sourceTree = "<group>"; };
 		9ACE7579004DA34002E4DEEE /* Pods-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-tvOS/Pods-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -329,8 +405,6 @@
 		C9313C172005292F000AD4C3 /* RPVSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPVSettingsController.h; sourceTree = "<group>"; };
 		C9313C182005292F000AD4C3 /* RPVSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPVSettingsController.m; sourceTree = "<group>"; };
 		C9313C192005292F000AD4C3 /* RPVAdvancedController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPVAdvancedController.m; sourceTree = "<group>"; };
-		C9313C1D20052B13000AD4C3 /* RPVResources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RPVResources.h; path = iOS/RPVResources.h; sourceTree = SOURCE_ROOT; };
-		C9313C1E20052B13000AD4C3 /* RPVResources.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RPVResources.m; path = iOS/RPVResources.m; sourceTree = SOURCE_ROOT; };
 		C9313C2320052C29000AD4C3 /* PreferencesAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesAppController.h; sourceTree = "<group>"; };
 		C9313C2420052C29000AD4C3 /* PSBundleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSBundleController.h; sourceTree = "<group>"; };
 		C9313C2520052C29000AD4C3 /* PSControlTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSControlTableCell.h; sourceTree = "<group>"; };
@@ -417,7 +491,7 @@
 		C9C5922121206F0300DF2E19 /* SpringBoardServices.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = SpringBoardServices.tbd; path = Shared/Daemon/lib/SpringBoardServices.tbd; sourceTree = "<group>"; };
 		C9C6EA422004257E00211FDD /* ReProvision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReProvision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C6EA5F2004261300211FDD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		C9C6EA602004261300211FDD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C9C6EA602004261300211FDD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; wrapsLines = 0; };
 		C9C6EA612004261300211FDD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9C6EA632004261300211FDD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C9C6EA652004261300211FDD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -598,13 +672,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32484428231D480A002CF343 /* CoreServices.framework in Frameworks */,
+				32D9CF77237D1C1800497D45 /* Preferences.tbd in Frameworks */,
+				32D2EB83237A92F500B836F3 /* AuthKit.tbd in Frameworks */,
+				32D2EB84237A92F500B836F3 /* AuthKitUI.tbd in Frameworks */,
+				324843FC231D1F10002CF343 /* Sharing.tbd in Frameworks */,
+				324843FE231D4550002CF343 /* CoreUI.tbd in Frameworks */,
 				C964EA2C212085A200AC98E6 /* libssl_tvOS.a in Frameworks */,
+				329EE77D23166925004E9461 /* Preferences.tbd in Frameworks */,
 				C964EA2E212085A400AC98E6 /* libcrypto_tvOS.a in Frameworks */,
 				C96CCE9D211A36EE008A249A /* libMobileGestalt.tbd in Frameworks */,
 				C96CCE9B211A36D3008A249A /* MobileCoreServices.framework in Frameworks */,
-				87BDA7092378226C00EA4540 /* AuthKit.tbd in Frameworks */,
-				87BDA70A2378226C00EA4540 /* AuthKitUI.tbd in Frameworks */,
-				C96CCE57211A33B0008A249A /* Preferences.tbd in Frameworks */,
 				DAE0BDC9DC0389DB581AA13D /* libPods-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -614,8 +692,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9FDB2A2205195E8005934CD /* libMobileGestalt.tbd in Frameworks */,
-				87BDA7032378223700EA4540 /* AuthKit.tbd in Frameworks */,
-				C9313C052005277E000AD4C3 /* Preferences.tbd in Frameworks */,
+				32D2EB7B237A929700B836F3 /* AuthKitUI.tbd in Frameworks */,
+				C92D374A20502D7300F9F152 /* WebKit.framework in Frameworks */,
+				C938D396200842F7003802FF /* MobileCoreServices.framework in Frameworks */,
+				32D2EB7E237A929F00B836F3 /* AuthKit.tbd in Frameworks */,
 				C92D374A20502D7300F9F152 /* WebKit.framework in Frameworks */,
 				C938D396200842F7003802FF /* MobileCoreServices.framework in Frameworks */,
 				A26601C23E41FF5D32A6DF6C /* libPods-iOS.a in Frameworks */,
@@ -627,8 +707,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FDC46406FBD5ED313E3C450E /* libPods-macOS.a in Frameworks */,
-				87BDA7082378225F00EA4540 /* AuthKitUI.tbd in Frameworks */,
-				87BDA7072378225F00EA4540 /* AuthKit.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,10 +715,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9C5922221206F0300DF2E19 /* AssertionServices.tbd in Frameworks */,
-				87BDA7062378225300EA4540 /* AuthKitUI.tbd in Frameworks */,
 				C9C5922321206F0300DF2E19 /* BackBoardServices.tbd in Frameworks */,
 				C9C5922421206F0300DF2E19 /* SpringBoardServices.tbd in Frameworks */,
-				87BDA7052378225300EA4540 /* AuthKit.tbd in Frameworks */,
 				C9F3FA6920EE6A48002AD7B9 /* CoreFoundation.framework in Frameworks */,
 				C9E7C2BD20EE296500FDF3B0 /* Foundation.framework in Frameworks */,
 			);
@@ -652,9 +728,7 @@
 		25B27802FF2D573B29DEC669 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				87BDA6FF237821FD00EA4540 /* AuthKit.tbd */,
 				87BDA7022378222400EA4540 /* AuthKit.tbd */,
-				87BDA700237821FD00EA4540 /* AuthKitUI.tbd */,
 				87BDA7012378222400EA4540 /* AuthKitUI.tbd */,
 				C9A9446A2215F72700F5C556 /* Security.framework */,
 				C964EA2D212085A400AC98E6 /* libcrypto_tvOS.a */,
@@ -683,6 +757,105 @@
 				DF76467802713F8A7F1F8A4E /* libPods-tvOS.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		324843FF231D47D7002CF343 /* CARExtractor */ = {
+			isa = PBXGroup;
+			children = (
+				32484400231D47D7002CF343 /* _CSIRenditionBlockData.h */,
+				32484401231D47D7002CF343 /* _CUIExternalLinkRendition.h */,
+				32484402231D47D7002CF343 /* _CUIInternalLinkRendition.h */,
+				32484403231D47D7002CF343 /* _CUILayerStackRendition.h */,
+				32484404231D47D7002CF343 /* _CUIPDFRendition.h */,
+				32484405231D47D7002CF343 /* _CUIRawDataRendition.h */,
+				32484406231D47D7002CF343 /* _CUIRawPixelRendition.h */,
+				32484407231D47D7002CF343 /* _CUIThemeEffectRendition.h */,
+				32484408231D47D7002CF343 /* _CUIThemeGradientRendition.h */,
+				32484409231D47D7002CF343 /* _CUIThemePixelRendition.h */,
+				3248440A231D47D7002CF343 /* CARExporter.h */,
+				3248440B231D47D7002CF343 /* CARExporter.m */,
+				3248440C231D47D7002CF343 /* CDStructures.h */,
+				3248440D231D47D7002CF343 /* CGImage+Export.h */,
+				3248440E231D47D7002CF343 /* CoreUI.h */,
+				3248440F231D47D7002CF343 /* CUICatalog.h */,
+				32484410231D47D7002CF343 /* CUICommonAssetStorage.h */,
+				32484411231D47D7002CF343 /* CUIImage.h */,
+				32484412231D47D7002CF343 /* CUINamedData.h */,
+				32484413231D47D7002CF343 /* CUINamedExternalLink.h */,
+				32484414231D47D7002CF343 /* CUINamedImage.h */,
+				32484415231D47D7002CF343 /* CUINamedImageAtlas.h */,
+				32484416231D47D7002CF343 /* CUINamedImageDescription.h */,
+				32484417231D47D7002CF343 /* CUINamedLayerImage.h */,
+				32484418231D47D7002CF343 /* CUINamedLayerStack.h */,
+				32484419231D47D7002CF343 /* CUINamedLookup.h */,
+				3248441A231D47D7002CF343 /* CUIRenditionKey.h */,
+				3248441B231D47D7002CF343 /* CUIRenditionLayerReference.h */,
+				3248441C231D47D7002CF343 /* CUIRenditionMetrics.h */,
+				3248441D231D47D7002CF343 /* CUIRenditionSliceInformation.h */,
+				3248441E231D47D7002CF343 /* CUIStructuredThemeStorage-Protocol.h */,
+				3248441F231D47D7002CF343 /* CUIStructuredThemeStorage2-Protocol.h */,
+				32484420231D47D7002CF343 /* CUIStructuredThemeStore.h */,
+				32484421231D47D7002CF343 /* CUIThemeFacet.h */,
+				32484422231D47D7002CF343 /* CUIThemeImageSource.h */,
+				32484423231D47D7002CF343 /* CUIThemeRendition.h */,
+				32484424231D47D7002CF343 /* main.m */,
+			);
+			path = CARExtractor;
+			sourceTree = "<group>";
+		};
+		32B779912314D6A600828355 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				32B779922314D6A600828355 /* RPVAccount2FAViewController.h */,
+				32B779932314D6A600828355 /* RPVAccount2FAViewController.m */,
+				32B779942314D6A600828355 /* RPVAccountFinalController.h */,
+				32B779952314D6A600828355 /* RPVAccountFinalController.m */,
+				32B779962314D6A600828355 /* RPVAccountPrivacyPolicyViewController.h */,
+				32B779972314D6A600828355 /* RPVAccountPrivacyPolicyViewController.m */,
+				32B779982314D6A600828355 /* RPVAccountTeamIDViewController.h */,
+				32B779992314D6A600828355 /* RPVAccountTeamIDViewController.m */,
+				32B7799A2314D6A600828355 /* RPVAccountViewController.h */,
+				32B7799B2314D6A600828355 /* RPVAccountViewController.m */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		32B779A22314DD8100828355 /* Root Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				32B779A32314DD8100828355 /* RPVTabBarController.h */,
+				32B779A42314DD8100828355 /* RPVTabBarController.m */,
+			);
+			path = "Root Controllers";
+			sourceTree = "<group>";
+		};
+		32B779A62315066500828355 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				32DA7AD2231922170009D558 /* UIView+RecursiveFind.h */,
+				32DA7AD3231922170009D558 /* UIView+RecursiveFind.m */,
+				32B779A72315066500828355 /* UIViewController+Additions.h */,
+				32B779A82315066500828355 /* UIViewController+Additions.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		32D2EB78237A8A0700B836F3 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				32484427231D480A002CF343 /* CoreServices.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		32DA7AD5231926170009D558 /* Log viewer */ = {
+			isa = PBXGroup;
+			children = (
+				32DA7AD9231929070009D558 /* NSTask.h */,
+				32DA7AD7231926420009D558 /* LogViewController.h */,
+				32DA7AD6231926420009D558 /* LogViewController.m */,
+			);
+			path = "Log viewer";
 			sourceTree = "<group>";
 		};
 		C90C2218200533B300255B08 /* Installed Pane */ = {
@@ -838,13 +1011,21 @@
 		C96CCE32211A2838008A249A /* tvOS */ = {
 			isa = PBXGroup;
 			children = (
+				32D2EB81237A92F400B836F3 /* AuthKit.tbd */,
+				32D2EB82237A92F400B836F3 /* AuthKitUI.tbd */,
+				32B779A12314D7F900828355 /* Defines.h */,
 				C96CCE33211A2838008A249A /* AppDelegate.h */,
 				C96CCE34211A2838008A249A /* AppDelegate.m */,
 				C96CCE3F211A2839008A249A /* Assets.xcassets */,
 				C96CCE3C211A2838008A249A /* Main.storyboard */,
+				324843FF231D47D7002CF343 /* CARExtractor */,
+				32B779912314D6A600828355 /* Account */,
+				32B779A62315066500828355 /* Categories */,
+				32B779A22314DD8100828355 /* Root Controllers */,
 				C9630A11211AE17E00FEEB61 /* Application Detail Pane */,
 				C96CCEA1211A3738008A249A /* Notifications */,
 				C96CCE47211A2A32008A249A /* Installed Pane */,
+				32DA7AD5231926170009D558 /* Log viewer */,
 				C96CCE48211A2A3A008A249A /* Settings Panes */,
 				C96CCE5B211A33D6008A249A /* Supporting Files */,
 			);
@@ -879,6 +1060,8 @@
 		C96CCE5B211A33D6008A249A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				324843FD231D4550002CF343 /* CoreUI.tbd */,
+				324843FB231D1F10002CF343 /* Sharing.tbd */,
 				C96CCE42211A2839008A249A /* main.m */,
 				C96CCE41211A2839008A249A /* Info.plist */,
 				C964EA2F2120874E00AC98E6 /* PackageVersion.plist */,
@@ -956,8 +1139,8 @@
 		C9C5921C21206D8B00DF2E19 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C9313C1D20052B13000AD4C3 /* RPVResources.h */,
-				C9313C1E20052B13000AD4C3 /* RPVResources.m */,
+				32B779872314617B00828355 /* RPVResources.h */,
+				32B779882314617B00828355 /* RPVResources.m */,
 				C92D374E205036F300F9F152 /* RPVAccountChecker.h */,
 				C92D374F205036F300F9F152 /* RPVAccountChecker.m */,
 			);
@@ -974,6 +1157,7 @@
 				C9C6EA432004257E00211FDD /* Products */,
 				DCE41DBEB53648B12AD3BE45 /* Pods */,
 				25B27802FF2D573B29DEC669 /* Frameworks */,
+				32D2EB78237A8A0700B836F3 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1359,7 +1543,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C964EA1E21207FE100AC98E6 /* RPVDaemonListener.h in Headers */,
-				87BDA6FE237821CA00EA4540 /* AuthKit.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1368,7 +1551,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9D5BACE20EE3D54000D5970 /* RPVDaemonListener.h in Headers */,
-				87BDA6FD237821CA00EA4540 /* AuthKit.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1401,6 +1583,7 @@
 				C96CCE2D211A2838008A249A /* Sources */,
 				C96CCE2E211A2838008A249A /* Frameworks */,
 				C96CCE2F211A2838008A249A /* Resources */,
+				66CE6BF796F9357C5A3B715D /* [CP] Embed Pods Frameworks */,
 				C9C5922721207CA200DF2E19 /* Sign application and create .deb */,
 				3AFF23D8EA9A28077B7CD5AE /* [CP] Embed Pods Frameworks */,
 				4C4F0726D7C015B69BD062F5 /* [CP] Copy Pods Resources */,
@@ -1424,6 +1607,7 @@
 				C9C6EA3E2004257E00211FDD /* Sources */,
 				C9C6EA3F2004257E00211FDD /* Frameworks */,
 				C9C6EA402004257E00211FDD /* Resources */,
+				8ABCE96F0C79D1EA9DC757CE /* [CP] Embed Pods Frameworks */,
 				38659AA49377400431BBBE6E /* [CP] Copy Pods Resources */,
 				C996746420EE30EB00EEFBD2 /* Sign application and create .deb */,
 				00CA779635D0B66A25D616D7 /* [CP] Embed Pods Frameworks */,
@@ -1488,11 +1672,11 @@
 					};
 					C96CCE30211A2838008A249A = {
 						CreatedOnToolsVersion = 9.4.1;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					C9C6EA412004257E00211FDD = {
 						CreatedOnToolsVersion = 9.1;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1541,9 +1725,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32B779AF23154CAC00828355 /* RMessageDesign.json in Resources */,
+				32B779AD23154C8100828355 /* root.pem in Resources */,
 				C96CCE40211A2839008A249A /* Assets.xcassets in Resources */,
 				C96CCE3E211A2838008A249A /* Main.storyboard in Resources */,
 				C964EA302120874E00AC98E6 /* PackageVersion.plist in Resources */,
+				32B779AE23154C8400828355 /* apple-ios.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1658,6 +1845,39 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tvOS/Pods-tvOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		66CE6BF796F9357C5A3B715D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tvOS/Pods-tvOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8ABCE96F0C79D1EA9DC757CE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/UIImageColors/UIImageColors.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageColors.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9726577BCA674A5320611896 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1700,7 +1920,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Copying application into Package\"\n\n# Clean out existing .app\nrm -rf \"${PROJECT_DIR}/iOS/Package/Applications/${CONTENTS_FOLDER_PATH}\"\n\nbuiltpath=\"${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${CONTENTS_FOLDER_PATH}\"\ncp -R $builtpath \"${PROJECT_DIR}/iOS/Package/Applications/\"\n\n# Sign with entitlements\n${PROJECT_DIR}/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/iOS/Package/Applications/${EXECUTABLE_PATH}\"\n\n# Build package!\n${PROJECT_DIR}/bin/iosod build -p \"${PROJECT_DIR}/iOS/PackageVersion.plist\" \"${PROJECT_DIR}/iOS/Package\" \"${PROJECT_DIR}/iOS/CydiaPackages\"\n";
+			shellScript = "echo $SDKROOT\nBASE_SDK=`basename $SDKROOT`\nif [[ $BASE_SDK == *\"Simulator\"* ]]\nthen\n    exit 0\nfi\n\necho \"Copying application into Package\"\n\n# Clean out existing .app\nrm -rf \"${PROJECT_DIR}/iOS/Package/Applications/${CONTENTS_FOLDER_PATH}\"\n\nbuiltpath=\"${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${CONTENTS_FOLDER_PATH}\"\ncp -R $builtpath \"${PROJECT_DIR}/iOS/Package/Applications/\"\n\n# Sign with entitlements\n${PROJECT_DIR}/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/iOS/Package/Applications/${EXECUTABLE_PATH}\"\n\n# Build package!\n${PROJECT_DIR}/bin/iosod build -p \"${PROJECT_DIR}/iOS/PackageVersion.plist\" \"${PROJECT_DIR}/iOS/Package\" \"${PROJECT_DIR}/iOS/CydiaPackages\"\n";
 		};
 		C996746A20EE32D500EEFBD2 /* Move daemon binary into Package */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1728,7 +1948,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Copying daemon into Package\"\nbuiltpath=\"${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/reprovisiond\"\n\ncp -R $builtpath \"${PROJECT_DIR}/tvOS/Package/usr/bin\"\n\n# We now need to sign the daemon with appropriate entitlements via ldid2\necho \"Signing with entitlements.plist...\"\nif type \"${iOSOpenDevPath}/bin/ldid2\" > /dev/null;\nthen\n${iOSOpenDevPath}/bin/ldid2 -S\"${PROJECT_DIR}/Shared/Daemon/entitlements.plist\" \"${PROJECT_DIR}/tvOS/Package/usr/bin/reprovisiond\"\nelif type \"/usr/bin/ldid2\" > /dev/null;\nthen\n/usr/bin/ldid2 -S\"${PROJECT_DIR}/Shared/Daemon/entitlements.plist\" \"${PROJECT_DIR}/tvOS/Package/usr/bin/reprovisiond\"\nelif type \"/usr/local/bin/ldid2\" > /dev/null;\nthen\n/usr/local/bin/ldid2 -S\"${PROJECT_DIR}/Shared/Daemon/entitlements.plist\" \"${PROJECT_DIR}/tvOS/Package/usr/bin/reprovisiond\"\nelif type \"ldid2\" > /dev/null;\nthen\nldid2 -S\"${PROJECT_DIR}/Shared/Daemon/entitlements.plist\" \"${PROJECT_DIR}/tvOS/Package/usr/bin/reprovisiond\"\nelse\necho \"Could not find ldid2 on your system (searched /usr/bin, /usr/local/bin, ${iOSOpenDevPath}/bin/)\"\nexit 1\nfi";
+			shellScript = "echo $SDKROOT\n\nBASE_SDK=`basename $SDKROOT`\n\nif [[ $BASE_SDK == *\"Simulator\"* ]]\nthen\nexit 0\nfi\n\necho \"Copying daemon into Package\"\nbuiltpath=\"${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/reprovisiond\"\n\ncp -R $builtpath \"${PROJECT_DIR}/tvOS/Package/usr/bin\"\n\n# We now need to sign the daemon with appropriate entitlements via ldid2\necho \"Signing with entitlements.plist...\"\nif type \"${iOSOpenDevPath}/bin/ldid2\" > /dev/null;\nthen\n${iOSOpenDevPath}/bin/ldid2 -S\"${PROJECT_DIR}/Shared/Daemon/entitlements.plist\" \"${PROJECT_DIR}/tvOS/Package/usr/bin/reprovisiond\"\nelif type \"/usr/bin/ldid2\" > /dev/null;\nthen\n/usr/bin/ldid2 -S\"${PROJECT_DIR}/Shared/Daemon/entitlements.plist\" \"${PROJECT_DIR}/tvOS/Package/usr/bin/reprovisiond\"\nelif type \"/usr/local/bin/ldid2\" > /dev/null;\nthen\n/usr/local/bin/ldid2 -S\"${PROJECT_DIR}/Shared/Daemon/entitlements.plist\" \"${PROJECT_DIR}/tvOS/Package/usr/bin/reprovisiond\"\nelif type \"ldid2\" > /dev/null;\nthen\nldid2 -S\"${PROJECT_DIR}/Shared/Daemon/entitlements.plist\" \"${PROJECT_DIR}/tvOS/Package/usr/bin/reprovisiond\"\nelse\necho \"Could not find ldid2 on your system (searched /usr/bin, /usr/local/bin, ${iOSOpenDevPath}/bin/)\"\nexit 1\nfi\n";
 		};
 		C9C5922721207CA200DF2E19 /* Sign application and create .deb */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1742,7 +1962,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Copying application into Package\"\n\n# Clean out existing .app\nrm -rf \"${PROJECT_DIR}/tvOS/Package/Applications/${CONTENTS_FOLDER_PATH}\"\n\nbuiltpath=\"${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${CONTENTS_FOLDER_PATH}\"\ncp -R $builtpath \"${PROJECT_DIR}/tvOS/Package/Applications/\"\n\n# Sign with entitlements\necho \"Signing with entitlements.xml...\"\nif type \"${iOSOpenDevPath}/bin/ldid2\" > /dev/null;\nthen\n${iOSOpenDevPath}/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"/usr/bin/ldid2\" > /dev/null;\nthen\n/usr/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"/usr/local/bin/ldid2\" > /dev/null;\nthen\n/usr/local/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"ldid2\" > /dev/null;\nthen\nldid2 -S\"${PROJECT_DIR}/Shared/entitlements.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelse\necho \"Could not find ldid2 on your system (searched /usr/bin, /usr/local/bin, ${iOSOpenDevPath}/bin/)\"\nexit 1\nfi\n\n# Build package!\n${iOSOpenDevPath}/bin/iosod build -p \"${PROJECT_DIR}/tvOS/PackageVersion.plist\" \"${PROJECT_DIR}/tvOS/Package\" \"${PROJECT_DIR}/tvOS/NitoPackages\"";
+			shellScript = "echo $SDKROOT\n\nBASE_SDK=`basename $SDKROOT`\n\nif [[ $BASE_SDK == *\"Simulator\"* ]]\nthen\nexit 0\nfi\n\necho \"Copying application into Package\"\n\n# Clean out existing .app\nrm -rf \"${PROJECT_DIR}/tvOS/Package/Applications/${CONTENTS_FOLDER_PATH}\"\n\nbuiltpath=\"${BUILD_DIR}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/${CONTENTS_FOLDER_PATH}\"\ncp -R $builtpath \"${PROJECT_DIR}/tvOS/Package/Applications/\"\n\n# Sign with entitlements\necho \"Signing with entitlements_tvos.xml...\"\nif type \"${iOSOpenDevPath}/bin/ldid2\" > /dev/null;\nthen\n${iOSOpenDevPath}/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements_tvos.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"/usr/bin/ldid2\" > /dev/null;\nthen\n/usr/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements_tvos.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"/usr/local/bin/ldid2\" > /dev/null;\nthen\n/usr/local/bin/ldid2 -S\"${PROJECT_DIR}/Shared/entitlements_tvos.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelif type \"ldid2\" > /dev/null;\nthen\nldid2 -S\"${PROJECT_DIR}/Shared/entitlements_tvos.xml\" \"${PROJECT_DIR}/tvOS/Package/Applications/${EXECUTABLE_PATH}\"\nelse\necho \"Could not find ldid2 on your system (searched /usr/bin, /usr/local/bin, ${iOSOpenDevPath}/bin/)\"\nexit 1\nfi\n\noutput=\"${PROJECT_DIR}/tvOS/PackageVersion.plist\" \"${PROJECT_DIR}/tvOS/Package\" \"${PROJECT_DIR}/tvOS/NitoPackages\"\n\n# Build package!\n${iOSOpenDevPath}/bin/iosod build -p \"${PROJECT_DIR}/tvOS/PackageVersion.plist\" \"${PROJECT_DIR}/tvOS/Package\" \"${PROJECT_DIR}/tvOS/NitoPackages\"\n\nif ! test -z \"${HOST_INSTALL_PATH}\" \nthen\n    # Find Latest package built\n    LATEST=`/bin/ls -1td \"${PROJECT_DIR}/tvOS/NitoPackages\"/* | /usr/bin/head -n1`\n    echo $LATEST\n    ${iOSOpenDevPath}/bin/iosod run -h ${HOST_INSTALL_PATH} \"killall -9 ReProvision\"\n    ${iOSOpenDevPath}/bin/iosod install -h ${HOST_INSTALL_PATH} \"$LATEST\"\n    ${iOSOpenDevPath}/bin/iosod run -h ${HOST_INSTALL_PATH} \"lsdtrip launch com.matchstic.reprovision.tvos\"\nfi\n\n\n\n\n\n\n\n";
 		};
 		E2B46DEA621ED4BB8F11BBD0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1759,7 +1979,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E7B8235B02A4CDD86F4E0C07 /* [CP] Check Pods Manifest.lock */ = {
@@ -1777,7 +1997,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F7072C299C299483280A60BA /* [CP] Check Pods Manifest.lock */ = {
@@ -1795,7 +2015,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1817,6 +2037,7 @@
 				C964EA3421208CC700AC98E6 /* RPVAccountChecker.m in Sources */,
 				C964EA3321208B2E00AC98E6 /* RPVTroubleshootingCertificatesViewController.m in Sources */,
 				C964EA3221208B2C00AC98E6 /* RPVTroubleshootingController.m in Sources */,
+				32D2EB79237A918100B836F3 /* RPVAuthentication.m in Sources */,
 				C964EA3121208B2A00AC98E6 /* RPVTroubleshootingNavigationViewController.m in Sources */,
 				C96CCE62211A3482008A249A /* RPVApplicationSigning.m in Sources */,
 				C96CCE63211A3482008A249A /* RPVBackgroundSigningManager.m in Sources */,
@@ -1838,9 +2059,11 @@
 				C96CCE73211A3482008A249A /* Dictionary.cpp in Sources */,
 				C9630A06211ADFE800FEEB61 /* RPVInstalledCollectionViewCell.m in Sources */,
 				C9630A05211ADFE800FEEB61 /* RPVInstalledMainHeaderView.m in Sources */,
+				32B779A52314DD8100828355 /* RPVTabBarController.m in Sources */,
 				C96CCE74211A3482008A249A /* hashtable.c in Sources */,
 				C96CCE75211A3482008A249A /* Integer.cpp in Sources */,
 				C96CCE76211A3482008A249A /* Key.cpp in Sources */,
+				32B779AB23151E8400828355 /* RPVCalendarController.m in Sources */,
 				C96CCE77211A3482008A249A /* iterator.c in Sources */,
 				C96CCE78211A3482008A249A /* list.c in Sources */,
 				C96CCE79211A3482008A249A /* node.c in Sources */,
@@ -1848,15 +2071,19 @@
 				C9630A04211ADFE800FEEB61 /* RPVInstalledSectionHeaderViewController.m in Sources */,
 				C96CCE7B211A3482008A249A /* node_list.c in Sources */,
 				C96CCE7C211A3482008A249A /* Node.cpp in Sources */,
+				32B7799F2314D6A600828355 /* RPVAccountTeamIDViewController.m in Sources */,
+				32B779A92315066500828355 /* UIViewController+Additions.m in Sources */,
+				32DA7AD4231922170009D558 /* UIView+RecursiveFind.m in Sources */,
 				C96CCE7D211A3482008A249A /* plist.c in Sources */,
 				C96CCE7E211A3482008A249A /* ptrarray.c in Sources */,
 				C96CCE7F211A3482008A249A /* Real.cpp in Sources */,
 				C96CCE80211A3482008A249A /* String.cpp in Sources */,
 				C96CCE81211A3482008A249A /* Structure.cpp in Sources */,
 				C96CCE82211A3482008A249A /* time64.c in Sources */,
+				32B7799C2314D6A600828355 /* RPVAccount2FAViewController.m in Sources */,
 				C96CCE83211A3482008A249A /* Uid.cpp in Sources */,
-				C9630A14211AE19D00FEEB61 /* RPVApplicationDetailController.m in Sources */,
 				C96CCE84211A3482008A249A /* xplist.c in Sources */,
+				32B779AC23151E8700828355 /* RPVCalendarCell.m in Sources */,
 				C96CCEA0211A3736008A249A /* RPVNotificationManager.m in Sources */,
 				C96CCE85211A3482008A249A /* EEProvisioning.mm in Sources */,
 				C96CCE86211A3482008A249A /* SAMKeychainQuery.m in Sources */,
@@ -1864,13 +2091,18 @@
 				C96CCE88211A3482008A249A /* EESigning.mm in Sources */,
 				C96CCE89211A3482008A249A /* aes_ni.c in Sources */,
 				C96CCE8A211A3482008A249A /* aescrypt.c in Sources */,
+				32DA7AD8231926420009D558 /* LogViewController.m in Sources */,
 				C96CCE8B211A3482008A249A /* aeskey.c in Sources */,
 				C96CCE8C211A3482008A249A /* aestab.c in Sources */,
 				C96CCE8D211A3482008A249A /* fileenc.c in Sources */,
 				C9630A03211ADFE800FEEB61 /* RPVInstalledTableViewCell.m in Sources */,
 				C96CCE8E211A3482008A249A /* hmac.c in Sources */,
 				C96CCE8F211A3482008A249A /* prng.c in Sources */,
+				32B7799E2314D6A600828355 /* RPVAccountPrivacyPolicyViewController.m in Sources */,
+				32B7799D2314D6A600828355 /* RPVAccountFinalController.m in Sources */,
+				32B7798A2314617C00828355 /* RPVResources.m in Sources */,
 				C96CCE90211A3482008A249A /* pwd2key.c in Sources */,
+				32484425231D47D8002CF343 /* CARExporter.m in Sources */,
 				C96CCE91211A3482008A249A /* sha1.c in Sources */,
 				C96CCE92211A3482008A249A /* crypt.c in Sources */,
 				C96CCE93211A3482008A249A /* ioapi.c in Sources */,
@@ -1881,12 +2113,13 @@
 				C96CCE97211A3482008A249A /* unzip.c in Sources */,
 				C96CCE98211A3482008A249A /* zip.c in Sources */,
 				C96CCE99211A3482008A249A /* SSZipArchive.m in Sources */,
+				32B779A02314D6A600828355 /* RPVAccountViewController.m in Sources */,
 				C96CCE3B211A2838008A249A /* RPVSettingsNavigationViewController.m in Sources */,
 				C96CCE35211A2838008A249A /* AppDelegate.m in Sources */,
+				32B779AA23151E8100828355 /* RPVApplicationDetailController.m in Sources */,
 				C96CCE55211A2C9B008A249A /* RPVAdvancedController.m in Sources */,
 				C96CCE54211A2C9B008A249A /* RPVSettingsController.m in Sources */,
 				C9C5921D21206E1000DF2E19 /* RPVInstalledViewController.m in Sources */,
-				C9C5921E21206E1300DF2E19 /* RPVResources.m in Sources */,
 				C96CCE43211A2839008A249A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1948,7 +2181,6 @@
 				C9313C1C2005292F000AD4C3 /* RPVAdvancedController.m in Sources */,
 				C96FBFE220EB9DF0007E2EC3 /* RPVInstalledViewController.m in Sources */,
 				C9E7C2AF20ECFC3C00FDF3B0 /* RPVTroubleshootingController.m in Sources */,
-				C9313C1F20052B13000AD4C3 /* RPVResources.m in Sources */,
 				C9C6EB062004280A00211FDD /* Date.cpp in Sources */,
 				C92D374120502B3900F9F152 /* RPVAccountViewController.m in Sources */,
 				C9C6EB2E2004280A00211FDD /* zip.c in Sources */,
@@ -1995,6 +2227,7 @@
 				C9C6EB48200428C200211FDD /* ldid.cpp in Sources */,
 				C9C6EB49200428C200211FDD /* lookup2.c in Sources */,
 				C9C6EB4A200428C200211FDD /* Array.cpp in Sources */,
+				32D2EB7A237A919B00B836F3 /* RPVAuthentication.m in Sources */,
 				C9C6EB4B200428C200211FDD /* base64.c in Sources */,
 				C9C6EB4C200428C200211FDD /* Boolean.cpp in Sources */,
 				C9C6EB4D200428C200211FDD /* bplist.c in Sources */,
@@ -2195,13 +2428,19 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9EUFEA5U7G;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = $SRCROOT/tvOS/Defines.h;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/tvOS/Headers",
 					"${PROJECT_DIR}/tvOS/include",
+					"$(inherited)",
 				);
+				HOST_INSTALL_PATH = "guest-room.local";
 				INFOPLIST_FILE = "$(SRCROOT)/tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2209,9 +2448,24 @@
 					"$(PROJECT_DIR)/tvOS",
 					"$(PROJECT_DIR)/tvOS/lib",
 					"$(PROJECT_DIR)/Shared",
+					"$(PROJECT_DIR)/iOS",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"CocoaLumberjack-tvOS\"",
+					"-l\"MarqueeLabel-tvOS\"",
+					"-l\"PureLayout\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"UIKit\"",
+					"-undefined",
+					dynamic_lookup,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.matchstic.reprovision.tvos;
 				PRODUCT_NAME = ReProvision;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
@@ -2228,13 +2482,19 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9EUFEA5U7G;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = $SRCROOT/tvOS/Defines.h;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/tvOS/Headers",
 					"${PROJECT_DIR}/tvOS/include",
+					"$(inherited)",
 				);
+				HOST_INSTALL_PATH = "guest-room.local";
 				INFOPLIST_FILE = "$(SRCROOT)/tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2242,9 +2502,24 @@
 					"$(PROJECT_DIR)/tvOS",
 					"$(PROJECT_DIR)/tvOS/lib",
 					"$(PROJECT_DIR)/Shared",
+					"$(PROJECT_DIR)/iOS",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"CocoaLumberjack-tvOS\"",
+					"-l\"MarqueeLabel-tvOS\"",
+					"-l\"PureLayout\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"UIKit\"",
+					"-undefined",
+					dynamic_lookup,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.matchstic.reprovision.tvos;
 				PRODUCT_NAME = ReProvision;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
@@ -2362,9 +2637,9 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9EUFEA5U7G;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/iOS/Headers/**",
 					"$(inherited)",
@@ -2381,6 +2656,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.matchstic.reprovision.ios;
 				PRODUCT_NAME = ReProvision;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SYSTEM_HEADER_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2394,9 +2670,9 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9EUFEA5U7G;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/iOS/Headers/**",
 					"$(inherited)",
@@ -2413,6 +2689,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.matchstic.reprovision.ios;
 				PRODUCT_NAME = ReProvision;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SYSTEM_HEADER_SEARCH_PATHS = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
