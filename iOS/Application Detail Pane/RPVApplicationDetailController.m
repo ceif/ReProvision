@@ -6,6 +6,7 @@
 //  Copyright © 2018 Matt Clarke. All rights reserved.
 //
 
+
 #import "RPVApplicationDetailController.h"
 #import "RPVApplication.h"
 #import "RPVIpaBundleApplication.h"
@@ -21,7 +22,10 @@
 
 #define IS_IPAD UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 
-@interface RPVApplicationDetailController ()
+@interface RPVApplicationDetailController (){
+    
+    CGFloat fontMultiplier;
+}
 
 // Basic heirarchy
 @property (nonatomic, strong) UIVisualEffectView *backgroundView;
@@ -72,6 +76,11 @@
 - (instancetype)initWithApplication:(RPVApplication*)application {
     
     LOG_SELF;
+    fontMultiplier = 1;
+#if TARGET_OS_TV
+    fontMultiplier = 2;
+#endif
+    
     self = [super init];
     
     if (self) {
@@ -165,7 +174,7 @@
     self.applicationNameLabel = [[MarqueeLabel alloc] initWithFrame:CGRectZero];
     self.applicationNameLabel.text = [self.application applicationName];
     self.applicationNameLabel.textColor = [UIColor blackColor];
-    self.applicationNameLabel.font = [UIFont systemFontOfSize:18.6 weight:UIFontWeightBold];
+    self.applicationNameLabel.font = [UIFont systemFontOfSize:18.6*fontMultiplier weight:UIFontWeightBold];
     
     // MarqueeLabel specific
     self.applicationNameLabel.fadeLength = 8.0;
@@ -184,7 +193,7 @@
     self.applicationBundleIdentifierLabel = [[MarqueeLabel alloc] initWithFrame:CGRectZero];
     self.applicationBundleIdentifierLabel.text = [self.application bundleIdentifier];
     self.applicationBundleIdentifierLabel.textColor = [UIColor grayColor];
-    self.applicationBundleIdentifierLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.applicationBundleIdentifierLabel.font = [UIFont systemFontOfSize:14*fontMultiplier weight:UIFontWeightMedium];
     
     // MarqueeLabel specific
     self.applicationBundleIdentifierLabel.fadeLength = 8.0;
@@ -198,7 +207,7 @@
     self.versionTitle.text = @"Version";
     self.versionTitle.textColor = [UIColor grayColor];
     self.versionTitle.textAlignment = NSTextAlignmentCenter;
-    self.versionTitle.font = [UIFont systemFontOfSize:14];
+    self.versionTitle.font = [UIFont systemFontOfSize:14*fontMultiplier];
     
     [self.contentView addSubview:self.versionTitle];
     
@@ -206,7 +215,7 @@
     self.applicationVersionLabel.text = [self.application applicationVersion];
     self.applicationVersionLabel.textColor = [UIColor blackColor];
     self.applicationVersionLabel.textAlignment = NSTextAlignmentCenter;
-    self.applicationVersionLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+    self.applicationVersionLabel.font = [UIFont systemFontOfSize:16*fontMultiplier weight:UIFontWeightSemibold];
     
     [self.contentView addSubview:self.applicationVersionLabel];
 }
@@ -216,7 +225,7 @@
     self.installedSizeTitle.text = @"Size";
     self.installedSizeTitle.textColor = [UIColor grayColor];
     self.installedSizeTitle.textAlignment = NSTextAlignmentCenter;
-    self.installedSizeTitle.font = [UIFont systemFontOfSize:14];
+    self.installedSizeTitle.font = [UIFont systemFontOfSize:14*fontMultiplier];
     
     [self.contentView addSubview:self.installedSizeTitle];
     
@@ -224,7 +233,7 @@
     self.applicationInstalledSizeLabel.text = [NSString stringWithFormat:@"%.2f MB", [self.application applicationInstalledSize].floatValue / 1024.0 / 1024.0];
     self.applicationInstalledSizeLabel.textColor = [UIColor blackColor];
     self.applicationInstalledSizeLabel.textAlignment = NSTextAlignmentCenter;
-    self.applicationInstalledSizeLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightSemibold];
+    self.applicationInstalledSizeLabel.font = [UIFont systemFontOfSize:16*fontMultiplier weight:UIFontWeightSemibold];
     
     [self.contentView addSubview:self.applicationInstalledSizeLabel];
 }
@@ -236,7 +245,7 @@
     self.signingButton = [UIButton buttonWithType:UIButtonTypeSystem];
 #endif
     [self.signingButton setTitle:@"BTN" forState:UIControlStateNormal];
-    self.signingButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    self.signingButton.titleLabel.font = [UIFont boldSystemFontOfSize:14*fontMultiplier];
     
     self.signingButton.layer.cornerRadius = 14.0;
     self.signingButton.backgroundColor = [UIColor whiteColor];
@@ -264,6 +273,7 @@
 #if TARGET_OS_TV
     controlState = UIControlStateFocused;
     controlEvent = UIControlEventPrimaryActionTriggered;
+    [self.signingButton setTitleColor:[UIColor blackColor] forState:controlState];
 #else
     [self.signingButton setTitleColor:[UIColor whiteColor] forState:controlState];
 
@@ -279,7 +289,7 @@
     self.calendarTitle.text = @"Expires";
     self.calendarTitle.textColor = [UIColor grayColor];
     self.calendarTitle.textAlignment = NSTextAlignmentCenter;
-    self.calendarTitle.font = [UIFont systemFontOfSize:14];
+    self.calendarTitle.font = [UIFont systemFontOfSize:14*fontMultiplier];
     
     [self.contentView addSubview:self.calendarTitle];
     
@@ -302,8 +312,9 @@
     self.closeButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.closeButton setTitle:@"Close" forState:UIControlStateNormal];
     [self.closeButton setTitle:@"Close" forState:UIControlStateFocused];
+    [self.closeButton setTitleColor:[UIColor blackColor] forState:UIControlStateFocused];
     controlEvent = UIControlEventPrimaryActionTriggered;
-    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14*fontMultiplier];
     
     self.closeButton.layer.cornerRadius = 14.0;
     //self.closeButton.backgroundColor = [UIColor whiteColor];
@@ -340,7 +351,7 @@
 - (void)_addProgressComponents {
     self.percentCompleteLabel = [[MarqueeLabel alloc] initWithFrame:CGRectZero];
     self.percentCompleteLabel.text = @"0% complete";
-    self.percentCompleteLabel.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
+    self.percentCompleteLabel.font = [UIFont systemFontOfSize:14*fontMultiplier weight:UIFontWeightMedium];
     self.percentCompleteLabel.hidden = YES;
     self.percentCompleteLabel.textColor = [UIColor grayColor];
     
