@@ -136,6 +136,13 @@
     [self.view addSubview:self.contentView];
     
     [self _setupContentViewComponents];
+    
+#if TARGET_OS_TV
+    
+    [self _setupFocusGuide];
+    
+#endif
+    
 }
 
 - (void)_setupContentViewComponents {
@@ -241,13 +248,14 @@
 - (void)_addMajorButtonComponent {
 #if !TARGET_OS_TV
     self.signingButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.signingButton.layer.cornerRadius = 14.0;
+    
 #else
     self.signingButton = [UIButton buttonWithType:UIButtonTypeSystem];
 #endif
     [self.signingButton setTitle:@"BTN" forState:UIControlStateNormal];
     self.signingButton.titleLabel.font = [UIFont boldSystemFontOfSize:14*fontMultiplier];
     
-    self.signingButton.layer.cornerRadius = 14.0;
     self.signingButton.backgroundColor = [UIColor whiteColor];
     
     // Add gradient
@@ -316,7 +324,7 @@
     controlEvent = UIControlEventPrimaryActionTriggered;
     self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14*fontMultiplier];
     
-    self.closeButton.layer.cornerRadius = 14.0;
+    //self.closeButton.layer.cornerRadius = 14.0;
     //self.closeButton.backgroundColor = [UIColor whiteColor];
     
     // Add gradient
@@ -381,6 +389,12 @@
 #endif
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    
+    [super viewWillAppear:animated];
+    
+}
+
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
@@ -397,8 +411,12 @@
     CGFloat y = itemInsetX; // Ends up being used for contentView height.
     CGFloat contentViewWidth = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIScreen mainScreen].bounds.size.width * 0.5 : [UIScreen mainScreen].bounds.size.width * 0.95;
     
+    CGFloat buttonHeight = 28;
+    CGFloat titleHeight = 20;
 #if TARGET_OS_TV
     self.applicationIconView.frame=  CGRectMake(15, y, 210, 160);
+    buttonHeight = 40;
+    titleHeight = 30;
 #else
     self.applicationIconView.frame = CGRectMake(15, y, 60, 60);
 #endif
@@ -406,7 +424,7 @@
     
     // Signing button.
     [self.signingButton sizeToFit];
-    self.signingButton.frame = CGRectMake(contentViewWidth - itemInsetX - self.signingButton.frame.size.width - (buttonTextMargin * 2), (y + self.applicationIconView.frame.size.height/2) - 14, self.signingButton.frame.size.width + (buttonTextMargin * 2), 28);
+    self.signingButton.frame = CGRectMake(contentViewWidth - itemInsetX - self.signingButton.frame.size.width - (buttonTextMargin * 2), (y + self.applicationIconView.frame.size.height/2) - 14, self.signingButton.frame.size.width + (buttonTextMargin * 2), buttonHeight);
     
     for (CALayer *layer in self.signingButton.layer.sublayers) {
         layer.frame = self.signingButton.bounds;
@@ -418,7 +436,7 @@
     [self.closeButton sizeToFit];
     CGFloat closeButtonX = self.signingButton.frame.origin.x;
     CGFloat closeButtonY = (y + self.signingButton.frame.size.height + self.applicationIconView.frame.size.height/2);
-    self.closeButton.frame = CGRectMake(closeButtonX, closeButtonY, self.signingButton.frame.size.width, 28);
+    self.closeButton.frame = CGRectMake(closeButtonX, closeButtonY, self.signingButton.frame.size.width, buttonHeight);
     
     for (CALayer *layer in self.closeButton.layer.sublayers) {
         layer.frame = self.closeButton.bounds;
@@ -428,12 +446,16 @@
     
     // Name and bundle ID are same height?
     CGFloat insetAfterIcon = self.applicationIconView.frame.origin.x + self.applicationIconView.frame.size.width + itemInsetX;
-    self.applicationNameLabel.frame = CGRectMake(insetAfterIcon, y + 5, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, 30);
+    self.applicationNameLabel.frame = CGRectMake(insetAfterIcon, y + 5, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, titleHeight+10);
     
     // Bundle ID.
-    self.applicationBundleIdentifierLabel.frame = CGRectMake(insetAfterIcon, y + 35, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, 20);
+    self.applicationBundleIdentifierLabel.frame = CGRectMake(insetAfterIcon, y + 35, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, titleHeight);
+    
+    
+    
     
 #if !TARGET_OS_TV
+    
     // Progress bar and label.
     self.progressBar.frame = CGRectMake(self.applicationBundleIdentifierLabel.frame.origin.x, self.applicationBundleIdentifierLabel.frame.origin.y, 20, 20);
     self.percentCompleteLabel.frame = CGRectMake(self.applicationBundleIdentifierLabel.frame.origin.x + self.progressBar.frame.size.width + 5, self.applicationBundleIdentifierLabel.frame.origin.y, self.applicationBundleIdentifierLabel.frame.size.width - 5 - self.progressBar.frame.size.width, 20);
@@ -443,22 +465,22 @@
     // Verison label
     
     CGFloat detailItemWidth = contentViewWidth/3 - itemInsetX*2;
-    self.versionTitle.frame = CGRectMake(contentViewWidth/2 - detailItemWidth - itemInsetX, y, detailItemWidth, 20);
-    self.applicationVersionLabel.frame = CGRectMake(self.versionTitle.frame.origin.x, y + 20 + innerItemInsetY, detailItemWidth, 20);
+    self.versionTitle.frame = CGRectMake(contentViewWidth/2 - detailItemWidth - itemInsetX, y, detailItemWidth, titleHeight);
+    self.applicationVersionLabel.frame = CGRectMake(self.versionTitle.frame.origin.x, y + titleHeight + innerItemInsetY, detailItemWidth, titleHeight);
     
     // Installed size
     
-    self.installedSizeTitle.frame = CGRectMake(contentViewWidth/2 + itemInsetX, y, detailItemWidth, 20);
-    self.applicationInstalledSizeLabel.frame = CGRectMake(self.installedSizeTitle.frame.origin.x, y + 20 + innerItemInsetY, detailItemWidth, 20);
+    self.installedSizeTitle.frame = CGRectMake(contentViewWidth/2 + itemInsetX, y, detailItemWidth, titleHeight);
+    self.applicationInstalledSizeLabel.frame = CGRectMake(self.installedSizeTitle.frame.origin.x, y + titleHeight + innerItemInsetY, detailItemWidth, titleHeight);
     
-    y += 40 + itemInsetY + innerItemInsetY;
+    y += titleHeight*2 + itemInsetY + innerItemInsetY;
     
     // Calendar, only if not an IPA application
     if ([self.application.class isEqual:[RPVApplication class]]) {
-        self.calendarTitle.frame = CGRectMake(itemInsetX, y, contentViewWidth - itemInsetX*2, 20);
-        self.calendarController.view.frame = CGRectMake(0, y + 20 + innerItemInsetY, contentViewWidth, [self.calendarController calendarHeight]);
+        self.calendarTitle.frame = CGRectMake(itemInsetX, y, contentViewWidth - itemInsetX*2, titleHeight);
+        self.calendarController.view.frame = CGRectMake(0, y + titleHeight + innerItemInsetY, contentViewWidth, [self.calendarController calendarHeight]);
         
-        y += 20 + [self.calendarController calendarHeight] + itemInsetY + innerItemInsetY;
+        y += titleHeight + [self.calendarController calendarHeight] + itemInsetY + innerItemInsetY;
     }
 
     self.contentView.frame = CGRectMake(self.view.frame.size.width/2 - contentViewWidth/2, self.view.frame.size.height/2 - y/2, contentViewWidth, y);
@@ -468,10 +490,39 @@
     self.closeButton.frame = CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y - 35, 30, 30);
     self.closeButton.layer.cornerRadius = self.closeButton.frame.size.width/2.0;
 #else
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self setNeedsFocusUpdate];
+        [self updateFocusIfNeeded];
+    });
+#endif
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    
+    [super viewDidAppear:animated];
+#if TARGET_OS_TV
+
     
 #endif
     
 }
+
+#if TARGET_OS_TV
+
+- (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments {
+    
+    return @[self.signingButton];
+}
+
+
+- (UIView *)preferredFocusedView {
+    
+    return self.signingButton;
+    
+}
+
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
 // Animations
@@ -522,8 +573,9 @@
     [self animateForDismissalWithCompletion:^{
         [self removeFromParentViewController];
         [self.view removeFromSuperview];
-        
+        self.parentViewController.view.userInteractionEnabled = true;
         // Unregister for notifications
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"com.matchstic.reprovision.ios/reloadFocusAvailability" object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }];
 }
@@ -635,6 +687,45 @@
     });
 }
 
+#if TARGET_OS_TV
+
+- (void)_setupFocusGuide {
+    UIFocusGuide *guide = [[UIFocusGuide alloc] init];
+    guide.preferredFocusedView = self.signingButton;
+    [self.view addLayoutGuide:guide];
+    
+    // Constraints
+    [self.view addConstraints:@[
+                                [guide.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+                                [guide.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+                                [guide.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+                                [guide.widthAnchor constraintEqualToAnchor:self.view.widthAnchor],
+                                ]];
+}
+
+- (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
+    
+    // Check for tabbar hide and show!
+    static NSString *kUITabBarButtonClassName = @"UITabBarButton";
+    NSString *prevFocusViewClassName = NSStringFromClass([context.previouslyFocusedView class]);
+    NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
+    
+    if (![prevFocusViewClassName isEqualToString:kUITabBarButtonClassName] &&
+        [nextFocusedView isEqualToString:kUITabBarButtonClassName]) {
+        
+        [coordinator addCoordinatedAnimations:^{
+        } completion:^{
+            
+        }];
+    } else {
+        [coordinator addCoordinatedAnimations:^{
+       
+        } completion:^{
+            
+        }];
+    }
+}
+#endif
 
 
 @end

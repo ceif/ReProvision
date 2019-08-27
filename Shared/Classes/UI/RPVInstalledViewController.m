@@ -98,7 +98,11 @@
     // Reload data when the resign threshold changes.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_reloadDataForUserDidSignIn:) name:@"com.matchstic.reprovision.ios/resigningThresholdDidChange" object:nil];
     
+    
 #if TARGET_OS_TV
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadFocusAvailability) name:@"com.matchstic.reprovision.ios/reloadFocusAvailability" object:nil];
+    
     [[self navigationItem] setTitle:@"Installed"];
 #endif
 }
@@ -653,11 +657,35 @@
     UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;
     [rootController addChildViewController:detailController];
     [rootController.view addSubview:detailController.view];
-    
+#if TARGET_OS_TV
+    [self reloadFocusAvailability];
+#endif
+    //rootController.view.userInteractionEnabled = FALSE;
     detailController.view.frame = rootController.view.bounds;
     
     // Animate in!
     [detailController animateForPresentation];
+}
+
+- (void)reloadFocusAvailability {
+    
+    [self _reloadDataForUserDidSignIn:nil];
+    if ([self appViewVisible]){
+        self.expiringSectionHeader.view.userInteractionEnabled = FALSE;
+        self.recentTableView.userInteractionEnabled = FALSE;
+        self.expiringCollectionView.userInteractionEnabled = FALSE;
+        self.otherApplicationsTableView.userInteractionEnabled = FALSE;
+        self.rootScrollView.userInteractionEnabled = FALSE;
+        self.tabBarController.tabBar.userInteractionEnabled = FALSE;
+    } else {
+        self.rootScrollView.userInteractionEnabled = TRUE;
+        self.tabBarController.tabBar.userInteractionEnabled = TRUE;
+         self.expiringSectionHeader.view.userInteractionEnabled = TRUE;
+        self.recentTableView.userInteractionEnabled = TRUE;
+        self.expiringCollectionView.userInteractionEnabled = TRUE;
+        self.otherApplicationsTableView.userInteractionEnabled = TRUE;
+    }
+    
 }
 
 // We provide editing only for the other applications table.
@@ -939,7 +967,25 @@
     [self startApplicationSigningForSection:section];
 }
 
+- (BOOL)appViewVisible {
+    
+    UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    __block BOOL hasController = FALSE;
+    [rootController.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:RPVApplicationDetailController.class]){
+            *stop = TRUE;
+            hasController = TRUE;
+        }
+    }];
+    return hasController;
+}
+
 - (BOOL)isButtonEnabledForSection:(NSInteger)section {
+    
+    if ([self appViewVisible]){
+        return FALSE;
+    }
+    
     switch (section) {
         case 1:
             return self.expiringSoonDataSource.count > 0;
@@ -951,5 +997,24 @@
             return NO;
     }
 }
+
+#if TARGET_OS_TV
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+}
+
+- (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments {
+    
+    if ([self appViewVisible]){
+        return @[self.childViewControllers[0].view];
+    }
+    
+    return @[self.view];
+}
+
+
+#endif
 
 @end
