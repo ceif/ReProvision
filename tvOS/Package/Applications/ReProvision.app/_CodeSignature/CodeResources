@@ -6,15 +6,15 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		4EBwaKvYp8MqD8nmrKD1M/SIG00=
+		CIaSShDmOH/vRQNQ4a6U5RocBgQ=
 		</data>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
 		<data>
-		fmDB++gZ3lMDd28JGFJNN1rRr0A=
+		krlIRB/fp5SOMqbRqenFbwHZR+I=
 		</data>
 		<key>Base.lproj/Main.storyboardc/9pv-A4-QxB-view-tsR-hK-woN.nib</key>
 		<data>
-		v3WLnam70+b8+B017sFmFordOSI=
+		q+e4ICRMXt2y4c9SF8vJoBGtflU=
 		</data>
 		<key>Base.lproj/Main.storyboardc/Info.plist</key>
 		<data>
@@ -22,15 +22,19 @@
 		</data>
 		<key>Base.lproj/Main.storyboardc/UITabBarController-49e-Tb-3d3.nib</key>
 		<data>
-		nqHq9waxm8ktbPVarjq7bQBj5HY=
+		Q87aXO1kNSFmRJU8Q9b0G2IWH1g=
 		</data>
 		<key>Base.lproj/Main.storyboardc/fGQ-JB-Prd-view-WT8-De-ETN.nib</key>
 		<data>
-		oA0TdspcLxCltqA+jydRtFj/usY=
+		iNSGMHbE5d+ob0OoMa5+BTM+Ag4=
+		</data>
+		<key>Frameworks/MarqueeLabel.framework/Info.plist</key>
+		<data>
+		kHtql86JnK+bgqKs4YSy+YgIVUo=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		gwYf2j2yI74R+SMAdM11cp+rdH0=
+		LaAYvWxTRdklQeM3iXd4trfhA5U=
 		</data>
 		<key>PackageVersion.plist</key>
 		<data>
@@ -40,6 +44,10 @@
 		<data>
 		n57qDP4tZfLD1rCS43W0B4LQjzE=
 		</data>
+		<key>embedded.mobileprovision</key>
+		<data>
+		Os41idYn7W9HIPO7deojl2EHubs=
+		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
@@ -47,33 +55,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			4EBwaKvYp8MqD8nmrKD1M/SIG00=
+			CIaSShDmOH/vRQNQ4a6U5RocBgQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			pc62iU/8v9UVF0/fW746Pk35RCpTtfR+ETxqeXFAMjA=
+			ms+uloPJ8HHeVsVM7Q/OPeLlXTb0FVdTag/Xc+OzD3g=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			fmDB++gZ3lMDd28JGFJNN1rRr0A=
+			krlIRB/fp5SOMqbRqenFbwHZR+I=
 			</data>
 			<key>hash2</key>
 			<data>
-			jcSOvQCYqaw1TooQRK3l+N0IG83BU6fNEoxZpe+IvFE=
+			5auEgJt3/xAXkHipHdX9FkTH3s5akVsV49Vm+unk5e4=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/9pv-A4-QxB-view-tsR-hK-woN.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			v3WLnam70+b8+B017sFmFordOSI=
+			q+e4ICRMXt2y4c9SF8vJoBGtflU=
 			</data>
 			<key>hash2</key>
 			<data>
-			nrKyjcnAlQBatTz7+HDmCyV2AtZChhbTBo9SYrAzvho=
+			uVXOCB/0A6VZ4hjRF7Xn0R+eM+L9UDrdQmGGx+AoQq4=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/Info.plist</key>
@@ -91,22 +99,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			nqHq9waxm8ktbPVarjq7bQBj5HY=
+			Q87aXO1kNSFmRJU8Q9b0G2IWH1g=
 			</data>
 			<key>hash2</key>
 			<data>
-			0NbNX2SHUE/HTC+4aHIW90F8Ln1bUceXeLQYyykxuYU=
+			oMo8pjnO3Yzh1yKD6ayJHOiYXJI9AbDtIoLTKaLPCeI=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/fGQ-JB-Prd-view-WT8-De-ETN.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			oA0TdspcLxCltqA+jydRtFj/usY=
+			iNSGMHbE5d+ob0OoMa5+BTM+Ag4=
 			</data>
 			<key>hash2</key>
 			<data>
-			EqFWUVrPHcx8W9g+9nfSjVscBnpeMSRLJ+orayCUSy8=
+			t+5TBS6vCW0j54cb8TKJM92kICDTyupyVq6yRNrKKDA=
+			</data>
+		</dict>
+		<key>Frameworks/MarqueeLabel.framework/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			kHtql86JnK+bgqKs4YSy+YgIVUo=
+			</data>
+			<key>hash2</key>
+			<data>
+			XI/rV0tgc48GVFAEbJOm4bKsaIrdpKAyRJ7Ki7AuHcU=
 			</data>
 		</dict>
 		<key>PackageVersion.plist</key>
@@ -118,6 +137,17 @@
 			<key>hash2</key>
 			<data>
 			QXRyYbROQXcdohPHFUz/5cjcymX9zFDecx5C9kh/f+s=
+			</data>
+		</dict>
+		<key>embedded.mobileprovision</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Os41idYn7W9HIPO7deojl2EHubs=
+			</data>
+			<key>hash2</key>
+			<data>
+			M4ZEq+pSbzt4leAuH7sHzkUfC3b92TwsipuFVlOgDSk=
 			</data>
 		</dict>
 	</dict>

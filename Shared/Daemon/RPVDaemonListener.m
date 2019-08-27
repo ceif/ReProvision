@@ -392,7 +392,7 @@ typedef enum : NSUInteger {
 
 - (void)suspendApplicationIfNecessary {
     // First, check if the main app is actually running right now
-    
+#if !TARGET_IPHONE_SIMULATOR
     NSString *frontMost = SBSCopyFrontmostApplicationDisplayIdentifier();
     if ([frontMost isEqualToString:@APPLICATION_IDENTIFIER]) {
         NSLog(@"*** [reprovisiond] :: DEBUG :: Is frontmost - abort");
@@ -409,6 +409,7 @@ typedef enum : NSUInteger {
     } else {
         NSLog(@"*** [reprovisiond] :: DEBUG :: Suspended");
     }
+#endif
 }
 
 - (void)sb_didFinishLaunchingNotification {

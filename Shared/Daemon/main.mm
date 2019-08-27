@@ -15,7 +15,7 @@
 int main(int argc, const char *argv[])
 {
     NSLog(@"*** [reprovisiond] :: Loading up daemon.");
-    
+    #if !TARGET_IPHONE_SIMULATOR
     // initialize our daemon
     RPVDaemonListener *daemon = [[RPVDaemonListener alloc] init];
     [daemon initialiseListener];
@@ -29,6 +29,6 @@ int main(int argc, const char *argv[])
     
     // Run the run loop forever.
     [[NSRunLoop currentRunLoop] run];
-    
+#endif
     return EXIT_SUCCESS;
 }

@@ -15,4 +15,5 @@ end
 target 'tvOS' do
 platform :tvos, '9.0'
 pod 'MarqueeLabel', '3.1.4'
+pod 'PureLayout', '3.1.4'
 end
