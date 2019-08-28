@@ -68,8 +68,10 @@
     return (__bridge NSString*)udid;
 }
 
+//ifdef WAS returning EESystemTypeiOS for everything.
+
 - (EESystemType)platformTypeForCurrentDevice {
-#ifdef TARGET_OS_IOS
+#if TARGET_OS_IOS
     return EESystemTypeiOS;
 #elif TARGET_OS_WATCHOS
     return EESystemTypewatchOS;

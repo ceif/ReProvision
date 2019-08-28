@@ -45,6 +45,7 @@ static NSString *_teamid = @"";
 + (void)_doActionWithName:(NSString*)action systemType:(EESystemType)systemType extraDictionary:(NSDictionary*)extra andCompletionHandler:(void (^)(NSError*, NSDictionary *))completionHandler {
     
     // watchOS is treated as iOS
+    // this check is not necessary, if tvos is in that URL it doesn't work
     NSString *os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios" : @"tvos";
     NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@/%@?clientId=XABBG36SBA", os, action];
     
@@ -78,8 +79,27 @@ static NSString *_teamid = @"";
      * ios
      * tvos
      * watchos
+     *
      */
-    switch (systemType) {
+    
+/*
+ 
+ This was one thing breaking signing on tvOS - systemType is always passed in as
+ EESystemTypeiOS- and the section belong being right is *VERY* important
+ 
+ */
+    
+    EESystemType stype = EESystemTypeiOS;
+#if TARGET_OS_IOS
+    stype = EESystemTypeiOS;
+#elif TARGET_OS_WATCHOS
+    stype = EESystemTypewatchOS;
+#elif TARGET_OS_TV
+    stype = EESystemTypetvOS;
+#endif
+    NSLog(@"systemType: %lu", stype);
+    
+    switch (stype) {
         case EESystemTypeiOS:
             [dict setObject:@"ios" forKey:@"DTDK_Platform"];
             //[dict setObject:@"ios" forKey:@"subPlatform"];
@@ -121,7 +141,7 @@ static NSString *_teamid = @"";
             data = [data gunzippedData];
             
             NSDictionary *plist = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:nil error:nil];
-            
+            NSLog(@"### plist: %@ for action: %@", plist, action);
             // Hit the completion handler.
             completionHandler(nil, plist);
         }

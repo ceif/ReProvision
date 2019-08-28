@@ -110,6 +110,7 @@ static auto dummy([](double) {});
     ldid::DiskFolder folder([[absolutePath copy] cStringUsingEncoding:NSUTF8StringEncoding]);
     ldid::Bundle outputBundle = Sign("", folder, _PKCS12, requirementsString, ldid::fun([&](const std::string &, const std::string &) -> std::string { return entitlementsString; }), ldid::fun([&](const std::string &) {}), ldid::fun(dummy));
     
+    
     // TODO: Handle errors!
     
     completionHandler(YES, @"");
