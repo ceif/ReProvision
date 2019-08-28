@@ -109,9 +109,40 @@ static CGFloat inset = 20;
         //self.progressBar.frame = CGRectMake(self.bundleIdentifierLabel.frame.origin.x, self.bundleIdentifierLabel.frame.origin.y, bundleIdentifierHeight, bundleIdentifierHeight);
         self.percentCompleteLabel.frame = CGRectMake(self.bundleIdentifierLabel.frame.origin.x + bundleIdentifierHeight + 7, self.bundleIdentifierLabel.frame.origin.y, self.bundleIdentifierLabel.frame.size.width - bundleIdentifierHeight - 7, bundleIdentifierHeight);
         
+        [self updateForCurrentMode];
+        
         self.notificationView.frame = self.contentView.bounds;
     } else {
         self.displayNameLabel.frame = self.contentView.bounds;
+    }
+}
+
+//
+
+- (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
+    
+    [super didUpdateFocusInContext:context withAnimationCoordinator:coordinator];
+    
+    [coordinator addCoordinatedAnimations:^{
+        
+        [self updateForCurrentMode];
+        
+    } completion:^{
+        
+    }];
+}
+
+
+- (void)updateForCurrentMode {
+    
+    LOG_SELF;
+    NSLog(@"dark mode: %i focused %i", [self darkMode], [self isFocused]);
+    
+    if ([self darkMode] && ![self isFocused]){
+        NSLog(@"white color?");
+        self.displayNameLabel.textColor = [UIColor whiteColor];
+    } else {
+        self.displayNameLabel.textColor = [UIColor blackColor];
     }
 }
 
@@ -241,7 +272,7 @@ static CGFloat inset = 20;
     //self.selectedBackgroundView.clipsToBounds = YES;
     self.notificationView.layer.cornerRadius = 12.5;
     self.notificationView.clipsToBounds = YES;
-    
+    [self updateForCurrentMode];
     //self.backgroundColor = [UIColor whiteColor];
     //self.contentView.backgroundColor = [UIColor whiteColor];
 }

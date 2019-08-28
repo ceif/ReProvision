@@ -55,6 +55,20 @@
     return self;
 }
 
+- (void)updateForCurrentMode {
+    if ([self darkMode] && ![self isFocused]){
+        self.displayNameLabel.textColor = [UIColor whiteColor];
+    } else {
+        self.displayNameLabel.textColor = [UIColor blackColor];
+    }
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    
+    [self updateForCurrentMode];
+    
+}
+
 - (void)_onSigningStatusUpdate:(NSNotification*)notification {
     NSString *bundleIdentifier = [[notification userInfo] objectForKey:@"bundleIdentifier"];
     int percent = [[[notification userInfo] objectForKey:@"percent"] intValue];
@@ -277,6 +291,7 @@
     self.layer.shadowRadius = 10.0;
     self.layer.shadowColor = [UIColor blackColor].CGColor;
     self.layer.shadowOffset = CGSizeMake(0, 27);
+    [self updateForCurrentMode];
 }
 
 - (void)configureWithApplication:(RPVApplication*)application fallbackDisplayName:(NSString*)fallback andExpiryDate:(NSDate*)expiryDate {

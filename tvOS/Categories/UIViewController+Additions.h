@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+@interface UIView (Additions)
+- (BOOL)darkMode;
+@end
 
 @interface UIViewController (Additions)
 

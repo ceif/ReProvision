@@ -130,6 +130,27 @@
     self.button.frame = CGRectMake(self.view.frame.size.width - insetMargin - self.button.frame.size.width - (buttonTextMargin * 2), self.view.frame.size.height/2 - 60/2, self.button.frame.size.width + (buttonTextMargin * 2), 60);
     
     self.titleLabel.frame = CGRectMake(insetMargin, 0, self.view.frame.size.width - self.button.frame.size.width - 40, self.view.frame.size.height);
+    
+     [self updateForCurrentMode];
+    
+}
+
+- (void)updateForCurrentMode {
+    
+    if ([self darkMode]){
+        
+        self.titleLabel.textColor = [UIColor whiteColor];
+        
+    } else {
+        
+        self.titleLabel.textColor = [UIColor blackColor];
+        
+    }
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [self updateForCurrentMode];
 }
 
 @end

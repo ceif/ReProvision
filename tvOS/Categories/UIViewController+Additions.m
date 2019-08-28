@@ -8,6 +8,17 @@
 
 #import "UIViewController+Additions.h"
 
+@implementation UIView (Additions)
+
+- (BOOL)darkMode {
+    
+    if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark){
+        return TRUE;
+    }
+    return FALSE;
+}
+@end
+
 @implementation UIViewController (Additions)
 
 - (BOOL)darkMode {

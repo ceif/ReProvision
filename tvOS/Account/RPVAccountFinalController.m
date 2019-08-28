@@ -38,11 +38,12 @@
     if ([self darkMode]){
         
         self.titleLabel.textColor = [UIColor whiteColor];
+        self.tableView.backgroundColor = [UIColor clearColor];
         
     } else {
         
         self.titleLabel.textColor = [UIColor blackColor];
-        
+        self.tableView.backgroundColor = [UIColor clearColor];
     }
     
 }
@@ -323,6 +324,10 @@
         applicationName = @"Cydia Impactor or Extender";
     } else
         applicationName = @"Xcode";
+    
+    if ([self darkMode] && ![cell isFocused]){
+        cell.textLabel.textColor = [UIColor whiteColor];
+    }
     
     cell.textLabel.text = [NSString stringWithFormat:@"Device: %@", machineName];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"Application: %@", applicationName];
