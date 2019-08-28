@@ -13,6 +13,16 @@
 #import "RPVNotificationManager.h"
 #import "RPVResources.h"
 
+
+@interface NSDistributedNotificationCenter : NSNotificationCenter
+
++ (id)defaultCenter;
+- (void)addObserver:(id)arg1 selector:(SEL)arg2 name:(id)arg3 object:(id)arg4;
+- (void)postNotificationName:(id)arg1 object:(id)arg2 userInfo:(id)arg3;
+
+@end
+
+
 @implementation RPVNotificationManager
 
 + (instancetype)sharedInstance {
@@ -34,15 +44,26 @@
 }
 
 - (void)sendNotificationWithTitle:(NSString*)title body:(NSString*)body isDebugMessage:(BOOL)isDebug isUrgentMessage:(BOOL)isUrgent andNotificationID:(NSString*)identifier {
+   
+    NSLog(@"send notification with title: %@", title);
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    dict[@"message"] = body;
+    dict[@"title"] = title;
+    
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.matchstic.ReProvision/displayBulletin" object:nil userInfo:dict];
+   
     if (isDebug && ![RPVResources shouldShowDebugAlerts]) {
         return;
     }
+    
     
     if (!isUrgent && ![RPVResources shouldShowNonUrgentAlerts]) {
         return;
     }
     
-    // TODO: Display notification via in-app library
+   
+    
+    // TODO: Display notification via in-app library < -- do this properly.
 }
 
 - (void)_updateBadge {

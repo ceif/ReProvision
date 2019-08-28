@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		329EE77D23166925004E9461 /* Preferences.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C96CCE56211A33B0008A249A /* Preferences.tbd */; };
 		32B779892314617C00828355 /* RPVResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779882314617B00828355 /* RPVResources.m */; };
 		32B7798A2314617C00828355 /* RPVResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779882314617B00828355 /* RPVResources.m */; };
 		32B7799C2314D6A600828355 /* RPVAccount2FAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779932314D6A600828355 /* RPVAccount2FAViewController.m */; };
@@ -67,7 +68,6 @@
 		C96CCE43211A2839008A249A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C96CCE42211A2839008A249A /* main.m */; };
 		C96CCE54211A2C9B008A249A /* RPVSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C96CCE50211A2C9B008A249A /* RPVSettingsController.m */; };
 		C96CCE55211A2C9B008A249A /* RPVAdvancedController.m in Sources */ = {isa = PBXBuildFile; fileRef = C96CCE51211A2C9B008A249A /* RPVAdvancedController.m */; };
-		C96CCE57211A33B0008A249A /* Preferences.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C96CCE56211A33B0008A249A /* Preferences.tbd */; };
 		C96CCE62211A3482008A249A /* RPVApplicationSigning.m in Sources */ = {isa = PBXBuildFile; fileRef = C96B0CDA2005782A00F713AF /* RPVApplicationSigning.m */; };
 		C96CCE63211A3482008A249A /* RPVBackgroundSigningManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C90AD5202069968E008B2F2B /* RPVBackgroundSigningManager.m */; };
 		C96CCE64211A3482008A249A /* RPVApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = C96B0CD42005704F00F713AF /* RPVApplication.m */; };
@@ -609,10 +609,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C964EA2C212085A200AC98E6 /* libssl_tvOS.a in Frameworks */,
+				329EE77D23166925004E9461 /* Preferences.tbd in Frameworks */,
 				C964EA2E212085A400AC98E6 /* libcrypto_tvOS.a in Frameworks */,
 				C96CCE9D211A36EE008A249A /* libMobileGestalt.tbd in Frameworks */,
 				C96CCE9B211A36D3008A249A /* MobileCoreServices.framework in Frameworks */,
-				C96CCE57211A33B0008A249A /* Preferences.tbd in Frameworks */,
 				DAE0BDC9DC0389DB581AA13D /* libPods-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
