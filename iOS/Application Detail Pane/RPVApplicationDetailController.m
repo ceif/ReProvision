@@ -139,6 +139,7 @@
 #if TARGET_OS_TV
     
     [self _setupFocusGuide];
+    [self updateForMode];
     
 #endif
     
@@ -386,6 +387,33 @@
     [self.contentView addSubview:self.progressBar];
 #endif
 }
+
+#if TARGET_OS_TV
+
+- (void)updateForMode {
+
+    if ([self darkMode]){
+        self.applicationNameLabel.textColor = [UIColor whiteColor];
+        self.percentCompleteLabel.textColor = [UIColor whiteColor];
+        self.applicationVersionLabel.textColor = [UIColor whiteColor];
+        self.applicationInstalledSizeLabel.textColor = [UIColor whiteColor];
+        self.contentView.backgroundColor = [UIColor blackColor];
+    } else {
+        self.applicationNameLabel.textColor = [UIColor blackColor];
+        self.percentCompleteLabel.textColor = [UIColor blackColor];
+        self.applicationVersionLabel.textColor = [UIColor blackColor];
+        self.applicationInstalledSizeLabel.textColor = [UIColor blackColor];
+        self.contentView.backgroundColor = [UIColor whiteColor];
+        
+    }
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [self updateForMode];
+}
+
+#endif
 
 - (void)viewWillAppear:(BOOL)animated {
     

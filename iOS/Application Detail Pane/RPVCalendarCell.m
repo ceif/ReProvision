@@ -55,6 +55,7 @@
     
     self.dayNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 25+dateOffset, CELL_WIDTH, CELL_WIDTH)];
     self.dayNumberLabel.text = @"00";
+
     self.dayNumberLabel.textColor = [UIColor blackColor];
     self.dayNumberLabel.textAlignment = NSTextAlignmentCenter;
     self.dayNumberLabel.font = [UIFont systemFontOfSize:20*fontMultiplier];
@@ -72,7 +73,30 @@
 
 - (void)setSelected:(BOOL)selected {
     self.selectedDotView.hidden = !selected;
-    self.dayNumberLabel.textColor = selected ? [UIColor whiteColor] : [UIColor blackColor];
+    UIColor *selectedColor = selected ? [UIColor whiteColor] : [UIColor blackColor];
+#if TARGET_OS_TV
+    if ([self darkMode]){
+        selectedColor = selected ? [UIColor blackColor] : [UIColor whiteColor];
+    } else {
+        selectedColor = selected ? [UIColor whiteColor] : [UIColor blackColor];
+    }
+#endif
+    
+    self.dayNumberLabel.textColor = selectedColor;
+}
+
+- (void)layoutSubviews {
+    
+    [super layoutSubviews];
+    UIColor *dayColor = [UIColor blackColor];
+#if TARGET_OS_TV
+    if ([self darkMode]){
+        dayColor = [UIColor whiteColor];
+    } else {
+        dayColor = [UIColor blackColor];
+    }
+#endif
+    self.dayNumberLabel.textColor = dayColor;
 }
 
 - (void)setDate:(NSDate*)date {
