@@ -126,7 +126,14 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
-    NSLog(@"### date label text: %@ self.dateLabel: %@ self: %@", self.dateLabel.text, self.dateLabel, self.view);
+#if TARGET_OS_TV
+    if ([self darkMode]){
+        self.dateLabel.textColor = [UIColor whiteColor];
+    } else {
+        self.dateLabel.textColor = [UIColor blackColor];
+    }
+#endif
+   // NSLog(@"### date label text: %@ self.dateLabel: %@ self: %@", self.dateLabel.text, self.dateLabel, self.view);
     
     CGFloat inset = 10;
     CGFloat cellMargin = (self.view.frame.size.width - (CELL_WIDTH * 7) - inset*2.0)/8.0;
