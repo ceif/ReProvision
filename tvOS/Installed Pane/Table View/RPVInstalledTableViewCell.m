@@ -135,11 +135,7 @@ static CGFloat inset = 20;
 
 - (void)updateForCurrentMode {
     
-    LOG_SELF;
-    NSLog(@"dark mode: %i focused %i", [self darkMode], [self isFocused]);
-    
     if ([self darkMode] && ![self isFocused]){
-        NSLog(@"white color?");
         self.displayNameLabel.textColor = [UIColor whiteColor];
     } else {
         self.displayNameLabel.textColor = [UIColor blackColor];

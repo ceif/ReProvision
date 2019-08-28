@@ -75,7 +75,6 @@
 
 - (instancetype)initWithApplication:(RPVApplication*)application {
     
-    LOG_SELF;
     fontMultiplier = 1;
 #if TARGET_OS_TV
     fontMultiplier = 2;
@@ -298,7 +297,6 @@
     self.calendarTitle.textColor = [UIColor grayColor];
     self.calendarTitle.textAlignment = NSTextAlignmentCenter;
     self.calendarTitle.font = [UIFont systemFontOfSize:14*fontMultiplier];
-    
     [self.contentView addSubview:self.calendarTitle];
     
     self.calendarController = [[RPVCalendarController alloc] initWithDate:[self.application applicationExpiryDate]];
@@ -318,8 +316,8 @@
     [self.closeButton setImage:[UIImage imageNamed:@"buttonClose"] forState:UIControlStateNormal];
 #else
     self.closeButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.closeButton setTitle:@"Close" forState:UIControlStateNormal];
-    [self.closeButton setTitle:@"Close" forState:UIControlStateFocused];
+    [self.closeButton setTitle:@"CLOSE" forState:UIControlStateNormal];
+    [self.closeButton setTitle:@"CLOSE" forState:UIControlStateFocused];
     [self.closeButton setTitleColor:[UIColor blackColor] forState:UIControlStateFocused];
     controlEvent = UIControlEventPrimaryActionTriggered;
     self.closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:14*fontMultiplier];
@@ -413,10 +411,18 @@
     
     CGFloat buttonHeight = 28;
     CGFloat titleHeight = 20;
+    CGFloat titleAdjustment = 0;
+    CGFloat titleBuffer = 0;
+    CGFloat calendarOffset = 0;
 #if TARGET_OS_TV
+    itemInsetY *= 2;
+    innerItemInsetY *=2;
     self.applicationIconView.frame=  CGRectMake(15, y, 210, 160);
     buttonHeight = 40;
     titleHeight = 30;
+    titleAdjustment = 10;
+    titleBuffer = 5;
+    calendarOffset = 15;
 #else
     self.applicationIconView.frame = CGRectMake(15, y, 60, 60);
 #endif
@@ -446,23 +452,23 @@
     
     // Name and bundle ID are same height?
     CGFloat insetAfterIcon = self.applicationIconView.frame.origin.x + self.applicationIconView.frame.size.width + itemInsetX;
-    self.applicationNameLabel.frame = CGRectMake(insetAfterIcon, y + 5, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, titleHeight+10);
+    self.applicationNameLabel.frame = CGRectMake(insetAfterIcon, y + 5, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, titleHeight+titleAdjustment);
     
     // Bundle ID.
-    self.applicationBundleIdentifierLabel.frame = CGRectMake(insetAfterIcon, y + 35, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, titleHeight);
-    
-    
+    self.applicationBundleIdentifierLabel.frame = CGRectMake(insetAfterIcon, y + 35 + titleBuffer, contentViewWidth - insetAfterIcon - itemInsetX*2 - self.signingButton.frame.size.width, titleHeight);
     
     
 #if !TARGET_OS_TV
-    
     // Progress bar and label.
     self.progressBar.frame = CGRectMake(self.applicationBundleIdentifierLabel.frame.origin.x, self.applicationBundleIdentifierLabel.frame.origin.y, 20, 20);
-    self.percentCompleteLabel.frame = CGRectMake(self.applicationBundleIdentifierLabel.frame.origin.x + self.progressBar.frame.size.width + 5, self.applicationBundleIdentifierLabel.frame.origin.y, self.applicationBundleIdentifierLabel.frame.size.width - 5 - self.progressBar.frame.size.width, 20);
+    self.percentCompleteLabel.frame = CGRectMake(self.applicationBundleIdentifierLabel.frame.origin.x + self.progressBar.frame.size.width + 5, self.applicationBundleIdentifierLabel.frame.origin.y, self.applicationBundleIdentifierLabel.frame.size.width - 5 - self.progressBar.frame.size.width, titleHeight);
+#else
+    self.percentCompleteLabel.frame = CGRectMake(self.applicationBundleIdentifierLabel.frame.origin.x + 20 + 5, self.applicationBundleIdentifierLabel.frame.origin.y, self.applicationBundleIdentifierLabel.frame.size.width - 5 - 20, titleHeight);
 #endif
+    
     y += 60 + itemInsetY;
     
-    // Verison label
+    // Version label
     
     CGFloat detailItemWidth = contentViewWidth/3 - itemInsetX*2;
     self.versionTitle.frame = CGRectMake(contentViewWidth/2 - detailItemWidth - itemInsetX, y, detailItemWidth, titleHeight);
@@ -478,9 +484,15 @@
     // Calendar, only if not an IPA application
     if ([self.application.class isEqual:[RPVApplication class]]) {
         self.calendarTitle.frame = CGRectMake(itemInsetX, y, contentViewWidth - itemInsetX*2, titleHeight);
-        self.calendarController.view.frame = CGRectMake(0, y + titleHeight + innerItemInsetY, contentViewWidth, [self.calendarController calendarHeight]);
+        self.calendarController.view.frame = CGRectMake(0, y + titleHeight + innerItemInsetY + calendarOffset, contentViewWidth, [self.calendarController calendarHeight]);
         
         y += titleHeight + [self.calendarController calendarHeight] + itemInsetY + innerItemInsetY;
+        
+        NSLog(@"y: %f ch: %f", y, [self.calendarController calendarHeight]);
+#if TARGET_OS_TV
+        //y+=20;
+#endif
+        
     }
 
     self.contentView.frame = CGRectMake(self.view.frame.size.width/2 - contentViewWidth/2, self.view.frame.size.height/2 - y/2, contentViewWidth, y);
@@ -491,8 +503,8 @@
     self.closeButton.layer.cornerRadius = self.closeButton.frame.size.width/2.0;
 #else
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self setNeedsFocusUpdate];
-        [self updateFocusIfNeeded];
+        //[self setNeedsFocusUpdate];
+        //[self updateFocusIfNeeded];
     });
 #endif
     
@@ -501,10 +513,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     
     [super viewDidAppear:animated];
-#if TARGET_OS_TV
 
-    
-#endif
     
 }
 
@@ -696,35 +705,31 @@
     
     // Constraints
     [self.view addConstraints:@[
-                                [guide.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+                                [guide.topAnchor constraintEqualToAnchor:self.self.view.topAnchor],
                                 [guide.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
                                 [guide.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
                                 [guide.widthAnchor constraintEqualToAnchor:self.view.widthAnchor],
                                 ]];
 }
 
+- (BOOL)shouldUpdateFocusInContext:(UIFocusUpdateContext *)context {
+    
+    static NSString *kUITabBarButtonClassName = @"UITabBar";
+    NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
+    NSLog(@"RPVAppDetail next focused view: %@", nextFocusedView);
+    if ([nextFocusedView containsString:kUITabBarButtonClassName] || [nextFocusedView isEqualToString:@"RPVInstalledCollectionViewCell"]){
+        return FALSE;
+    }
+    return TRUE;
+
+}
+
+/*
 - (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
     
-    // Check for tabbar hide and show!
-    static NSString *kUITabBarButtonClassName = @"UITabBarButton";
-    NSString *prevFocusViewClassName = NSStringFromClass([context.previouslyFocusedView class]);
-    NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
     
-    if (![prevFocusViewClassName isEqualToString:kUITabBarButtonClassName] &&
-        [nextFocusedView isEqualToString:kUITabBarButtonClassName]) {
-        
-        [coordinator addCoordinatedAnimations:^{
-        } completion:^{
-            
-        }];
-    } else {
-        [coordinator addCoordinatedAnimations:^{
-       
-        } completion:^{
-            
-        }];
-    }
 }
+ */
 #endif
 
 

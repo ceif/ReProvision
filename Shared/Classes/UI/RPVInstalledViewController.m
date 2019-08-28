@@ -38,7 +38,11 @@
 + (instancetype)applicationProxyForIdentifier:(NSString*)arg1;
 @end
 
-@interface RPVInstalledViewController ()
+@interface RPVInstalledViewController () {
+    
+    BOOL _aboutToShow;
+    
+}
 // Views
 @property (nonatomic, strong) UIScrollView *rootScrollView;
 
@@ -198,7 +202,7 @@
     self.recentSectionHeaderView.invertColours = NO;
     [self.rootScrollView addSubview:self.recentSectionHeaderView];
 #endif
-
+    
     // Table View for recent items.
 #if TARGET_OS_TV
     self.recentTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -359,6 +363,22 @@
 }
 
 #if TARGET_OS_TV
+
+- (BOOL)shouldUpdateFocusInContext:(UIFocusUpdateContext *)context {
+    
+    static NSString *kUITabBarButtonClassName = @"UITabBar";
+    NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
+    NSLog(@"RPVInstalledView next focused view: %@", nextFocusedView);
+    if ([self appViewVisible] || _aboutToShow){
+        NSLog(@"app view visible");
+        if ([nextFocusedView containsString:kUITabBarButtonClassName] || [nextFocusedView isEqualToString:@"RPVInstalledCollectionViewCell"]){
+            return FALSE;
+        }
+    }
+    return TRUE;
+    
+}
+
 - (void)didUpdateFocusInContext:(UIFocusUpdateContext *)context withAnimationCoordinator:(UIFocusAnimationCoordinator *)coordinator {
     
     // Check for tabbar hide and show!
@@ -368,7 +388,7 @@
     NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
     
     RPVStickyScrollView *stickyScrollView = (RPVStickyScrollView*)self.rootScrollView;
-    
+    NSLog(@"RPVInstalledView next focused view: %@", nextFocusedView);
     if (![prevFocusViewClassName isEqualToString:kUITabBarButtonClassName] &&
         [nextFocusedView isEqualToString:kUITabBarButtonClassName]) {
         
@@ -477,7 +497,7 @@
     [self.view setNeedsLayout];
     
     // Set the sideloaded apps table to be editing if necessary.
-   // [self.otherApplicationsTableView setEditing:self.otherApplicationsDataSource.count > 0 animated:NO];
+    // [self.otherApplicationsTableView setEditing:self.otherApplicationsDataSource.count > 0 animated:NO];
 }
 
 - (void)_debugCreateFakeDataSources {
@@ -569,7 +589,7 @@
     // Show detail view
     if (self.expiringSoonDataSource.count > 0) {
         RPVApplication *application = [self.expiringSoonDataSource objectAtIndex:indexPath.row];
-        NSString *buttonTitle = @"Sign";
+        NSString *buttonTitle = @"SIGN";
         
         [self _showApplicationDetailController:application withButtonTitle:buttonTitle isDestructiveResign:NO];
     }
@@ -641,6 +661,10 @@
 }
 
 - (void)_showApplicationDetailController:(RPVApplication*)application withButtonTitle:(NSString*)buttonTitle isDestructiveResign:(BOOL)isDestructiveResign {
+   
+    self.expiringCollectionView.userInteractionEnabled = false;
+    
+    _aboutToShow = TRUE;
     RPVApplicationDetailController *detailController = [[RPVApplicationDetailController alloc] initWithApplication:application];
     detailController.warnUserOnResign = isDestructiveResign;
     
@@ -667,6 +691,7 @@
     [detailController animateForPresentation];
 }
 
+#if TARGET_OS_TV
 - (void)reloadFocusAvailability {
     
     [self _reloadDataForUserDidSignIn:nil];
@@ -678,15 +703,18 @@
         self.rootScrollView.userInteractionEnabled = FALSE;
         self.tabBarController.tabBar.userInteractionEnabled = FALSE;
     } else {
+        _aboutToShow = FALSE;
         self.rootScrollView.userInteractionEnabled = TRUE;
         self.tabBarController.tabBar.userInteractionEnabled = TRUE;
-         self.expiringSectionHeader.view.userInteractionEnabled = TRUE;
+        self.expiringSectionHeader.view.userInteractionEnabled = TRUE;
         self.recentTableView.userInteractionEnabled = TRUE;
         self.expiringCollectionView.userInteractionEnabled = TRUE;
         self.otherApplicationsTableView.userInteractionEnabled = TRUE;
     }
     
 }
+
+#endif
 
 // We provide editing only for the other applications table.
 
@@ -711,33 +739,33 @@
         
         // Great success! Now we can move items around!
         dispatch_async(dispatch_get_main_queue(), ^{
-        
-        int oldDataSource = 0;
-        RPVApplication *application;
-        // Check expiring
-        for (RPVApplication *app in self.expiringSoonDataSource) {
-            if ([app.bundleIdentifier isEqualToString:bundleIdentifier]) {
-                oldDataSource = 1;
-                application = app;
-                break;
+            
+            int oldDataSource = 0;
+            RPVApplication *application;
+            // Check expiring
+            for (RPVApplication *app in self.expiringSoonDataSource) {
+                if ([app.bundleIdentifier isEqualToString:bundleIdentifier]) {
+                    oldDataSource = 1;
+                    application = app;
+                    break;
+                }
             }
-        }
-        // Check recents
-        for (RPVApplication *app in self.recentlySignedDataSource) {
-            if ([app.bundleIdentifier isEqualToString:bundleIdentifier]) {
-                oldDataSource = 2;
-                application = app;
-                break;
+            // Check recents
+            for (RPVApplication *app in self.recentlySignedDataSource) {
+                if ([app.bundleIdentifier isEqualToString:bundleIdentifier]) {
+                    oldDataSource = 2;
+                    application = app;
+                    break;
+                }
             }
-        }
-        // Check others
-        for (RPVApplication *app in self.otherApplicationsDataSource) {
-            if ([app.bundleIdentifier isEqualToString:bundleIdentifier]) {
-                oldDataSource = 3;
-                application = app;
-                break;
+            // Check others
+            for (RPVApplication *app in self.otherApplicationsDataSource) {
+                if ([app.bundleIdentifier isEqualToString:bundleIdentifier]) {
+                    oldDataSource = 3;
+                    application = app;
+                    break;
+                }
             }
-        }
             
             if (!application) {
                 // We've just had this called from installing an IPA.
@@ -756,93 +784,93 @@
                 
                 return;
             }
-        
-        // Move from the old data source to number 2.
-        if (oldDataSource == 1) {
-            // Batch updates, or straight-up reloadData.
-            if (self.expiringSoonDataSource.count - 1 == 0) {
-                // Remove items from data source.
-                [self.expiringSoonDataSource removeObject:application];
-                
-                [self.expiringCollectionView reloadData];
-            } else {
-                [self.expiringCollectionView performBatchUpdates:^{
-                    int index = (int)[self.expiringSoonDataSource indexOfObject:application];
-                    
-                    // Remove items from data source.
-                    [self.expiringSoonDataSource removeObjectAtIndex:index];
-                    
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                    [self.expiringCollectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-                } completion:^(BOOL finished) {
-                    
-                }];
-            }
-        } else if (oldDataSource == 2) {
-            // Effectively this will be a re-order, but oh well.
-            // Newest items go at the bottom.
             
-            // Just reload into no applications.
-            if (self.recentlySignedDataSource.count - 1 == 0) {
-                [self.recentlySignedDataSource removeObject:application];
+            // Move from the old data source to number 2.
+            if (oldDataSource == 1) {
+                // Batch updates, or straight-up reloadData.
+                if (self.expiringSoonDataSource.count - 1 == 0) {
+                    // Remove items from data source.
+                    [self.expiringSoonDataSource removeObject:application];
+                    
+                    [self.expiringCollectionView reloadData];
+                } else {
+                    [self.expiringCollectionView performBatchUpdates:^{
+                        int index = (int)[self.expiringSoonDataSource indexOfObject:application];
+                        
+                        // Remove items from data source.
+                        [self.expiringSoonDataSource removeObjectAtIndex:index];
+                        
+                        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                        [self.expiringCollectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
+                    } completion:^(BOOL finished) {
+                        
+                    }];
+                }
+            } else if (oldDataSource == 2) {
+                // Effectively this will be a re-order, but oh well.
+                // Newest items go at the bottom.
+                
+                // Just reload into no applications.
+                if (self.recentlySignedDataSource.count - 1 == 0) {
+                    [self.recentlySignedDataSource removeObject:application];
+                    [self.recentTableView reloadData];
+                } else {
+                    [self.recentTableView beginUpdates];
+                    
+                    int index = (int)[self.recentlySignedDataSource indexOfObject:application];
+                    [self.recentlySignedDataSource removeObjectAtIndex:index];
+                    
+                    // Delete the row from the table
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                    
+                    [self.recentTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    
+                    [self.recentTableView endUpdates];
+                }
+            } else if (oldDataSource == 3) {
+                
+                if (self.otherApplicationsDataSource.count - 1 == 0) {
+                    [self.otherApplicationsDataSource removeObject:application];
+                    [self.otherApplicationsTableView reloadData];
+                } else {
+                    [self.otherApplicationsTableView beginUpdates];
+                    
+                    int index = (int)[self.otherApplicationsDataSource indexOfObject:application];
+                    [self.otherApplicationsDataSource removeObjectAtIndex:index];
+                    
+                    // Delete the row from the table
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+                    
+                    [self.otherApplicationsTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    
+                    [self.otherApplicationsTableView endUpdates];
+                }
+            }
+            
+            // Now that we've removed the old application, create a new object for it to handle changes
+            // in the bundle URL of the application on-disk.
+            application = [[RPVApplicationDatabase sharedInstance] getApplicationWithBundleIdentifier:[application bundleIdentifier]];
+            
+            [self.recentTableView beginUpdates];
+            
+            // And add to source 2.
+            [self.recentlySignedDataSource addObject:application];
+            int index = (int)[self.recentlySignedDataSource indexOfObject:application];
+            
+            if (self.recentlySignedDataSource.count == 1) {
+                // Reload the table instead to hide the no apps label
                 [self.recentTableView reloadData];
             } else {
-                [self.recentTableView beginUpdates];
-                
-                int index = (int)[self.recentlySignedDataSource indexOfObject:application];
-                [self.recentlySignedDataSource removeObjectAtIndex:index];
-                
-                // Delete the row from the table
+                // Add the row to the table
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
                 
-                [self.recentTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                
-                [self.recentTableView endUpdates];
+                [self.recentTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
-        } else if (oldDataSource == 3) {
             
-            if (self.otherApplicationsDataSource.count - 1 == 0) {
-                [self.otherApplicationsDataSource removeObject:application];
-                [self.otherApplicationsTableView reloadData];
-            } else {
-                [self.otherApplicationsTableView beginUpdates];
-                
-                int index = (int)[self.otherApplicationsDataSource indexOfObject:application];
-                [self.otherApplicationsDataSource removeObjectAtIndex:index];
-                
-                // Delete the row from the table
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-                
-                [self.otherApplicationsTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                
-                [self.otherApplicationsTableView endUpdates];
-            }
-        }
+            [self.recentTableView endUpdates];
             
-        // Now that we've removed the old application, create a new object for it to handle changes
-        // in the bundle URL of the application on-disk.
-        application = [[RPVApplicationDatabase sharedInstance] getApplicationWithBundleIdentifier:[application bundleIdentifier]];
-        
-        [self.recentTableView beginUpdates];
-        
-        // And add to source 2.
-        [self.recentlySignedDataSource addObject:application];
-        int index = (int)[self.recentlySignedDataSource indexOfObject:application];
-        
-        if (self.recentlySignedDataSource.count == 1) {
-            // Reload the table instead to hide the no apps label
-            [self.recentTableView reloadData];
-        } else {
-            // Add the row to the table
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-            
-            [self.recentTableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
-        
-        [self.recentTableView endUpdates];
-        
-        // We now need to relayout everything!
-        [self.view setNeedsLayout];
+            // We now need to relayout everything!
+            [self.view setNeedsLayout];
             
             // Flash notification on this cell.
             dispatch_async(dispatch_get_main_queue(), ^(){
@@ -928,7 +956,7 @@
 
 - (id)_cellForApplication:(RPVApplication*)application {
     NSString *bundleIdentifier = [application bundleIdentifier];
-
+    
     // Check expiring
     for (RPVApplication *app in self.expiringSoonDataSource) {
         if ([app.bundleIdentifier isEqualToString:bundleIdentifier]) {

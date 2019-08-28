@@ -97,8 +97,9 @@
     
     NSString *provisionPath = [[self.proxy.bundleURL path] stringByAppendingString:@"/embedded.mobileprovision"];
     if (![[NSFileManager defaultManager] fileExistsAtPath:provisionPath]) {
+#if !TARGET_OS_SIMULATOR
         NSLog(@"*** [ReProvision] :: ERROR :: No embedded.mobileprovision at %@, given bundleURL is %@", provisionPath, self.proxy.bundleURL);
-        
+#endif
         // Date that is 2 days away.
         return [NSDate dateWithTimeIntervalSinceNow:172800];
     }

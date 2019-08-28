@@ -9,7 +9,12 @@
 #import "RPVCalendarController.h"
 #import "RPVCalendarCell.h"
 
-@interface RPVCalendarController ()
+@interface RPVCalendarController () {
+    
+    CGFloat fontMultiplier;
+    CGFloat timePadding;
+    
+}
 @property (nonatomic, strong) NSDate *dateToDisplay;
 
 @property (nonatomic, strong) NSMutableArray *cells;
@@ -22,6 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     // Do any additional setup after loading the view.
 }
 
@@ -41,10 +47,22 @@
 }
 
 - (CGFloat)calendarHeight {
+#if !TARGET_OS_TV
     return CELL_HEIGHT + 60;
+#else
+    return CELL_HEIGHT + 100;
+#endif
 }
 
 - (void)loadView {
+    
+    fontMultiplier = 1.0;
+    timePadding = 0.0;
+#if TARGET_OS_TV
+    fontMultiplier = 2.0;
+    timePadding = 15;
+#endif
+    
     self.view = [[UIView alloc] initWithFrame:CGRectZero];
     self.view.backgroundColor = [UIColor clearColor];
     
@@ -81,8 +99,8 @@
     self.dateLabel.text = [dateFormatter stringFromDate:self.dateToDisplay];
     self.dateLabel.textColor = [UIColor blackColor];
     self.dateLabel.textAlignment = NSTextAlignmentCenter;
-    self.dateLabel.font = [UIFont systemFontOfSize:18];
-    
+    self.dateLabel.font = [UIFont systemFontOfSize:18*fontMultiplier];
+
     [self.view addSubview:self.dateLabel];
     
     // Check for 24hr time
@@ -100,13 +118,15 @@
     self.timeLabel.text = [dateFormatter stringFromDate:self.dateToDisplay];
     self.timeLabel.textColor = [UIColor grayColor];
     self.timeLabel.textAlignment = NSTextAlignmentCenter;
-    self.timeLabel.font = [UIFont systemFontOfSize:16];
+    self.timeLabel.font = [UIFont systemFontOfSize:16*fontMultiplier];
     
     [self.view addSubview:self.timeLabel];
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+    
+    NSLog(@"### date label text: %@ self.dateLabel: %@ self: %@", self.dateLabel.text, self.dateLabel, self.view);
     
     CGFloat inset = 10;
     CGFloat cellMargin = (self.view.frame.size.width - (CELL_WIDTH * 7) - inset*2.0)/8.0;
@@ -116,9 +136,9 @@
         
         cell.frame = CGRectMake(inset + cellMargin * (i+1) + CELL_WIDTH*i, 0, CELL_WIDTH, CELL_HEIGHT);
     }
-    
-    self.dateLabel.frame = CGRectMake(inset, CELL_HEIGHT + 10, self.view.frame.size.width - inset*2, 20);
-    self.timeLabel.frame = CGRectMake(inset, CELL_HEIGHT + 10 + 20 + 10, self.view.frame.size.width - inset*2, 20);
+    CGFloat width = self.view.frame.size.width - inset*2;
+    self.dateLabel.frame = CGRectMake(inset, CELL_HEIGHT + 10*fontMultiplier + timePadding, width , 40);
+    self.timeLabel.frame = CGRectMake(inset, CELL_HEIGHT + 10*fontMultiplier + 20 + 10*fontMultiplier + timePadding, self.view.frame.size.width - inset*2, 20*fontMultiplier);
 }
 
 @end
