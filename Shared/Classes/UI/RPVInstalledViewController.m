@@ -1036,7 +1036,10 @@
 - (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments {
     
     if ([self appViewVisible]){
-        return @[self.childViewControllers[0].view];
+        
+        if (self.childViewControllers.count > 0){
+            return @[self.childViewControllers[0].view];
+        }
     }
     
     return @[self.view];

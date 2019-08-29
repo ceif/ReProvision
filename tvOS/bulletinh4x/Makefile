@@ -1,9 +1,9 @@
 INSTALL_TARGET_PROCESSES = PineBoard ReProvision
 ARCHS = arm64
 TARGET = appletv
-target ?= appletv:clang:10.1:10.0
+target ?= appletv:clang:11.4.1:10.0
 export GO_EASY_ON_ME=1
-export SDKVERSION=12,1
+export SDKVERSION=12.1
 THEOS_DEVICE_IP=twelve.local
 
 include $(THEOS)/makefiles/common.mk

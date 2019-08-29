@@ -549,6 +549,11 @@
 
 - (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments {
     
+    if (self.signingButton == nil)
+    {
+        NSLog(@"sb: %@", self.signingButton);
+        return @[self.view];
+    }
     return @[self.signingButton];
 }
 

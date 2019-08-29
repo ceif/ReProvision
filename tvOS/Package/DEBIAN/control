@@ -1,6 +1,6 @@
 Package: com.matchstic.reprovision
 Name: ReProvision
-Version: 0.1
+Version: 0.1.1
 Description: Re-sign applications on your Apple TV. This is a beta version that is unfinished and with minimal testing, buyer beware! 
 Section: System
 Pre-Depends: cy+model.appletv

@@ -45,25 +45,24 @@
 
 - (void)sendNotificationWithTitle:(NSString*)title body:(NSString*)body isDebugMessage:(BOOL)isDebug isUrgentMessage:(BOOL)isUrgent andNotificationID:(NSString*)identifier {
    
-    NSLog(@"send notification with title: %@", title);
-    NSMutableDictionary *dict = [NSMutableDictionary new];
-    dict[@"message"] = body;
-    dict[@"title"] = title;
-    
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.matchstic.ReProvision/displayBulletin" object:nil userInfo:dict];
-   
     if (isDebug && ![RPVResources shouldShowDebugAlerts]) {
         return;
     }
-    
-    
     if (!isUrgent && ![RPVResources shouldShowNonUrgentAlerts]) {
         return;
     }
     
+     // TODO: Display notification via in-app library < -- do this properly.
+    
+    NSLog(@"send notification with title: %@", title);
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    dict[@"message"] = body;
+    dict[@"title"] = title;
+    dict[@"timeout"] = @1;
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.matchstic.ReProvision/displayBulletin" object:nil userInfo:dict];
    
     
-    // TODO: Display notification via in-app library < -- do this properly.
+   
 }
 
 - (void)_updateBadge {
