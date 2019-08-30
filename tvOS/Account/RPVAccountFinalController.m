@@ -179,7 +179,7 @@
             }
         }
         
-        NSLog(@"Is free user? %d", isFreeUser);
+        DDLogInfo(@"Is free user? %d", isFreeUser);
         
         if (isFreeUser) {
             [EEAppleServices listAllDevelopmentCertificatesForTeamID:self.teamId systemType:EESystemTypeiOS withCompletionHandler:^(NSError *error, NSDictionary *dictionary) {
@@ -190,7 +190,7 @@
                 // If the count of certs is > 1 existing profiles, we need the user to revoke one.
                 NSArray *certificates = [dictionary objectForKey:@"certificates"];
                 if (certificates.count > 1) {
-                    NSLog(@"Need to remove an existing certificate!");
+                    DDLogInfo(@"Need to remove an existing certificate!");
                     [self _setupUIForRevokingCertificates:certificates];
                 } else {
                     // No need to revoke anything

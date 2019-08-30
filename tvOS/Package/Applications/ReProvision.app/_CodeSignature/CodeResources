@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		RG6AQmEirRq6/FwM54pIwCEc59g=
+		w6KpAQpEUXbmukGpBojA7XnTt50=
 		</data>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
 		<data>
@@ -27,6 +27,10 @@
 		<key>Base.lproj/Main.storyboardc/fGQ-JB-Prd-view-WT8-De-ETN.nib</key>
 		<data>
 		3/Lc+5EJIGOYzerJIPYL5sA52dI=
+		</data>
+		<key>Icon-Front.png</key>
+		<data>
+		WQoh6+baCMZmogIRJpOn+KxZuws=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -63,11 +67,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			RG6AQmEirRq6/FwM54pIwCEc59g=
+			w6KpAQpEUXbmukGpBojA7XnTt50=
 			</data>
 			<key>hash2</key>
 			<data>
-			P6TQv32XcUf20SP855nZKrmn78Z16L0+G62IEufw81g=
+			aSMvFLYIj7V2UEFCxRMHTQCEgaSSYsDNf07GZLSEV2w=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
@@ -123,6 +127,17 @@
 			<key>hash2</key>
 			<data>
 			CbZ3NTLy/MX39xTiRwEhQ0B9kr7ghhgWp4jhMQ3gFkk=
+			</data>
+		</dict>
+		<key>Icon-Front.png</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			WQoh6+baCMZmogIRJpOn+KxZuws=
+			</data>
+			<key>hash2</key>
+			<data>
+			bBLDjqGbkPTLdBc+JaWtF0gTakgCIG1Dlk9106m7M40=
 			</data>
 		</dict>
 		<key>PackageVersion.plist</key>

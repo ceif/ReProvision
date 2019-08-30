@@ -54,14 +54,17 @@
     
      // TODO: Display notification via in-app library < -- do this properly.
     
-    NSLog(@"send notification with title: %@", title);
+    DDLogInfo(@"send notification with title: %@", title);
     NSMutableDictionary *dict = [NSMutableDictionary new];
     dict[@"message"] = body;
     dict[@"title"] = title;
-    dict[@"timeout"] = @1;
+    dict[@"timeout"] = @2;
+    UIImage *image = [UIImage imageNamed:@"notifIcon"];
+    NSData *imageData = UIImagePNGRepresentation(image);;
+    if (imageData){
+        dict[@"imageData"] = imageData;
+    }
     [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.matchstic.ReProvision/displayBulletin" object:nil userInfo:dict];
-   
-    
    
 }
 
@@ -89,7 +92,7 @@
         
         [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
             if (error) {
-                NSLog(@"Error: %@", error.localizedDescription);
+                DDLogInfo(@"Error: %@", error.localizedDescription);
             }
             
         }];

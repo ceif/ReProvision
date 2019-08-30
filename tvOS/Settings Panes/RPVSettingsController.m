@@ -173,6 +173,22 @@
     
     [array addObject:designer];
     
+#if TARGET_OS_TV
+    PSSpecifier* nito = [PSSpecifier preferenceSpecifierNamed:@"nito"
+                                                           target:self
+                                                              set:nil
+                                                              get:nil
+                                                           detail:nil
+                                                             cell:PSLinkCell
+                                                             edit:nil];
+    
+    [array addObject:nito];
+    
+    
+    
+#endif
+    
+    
     PSSpecifier *openSourceLicenses = [PSSpecifier preferenceSpecifierNamed:@"Third-party Licenses"
                                                                      target:self
                                                                         set:nil
@@ -215,7 +231,7 @@
         return cell;
     }
     
-    if (indexPath.section == 4 && indexPath.row < 2) {
+    if (indexPath.section == 4 && indexPath.row < 3) {
         static NSString *cellIdentifier = @"credits.cell";
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -223,9 +239,28 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
         }
         
-        cell.textLabel.text = indexPath.row == 0 ? @"Matchstic" : @"Aesign";
-        cell.detailTextLabel.text = indexPath.row == 0 ? @"Developer" : @"Designer";
-        cell.imageView.image = [UIImage imageNamed:indexPath.row == 0 ? @"author" : @"designer"];
+        switch (indexPath.row) {
+            case 0:
+                cell.textLabel.text = @"Matchstic";
+                cell.detailTextLabel.text = @"Developer";
+                cell.imageView.image = [UIImage imageNamed:@"author"];
+                break;
+                
+            case 1:
+                cell.textLabel.text =  @"Aesign";
+                cell.detailTextLabel.text = @"Designer";
+                cell.imageView.image = [UIImage imageNamed:@"designer"];
+                break;
+                
+            case 2:
+                cell.textLabel.text =  @"nitoTV";
+                cell.detailTextLabel.text = @"tvOS Developer";
+                cell.imageView.image = [UIImage imageNamed:@"nito"];
+                break;
+                
+            default:
+                break;
+        }
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         

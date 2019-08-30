@@ -27,7 +27,28 @@
 
 @implementation AppDelegate
 
+- (void)setupFileLogging {
+    
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    NSString *dir = @"/var/mobile/Library/Caches/com.nito.ReProvision/Logs";
+    
+    [[NSFileManager defaultManager] createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    DDLogFileManagerDefault *manager = [[DDLogFileManagerDefault alloc] initWithLogsDirectory:dir];
+    DDFileLogger *fileLogger = [[DDFileLogger alloc] initWithLogFileManager:manager];
+    fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+    [DDLog addLogger:fileLogger];
+    DDLogInfo(@"DDLOGTEST");
+    
+    
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    [self setupFileLogging];
+    
     // Override point for customization after application launch.
     [[RPVApplicationSigning sharedInstance] addSigningUpdatesObserver:self];
     
@@ -41,7 +62,7 @@
     // (prevents not being able to correctly read the passcode when the device is locked)
     [SAMKeychain setAccessibilityType:kSecAttrAccessibleAfterFirstUnlock];
     
-    NSLog(@"*** [ReProvision] :: applicationDidFinishLaunching, options: %@", launchOptions);
+    DDLogInfo(@"*** [ReProvision] :: applicationDidFinishLaunching, options: %@", launchOptions);
     
     return YES;
 }
@@ -52,18 +73,18 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Launched in background by daemon, or when exiting the application.
-    NSLog(@"*** [ReProvision] :: applicationDidEnterBackground");
+    DDLogInfo(@"*** [ReProvision] :: applicationDidEnterBackground");
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // nop
-    NSLog(@"*** [ReProvision] :: applicationWillEnterForeground");
+    DDLogInfo(@"*** [ReProvision] :: applicationWillEnterForeground");
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // nop
-    NSLog(@"*** [ReProvision] :: applicationDidBecomeActive");
+    DDLogInfo(@"*** [ReProvision] :: applicationDidBecomeActive");
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -78,11 +99,11 @@
 
 - (void)applicationSigningDidStart {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"com.matchstic.reprovision/signingInProgress" object:nil];
-    NSLog(@"Started signing...");
+    DDLogInfo(@"Started signing...");
 }
 
 - (void)applicationSigningUpdateProgress:(int)percent forBundleIdentifier:(NSString *)bundleIdentifier {
-    NSLog(@"'%@' at %d%%", bundleIdentifier, percent);
+    DDLogInfo(@"'%@' at %d%%", bundleIdentifier, percent);
     
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
     [userInfo setObject:bundleIdentifier forKey:@"bundleIdentifier"];
@@ -113,7 +134,7 @@
 }
 
 - (void)applicationSigningDidEncounterError:(NSError *)error forBundleIdentifier:(NSString *)bundleIdentifier {
-    NSLog(@"'%@' had error: %@", bundleIdentifier, error);
+    DDLogInfo(@"'%@' had error: %@", bundleIdentifier, error);
     [[RPVNotificationManager sharedInstance] sendNotificationWithTitle:@"Error" body:[NSString stringWithFormat:@"For '%@'\n%@", bundleIdentifier, error.localizedDescription] isDebugMessage:NO isUrgentMessage:YES andNotificationID:nil];
     
     // Ensure the UI goes back to when signing was not occuring
@@ -125,7 +146,7 @@
 }
 
 - (void)applicationSigningCompleteWithError:(NSError *)error {
-    NSLog(@"Completed signing, with error: %@", error);
+    DDLogInfo(@"Completed signing, with error: %@", error);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"com.matchstic.reprovision/signingComplete" object:nil];
     
     // Display any errors if needed.
@@ -170,7 +191,7 @@
     // Handle when we're open and get a background request come through.
     status = notify_register_dispatch("com.matchstic.reprovision.ios/applicationNotification", &_daemonNotificationToken, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0l), ^(int info) {
         
-        NSLog(@"*** [ReProvision] :: Got a background signing request when open.");
+        DDLogInfo(@"*** [ReProvision] :: Got a background signing request when open.");
         
         [self _didRecieveDaemonNotification];
     });
@@ -193,7 +214,7 @@
     uint64_t incoming = 0;
     notify_get_state(_daemonNotificationToken, &incoming);
     
-    NSLog(@"*** [ReProvision] :: daemon notification received. State: %d", (int)incoming);
+    DDLogInfo(@"*** [ReProvision] :: daemon notification received. State: %d", (int)incoming);
     
     switch (incoming) {
         case 1:

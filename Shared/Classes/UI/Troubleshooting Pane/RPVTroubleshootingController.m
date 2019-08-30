@@ -236,11 +236,19 @@
     
     CGFloat extra = 24;
     
+#if TARGET_OS_TV
+    // We also need to add an additional 20pt for each instance of "\n\n" in the string.
+        NSArray *split = [str componentsSeparatedByString:@"\n\n"];
+        extra += (split.count - 1) * 20;
+#else
     // We also need to add an additional 20pt for each instance of "\n\n" in the string.
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         NSArray *split = [str componentsSeparatedByString:@"\n\n"];
         extra += (split.count - 1) * 20;
     }
+#endif
+    
+   
     
     return [self boundedRectForFont:font andText:str width:self.tableView.contentSize.width].size.height + extra;
 }

@@ -10,7 +10,10 @@
 
 #import "PureLayout.h"
 #import "UIViewController+Additions.h"
+#import <CocoaLumberjack/CocoaLumberjack.h>
+
+static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #define DLog(format, ...) CFShow((__bridge CFStringRef)[NSString stringWithFormat:format, ## __VA_ARGS__])
-#define LOG_SELF        NSLog(@"%@ %@", self, NSStringFromSelector(_cmd))
+#define LOG_SELF        DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd))
 
 #endif

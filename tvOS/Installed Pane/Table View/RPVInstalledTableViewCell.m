@@ -45,7 +45,7 @@ static CGFloat inset = 20;
     NSString *bundleIdentifier = [[notification userInfo] objectForKey:@"bundleIdentifier"];
     int percent = [[[notification userInfo] objectForKey:@"percent"] intValue];
     
-    NSLog(@"**** Signing update: %@", [notification userInfo]);
+    DDLogInfo(@"**** Signing update: %@", [notification userInfo]);
     
     if ([bundleIdentifier isEqualToString:self.bundleIdentifier]) {
         dispatch_async(dispatch_get_main_queue(), ^{

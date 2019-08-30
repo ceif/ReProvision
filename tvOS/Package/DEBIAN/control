@@ -1,13 +1,14 @@
 Package: com.matchstic.reprovision
 Name: ReProvision
 Version: 0.1.1
-Description: Re-sign applications on your Apple TV. This is a beta version that is unfinished and with minimal testing, buyer beware! 
+Description: Re-sign applications on your Apple TV.
 Section: System
 Pre-Depends: cy+model.appletv
-Depends: firmware (>= 9.0)
+Depends: firmware (>= 9.0), com.nito.bulletinh4x
 Priority: optional
 Architecture: appletvos-arm64
 Author: Matt Clarke <matt@incendo.ws>
 dev: Matt Clarke <matt@incendo.ws>
 Maintainer: Matt Clarke <matt@incendo.ws>
 Homepage: https://github.com/Matchstic/ReProvision
+Depiction: https://nitosoft.com/ATV4/repro/repro.json

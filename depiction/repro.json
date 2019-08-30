@@ -1,0 +1,14 @@
+{
+	"LongDescription": "Re-sign applications on your Apple TV.Keep applications signed, even after 7 days are up.\n\nNo paid developer account is required for this package.\n\nReProvision provides useful features,\n\nsuch as:\n\n\t• Automatic re - signing of locally provisioned applications.\n\t• Saving of your Apple ID login details\n\n(Note: sensitive information is stored in the Keychain).",
+	"MainTextColor": "FFFFFF",
+	"FlowcaseIconURL": "https://nitosoft.com/ATV4/repro/flowcase.png",
+	"AppIconURL": "https://nitosoft.com/ATV4/repro/icon.jpg",
+	"BackgroundImageURL": "https://nitosoft.com/ATV4/repro/background.png",
+	"ShowTopScreenshot": true,
+	"Screenshots": [
+		"https://nitosoft.com/ATV4/repro/repro_01.png",
+		"https://nitosoft.com/ATV4/repro/repro_02.png",
+		"https://nitosoft.com/ATV4/repro/repro_03.png",
+		"https://nitosoft.com/ATV4/repro/repro_04.png"
+	]
+}

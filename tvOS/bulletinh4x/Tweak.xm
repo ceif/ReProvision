@@ -34,13 +34,28 @@
 
 %hook PBApplication
 
-
 %new - (void)h4xDisplayBulletin:(id)note {
 
     NSDictionary *userInfo = [note userInfo];
     NSString *title = userInfo[@"title"];
     NSString *message = userInfo[@"message"];
     NSInteger timeout = [userInfo[@"timeout"] integerValue];
+    NSString *imageKey = nil;
+    NSArray *allKeys = [userInfo allKeys];
+
+    id imageData = nil; //could be NSString or NSData
+
+    if ([allKeys containsObject:@"imageData"]){
+        imageKey = @"PBSSystemBulletinImageDataKey";
+        imageData = userInfo[@"imageData"];
+    } else if ([allKeys containsObject:@"imageURL"]){
+        imageKey = @"PBSSystemBulletinImageURLKey";
+        imageData = userInfo[@"imageURL"];
+    } else if ([allKeys containsObject:@"imageID"]){
+        imageKey = @"PBSSystemBulletinImageIDKey";
+        imageData = userInfo[@"imageID"];
+    }
+
     PBBulletinService *bs = [self bulletinService];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     //[dict setValue:@"PBSSystemBulletinImageIDRemote" forKey:@"PBSSystemBulletinImageIDKey"];
@@ -49,7 +64,8 @@
     if (message){
         [dict setValue:message forKey:@"PBSSystemBulletinMessageKey"];
     }
-    if (title) [dict setValue:title forKey:@"PBSSystemBulletinTitleKey"];  
+    if (title) [dict setValue:title forKey:@"PBSSystemBulletinTitleKey"]; 
+    if (imageData) dict[imageKey] = imageData;
     Class cls = NSClassFromString(@"PBSBulletin");
     id bull = [[cls alloc] init];
     [bull setMessage: dict];

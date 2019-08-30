@@ -1,1 +1,8 @@
-{ Filter = { Bundles = ( "com.apple.PineBoard" ); }; }
+{
+	Filter = {
+		Bundles = (
+			"com.apple.PineBoard",
+			"com.apple.TVSystemBulletinService",
+		);
+	};
+}

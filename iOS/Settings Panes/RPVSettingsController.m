@@ -9,6 +9,7 @@
 #import "RPVSettingsController.h"
 #import "RPVAdvancedController.h"
 #import "RPVResources.h"
+#import <TargetConditionals.h>
 
 @interface PSSpecifier (Private)
 - (void)setButtonAction:(SEL)arg1;
