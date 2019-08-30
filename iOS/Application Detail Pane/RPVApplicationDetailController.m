@@ -747,7 +747,6 @@
     
     static NSString *kUITabBarButtonClassName = @"UITabBar";
     NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
-    context.previouslyFocusedView);
     if ([nextFocusedView containsString:kUITabBarButtonClassName] || [nextFocusedView isEqualToString:@"RPVInstalledCollectionViewCell"] || [nextFocusedView isEqualToString:@"RPVInstalledTableViewCell"]){
         return FALSE;
     }
