@@ -13,6 +13,11 @@
 #import <TORoundedTableView/TORoundedTableView.h>
 #import <TORoundedTableView/TORoundedTableViewCell.h>
 #import <TORoundedTableView/TORoundedTableViewCapCell.h>
+
+#else
+
+#import "LogViewController.h"
+
 #endif
 
 #import "RPVTroubleshootingCertificatesViewController.h"
@@ -111,7 +116,13 @@
     [archive addObject:@"This error may occur when an IPA is signed, but not repackaged correctly.\n\nTo resolve, simply try again another time."];
     
     [items addObject:archive];
+#if TARGET_OS_TV
+    NSMutableArray *logs = [NSMutableArray array];
+    [logs addObject:@"View App Log"];
+    [logs addObject:@"View Daemon Log"];
     
+    [items addObject:logs];
+#endif
     self.dataSource = items;
 }
 
@@ -160,7 +171,7 @@
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     
     // Also handle if a link cell.
-    if (indexPath.row == 2) {
+    if (indexPath.row == 2 || indexPath.section == 5) {
         cell.textLabel.textColor = [UIApplication sharedApplication].delegate.window.tintColor;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else {
@@ -261,6 +272,42 @@
 // Selection.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSLog(@"index path section: %lu row: %lu",  indexPath.section, indexPath.row);
+    
+#if TARGET_OS_TV
+    if (indexPath.section == 5){
+        
+        LogViewController *lvc = nil;
+        switch (indexPath.row) {
+                
+            case 0: //app log
+                ///var/mobile/Library/Caches/com.nito.ReProvision/Logs
+                lvc = [[LogViewController alloc] initWithCommand:@"-f \"`/bin/ls -1td /var/mobile/Library/Caches/com.nito.ReProvision/Logs/*| /usr/bin/head -n1`\""];
+                
+                lvc.title = @"App Log";
+                break;
+                
+            case 1: //daemon log
+                
+ 
+                lvc = [[LogViewController alloc] initWithCommand:@"-f /var/mobile/Library/Logs/reprovisiond-Error.log"];
+                lvc.title = @"Error Log";
+                break;
+                
+            default:
+                break;
+        }
+        
+        if (lvc){
+            
+            [self presentViewController:lvc animated:true completion:nil];
+            
+        }
+        
+    }
+    
+#endif
     
     if (indexPath.row == 2) {
         // This is a link.
