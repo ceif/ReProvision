@@ -11,6 +11,7 @@
 #import "PureLayout.h"
 #import "UIViewController+Additions.h"
 #import <CocoaLumberjack/CocoaLumberjack.h>
+#import "UIView+RecursiveFind.h"
 
 static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #define DLog(format, ...) CFShow((__bridge CFStringRef)[NSString stringWithFormat:format, ## __VA_ARGS__])

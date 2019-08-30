@@ -16,17 +16,36 @@
 
 @implementation RPVTabBarController
 
+- (BOOL)shouldUpdateFocusInContext:(UIFocusUpdateContext *)context {
+    
+    static NSString *kUITabBarButtonClassName = @"UITabBar";
+    NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
+    NSLog(@"RPVInstalledView next focused view: %@ previous: %@", context.nextFocusedView, context.previouslyFocusedView);
+    if ([self appViewVisible]){
+        NSLog(@"app view visible");
+        if ([nextFocusedView containsString:kUITabBarButtonClassName] || [nextFocusedView isEqualToString:@"RPVInstalledCollectionViewCell"] || [nextFocusedView isEqualToString:@"RPVInstalledTableViewCell"]){
+            return FALSE;
+        }
+    }
+    return [super shouldUpdateFocusInContext:context];;
+    
+}
+
+- (UIView *)preferredFocusedView  {
+    
+    if ([self appViewVisible]){
+        NSLog(@"app view visible");
+        return nil;
+    }
+    
+    return [super preferredFocusedView];
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    /*
-    // Remove the titles and adjust the inset to account for missing title
-    for (UITabBarItem * tabBarItem in self.tabBar.items){
-        tabBarItem.title = @"";
-        tabBarItem.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0);
-        tabBarItem.image = [[tabBarItem image] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    }
-     */
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -55,13 +74,8 @@
 }
 
 - (void)presentAccountViewControllerAnimated:(BOOL)animated {
-    /*
-    [self performSegueWithIdentifier:animated ? @"presentAccountControllerAnimated" : @"presentAccountController" sender:nil];
-     
-     */
-    
+
     RPVAccountViewController *accountController = [RPVAccountViewController new];
-    
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:accountController];
     
     [self presentViewController:navController animated:animated completion:^{
@@ -71,19 +85,5 @@
     
 }
 
-/*
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return [self.childViewControllerForStatusBarStyle preferredStatusBarStyle];
-}
-*/
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

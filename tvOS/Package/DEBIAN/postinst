@@ -7,7 +7,7 @@ echo "Reloading application cache"
 # Handle the daemon
 echo "(Re)-loading daemon..."
 chown root /Library/LaunchDaemons/com.matchstic.reprovisiond.plist
-chowm mobile /usr/bin/reprovisiond
+chown mobile /usr/bin/reprovisiond
 chown -R mobile /Applications/ReProvision.app
 
 # Unload for an upgrade. - Might spew an error, so hide that.

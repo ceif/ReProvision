@@ -6,7 +6,7 @@
 	<dict>
 		<key>Assets.car</key>
 		<data>
-		w6KpAQpEUXbmukGpBojA7XnTt50=
+		O/d/ETfoUVPRnq/GtOMEZwkn9+c=
 		</data>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
 		<data>
@@ -28,17 +28,13 @@
 		<data>
 		3/Lc+5EJIGOYzerJIPYL5sA52dI=
 		</data>
-		<key>Icon-Front.png</key>
-		<data>
-		WQoh6+baCMZmogIRJpOn+KxZuws=
-		</data>
 		<key>Info.plist</key>
 		<data>
 		LaAYvWxTRdklQeM3iXd4trfhA5U=
 		</data>
 		<key>PackageVersion.plist</key>
 		<data>
-		nNpQrnQCgwVjHGz/ajU4uewPmtE=
+		pngMi6X9YMAkZgo5qvhxHQlI7/g=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -67,11 +63,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			w6KpAQpEUXbmukGpBojA7XnTt50=
+			O/d/ETfoUVPRnq/GtOMEZwkn9+c=
 			</data>
 			<key>hash2</key>
 			<data>
-			aSMvFLYIj7V2UEFCxRMHTQCEgaSSYsDNf07GZLSEV2w=
+			/8eLqLE5QNXLK45hih+niu9N2yoxP3Mpj+gQisZehxg=
 			</data>
 		</dict>
 		<key>Base.lproj/Main.storyboardc/8rJ-Kc-sve-view-QS5-Rx-YEW.nib</key>
@@ -129,26 +125,15 @@
 			CbZ3NTLy/MX39xTiRwEhQ0B9kr7ghhgWp4jhMQ3gFkk=
 			</data>
 		</dict>
-		<key>Icon-Front.png</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			WQoh6+baCMZmogIRJpOn+KxZuws=
-			</data>
-			<key>hash2</key>
-			<data>
-			bBLDjqGbkPTLdBc+JaWtF0gTakgCIG1Dlk9106m7M40=
-			</data>
-		</dict>
 		<key>PackageVersion.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			nNpQrnQCgwVjHGz/ajU4uewPmtE=
+			pngMi6X9YMAkZgo5qvhxHQlI7/g=
 			</data>
 			<key>hash2</key>
 			<data>
-			psSppKQCufi1KWmzCAJSn60fm184yEGmlt9fVBSPiLA=
+			6oLsftotzPXz1gYqFiWLrLgZB9M2e8ztcgkRMLioNTY=
 			</data>
 		</dict>
 		<key>RMessageDesign.json</key>

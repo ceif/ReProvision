@@ -368,10 +368,8 @@
     
     static NSString *kUITabBarButtonClassName = @"UITabBar";
     NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
-    NSLog(@"RPVInstalledView next focused view: %@", nextFocusedView);
     if ([self appViewVisible] || _aboutToShow){
-        NSLog(@"app view visible");
-        if ([nextFocusedView containsString:kUITabBarButtonClassName] || [nextFocusedView isEqualToString:@"RPVInstalledCollectionViewCell"]){
+        if ([nextFocusedView containsString:kUITabBarButtonClassName] || [nextFocusedView isEqualToString:@"RPVInstalledCollectionViewCell"] || [nextFocusedView isEqualToString:@"RPVInstalledTableViewCell"]){
             return FALSE;
         }
     }
@@ -388,7 +386,6 @@
     NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
     
     RPVStickyScrollView *stickyScrollView = (RPVStickyScrollView*)self.rootScrollView;
-    NSLog(@"RPVInstalledView next focused view: %@", nextFocusedView);
     if (![prevFocusViewClassName isEqualToString:kUITabBarButtonClassName] &&
         [nextFocusedView isEqualToString:kUITabBarButtonClassName]) {
         
@@ -590,7 +587,15 @@
     if (self.expiringSoonDataSource.count > 0) {
         RPVApplication *application = [self.expiringSoonDataSource objectAtIndex:indexPath.row];
         NSString *buttonTitle = @"SIGN";
-        
+        _aboutToShow = TRUE;
+
+        self.recentTableView.userInteractionEnabled = FALSE;
+        self.otherApplicationsTableView.userInteractionEnabled = FALSE;
+        self.expiringCollectionView.userInteractionEnabled = FALSE;
+        self.recentSectionHeader.button.enabled = FALSE;
+        self.otherApplicationsSectionHeader.button.enabled = FALSE;
+        self.expiringSectionHeader.button.enabled = FALSE;
+        [self forceFocusUpdateDelayed:0.1];
         [self _showApplicationDetailController:application withButtonTitle:buttonTitle isDestructiveResign:NO];
     }
 }
@@ -657,6 +662,21 @@
         return;
     }
     
+#if TARGET_OS_TV
+    _aboutToShow = TRUE;
+    [tableView deselectRowAtIndexPath:indexPath animated:FALSE];
+    tableView.userInteractionEnabled = false;
+    self.recentTableView.userInteractionEnabled = FALSE;
+    self.otherApplicationsTableView.userInteractionEnabled = FALSE;
+    self.expiringCollectionView.userInteractionEnabled = FALSE;
+    self.recentSectionHeader.button.enabled = FALSE;
+    self.otherApplicationsSectionHeader.button.enabled = FALSE;
+    self.expiringSectionHeader.button.enabled = FALSE;
+    
+    [self forceFocusUpdateDelayed:0.1];
+    
+    
+#endif
     [self _showApplicationDetailController:application withButtonTitle:buttonTitle isDestructiveResign:isDestructiveResign];
 }
 
@@ -664,7 +684,6 @@
    
     self.expiringCollectionView.userInteractionEnabled = false;
     
-    _aboutToShow = TRUE;
     RPVApplicationDetailController *detailController = [[RPVApplicationDetailController alloc] initWithApplication:application];
     detailController.warnUserOnResign = isDestructiveResign;
     
@@ -682,7 +701,7 @@
     [rootController addChildViewController:detailController];
     [rootController.view addSubview:detailController.view];
 #if TARGET_OS_TV
-    [self reloadFocusAvailability];
+   // [self reloadFocusAvailability];
 #endif
     //rootController.view.userInteractionEnabled = FALSE;
     detailController.view.frame = rootController.view.bounds;
@@ -994,19 +1013,19 @@
     NSLog(@"Got input: %d", (int)section);
     [self startApplicationSigningForSection:section];
 }
-
-- (BOOL)appViewVisible {
-    
-    UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    __block BOOL hasController = FALSE;
-    [rootController.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj isKindOfClass:RPVApplicationDetailController.class]){
-            *stop = TRUE;
-            hasController = TRUE;
-        }
-    }];
-    return hasController;
-}
+//
+//- (BOOL)appViewVisible {
+//    
+//    UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;
+//    __block BOOL hasController = FALSE;
+//    [rootController.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        if ([obj isKindOfClass:RPVApplicationDetailController.class]){
+//            *stop = TRUE;
+//            hasController = TRUE;
+//        }
+//    }];
+//    return hasController;
+//}
 
 - (BOOL)isButtonEnabledForSection:(NSInteger)section {
     

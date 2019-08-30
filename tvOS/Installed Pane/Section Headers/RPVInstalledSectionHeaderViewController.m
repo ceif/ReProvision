@@ -10,7 +10,7 @@
 @interface RPVInstalledSectionHeaderViewController ()
 
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIButton *button;
+
 @property (nonatomic, strong) UIView *seperatorLine;
 
 @property (nonatomic, readwrite) NSInteger section;

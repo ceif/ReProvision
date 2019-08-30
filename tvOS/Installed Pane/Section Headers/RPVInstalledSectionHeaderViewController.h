@@ -17,6 +17,7 @@
 @interface RPVInstalledSectionHeaderViewController : UIViewController
 
 @property (nonatomic, readwrite) BOOL invertColours;
+@property (nonatomic, strong) UIButton *button; //public for now
 
 - (void)configureWithTitle:(NSString*)title buttonLabel:(NSString*)buttonLabel section:(NSInteger)section andDelegate:(id<RPVInstalledSectionHeaderDelegate>)delegate;
 

@@ -7,12 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+
+@interface NSObject (Additions)
+
+- (BOOL)appViewVisible;
+@end
+
 @interface UIView (Additions)
 - (BOOL)darkMode;
 @end
 
 @interface UIViewController (Additions)
-
+- (void)forceFocusUpdateDelayed:(CGFloat)delay;
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message ;
 - (BOOL)darkMode;
 

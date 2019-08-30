@@ -516,7 +516,7 @@
         
         y += titleHeight + [self.calendarController calendarHeight] + itemInsetY + innerItemInsetY;
         
-        NSLog(@"y: %f ch: %f", y, [self.calendarController calendarHeight]);
+        //NSLog(@"y: %f ch: %f", y, [self.calendarController calendarHeight]);
 #if TARGET_OS_TV
         //y+=20;
 #endif
@@ -551,7 +551,6 @@
     
     if (self.signingButton == nil)
     {
-        NSLog(@"sb: %@", self.signingButton);
         return @[self.view];
     }
     return @[self.signingButton];
@@ -658,7 +657,6 @@
 
 - (void)_userDidTapToClose:(id)sender {
     
-    NSLog(@"user tapped close");
     [self _userDidTapCloseButton:nil];
 }
 
@@ -749,8 +747,8 @@
     
     static NSString *kUITabBarButtonClassName = @"UITabBar";
     NSString *nextFocusedView = NSStringFromClass([context.nextFocusedView class]);
-    NSLog(@"RPVAppDetail next focused view: %@", nextFocusedView);
-    if ([nextFocusedView containsString:kUITabBarButtonClassName] || [nextFocusedView isEqualToString:@"RPVInstalledCollectionViewCell"]){
+    context.previouslyFocusedView);
+    if ([nextFocusedView containsString:kUITabBarButtonClassName] || [nextFocusedView isEqualToString:@"RPVInstalledCollectionViewCell"] || [nextFocusedView isEqualToString:@"RPVInstalledTableViewCell"]){
         return FALSE;
     }
     return TRUE;
