@@ -105,6 +105,10 @@
     }
 
     NSDictionary *provision = [self _provisioningProfileAtPath:provisionPath];
+    if (!provision) {
+        // Date that is 2 days away.
+        return [NSDate dateWithTimeIntervalSinceNow:172800];
+    }
     
     return [provision objectForKey:@"ExpirationDate"];
 }
@@ -125,8 +129,10 @@
 - (NSDictionary *)_provisioningProfileAtPath:(NSString *)path {
     NSError *err;
     NSString *stringContent = [NSString stringWithContentsOfFile:path encoding:NSASCIIStringEncoding error:&err];
-    stringContent = [stringContent componentsSeparatedByString:@"<plist version=\"1.0\">"][1];
-    stringContent = [NSString stringWithFormat:@"%@%@", @"<plist version=\"1.0\">", stringContent];
+    
+    NSRange startRange = [stringContent rangeOfString:@"<plist"];
+    
+    stringContent = [stringContent substringFromIndex:startRange.location];
     stringContent = [stringContent componentsSeparatedByString:@"</plist>"][0];
     stringContent = [NSString stringWithFormat:@"%@%@", stringContent, @"</plist>"];
     
@@ -135,9 +141,13 @@
     NSError *error;
     NSPropertyListFormat format;
     
-    id plist = [NSPropertyListSerialization propertyListWithData:stringData options:NSPropertyListImmutable format:&format error:&error];
-    
-    return plist;
+    @try {
+        id plist = [NSPropertyListSerialization propertyListWithData:stringData options:NSPropertyListImmutable format:&format error:&error];
+        return plist;
+    } @catch (NSException *e) {
+        NSLog(@"*** ReProvision :: Failed to parse plist: %@, %@", e, stringData);
+        return @{};
+    }
 }
 
 @end
