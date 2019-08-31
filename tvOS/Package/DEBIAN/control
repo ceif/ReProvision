@@ -4,7 +4,7 @@ Version: 0.2.1
 Description: Re-sign applications on your Apple TV.
 Section: System
 Pre-Depends: cy+model.appletv
-Depends: firmware (>= 9.0), com.nito.bulletinh4x
+Depends: firmware (>= 9.0), com.nito.bulletinh4x (>=1.0-4)
 Priority: optional
 Architecture: appletvos-arm64
 Author: Matt Clarke <matt@incendo.ws>

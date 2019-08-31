@@ -41,6 +41,7 @@
     
 #if TARGET_OS_TV
     self.view.backgroundColor = [UIColor clearColor];
+    self.tableView.remembersLastFocusedIndexPath = false;
     [(UITableView*)self.tableView setBackgroundColor:[UIColor clearColor]];
 #else
     if (@available(iOS 11.0, *)) {
@@ -292,7 +293,7 @@
                 
  
                 lvc = [[LogViewController alloc] initWithCommand:@"-f /var/mobile/Library/Logs/reprovisiond-Error.log"];
-                lvc.title = @"Error Log";
+                lvc.title = @"Daemon Log";
                 break;
                 
             default:

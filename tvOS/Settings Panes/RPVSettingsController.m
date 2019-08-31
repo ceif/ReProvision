@@ -9,6 +9,29 @@
 #import "RPVSettingsController.h"
 #import "RPVAdvancedController.h"
 #import "RPVResources.h"
+#import <objc/runtime.h>
+
+
+
+@implementation RPVListItemsController
+
+
+- (void)viewWillAppear:(bool)arg1 {
+ 
+    [super viewWillAppear:arg1];
+    
+    //if ([self darkMode]){
+     
+      //  [self.view printRecursiveDescription];
+        UITableView *table = [self table];
+        table.backgroundColor = [UIColor clearColor];
+        self.view.backgroundColor = [UIColor clearColor];
+    //}
+    
+    
+}
+
+@end
 
 @interface PSSpecifier (Private)
 - (void)setButtonAction:(SEL)arg1;
@@ -25,6 +48,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //id object = [RPVListLoader new];
+    //DDLogInfo(@"obj: %@", object);
     self.view.tintColor = [UIApplication sharedApplication].delegate.window.tintColor;
     [[self navigationItem] setTitle:@"Settings"];
     
@@ -106,7 +131,7 @@
     
     [array addObject:resign];
     
-    PSSpecifier *threshold = [PSSpecifier preferenceSpecifierNamed:@"Re-sign Applications When:" target:self set:@selector(setPreferenceValue:specifier:) get:@selector(readPreferenceValue:) detail:NSClassFromString(@"PSListItemsController") cell:PSLinkListCell edit:nil];
+    PSSpecifier *threshold = [PSSpecifier preferenceSpecifierNamed:@"Re-sign Applications When:" target:self set:@selector(setPreferenceValue:specifier:) get:@selector(readPreferenceValue:) detail:NSClassFromString(@"RPVListItemsController") cell:PSLinkListCell edit:nil];
     [threshold setProperty:@YES forKey:@"enabled"];
     [threshold setProperty:@2 forKey:@"default"];
     threshold.values = [NSArray arrayWithObjects:@1, @2, @3, @4, @5, @6, nil];

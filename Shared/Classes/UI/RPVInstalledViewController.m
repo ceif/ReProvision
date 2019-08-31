@@ -187,6 +187,7 @@
     self.expiringCollectionView.dataSource = self;
 #if TARGET_OS_TV
     self.expiringCollectionView.clipsToBounds = NO;
+    self.expiringCollectionView.backgroundColor = [UIColor clearColor];
 #endif
     [self.rootScrollView addSubview:self.expiringCollectionView];
     
@@ -553,11 +554,13 @@
     
     RPVApplication *application;
     NSString *fallbackString = @"";
-    if (self.expiringSoonDataSource.count > 0)
+    if (self.expiringSoonDataSource.count > 0) {
         application = [self.expiringSoonDataSource objectAtIndex:indexPath.row];
-    else
+        collectionView.userInteractionEnabled = true;
+    } else {
         fallbackString = @"No applications are expiring soon";
-    
+        collectionView.userInteractionEnabled = false;
+    }
     [cell configureWithApplication:application fallbackDisplayName:fallbackString andExpiryDate:[application applicationExpiryDate]];
     
     return cell;

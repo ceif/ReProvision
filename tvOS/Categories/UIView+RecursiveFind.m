@@ -17,7 +17,7 @@
 
 - (UIView *)findFirstSubviewWithClass:(Class)theClass {
     
-    if ([self isKindOfClass:theClass]) {
+    if ([self isMemberOfClass:theClass]) {
             return self;
         }
     
@@ -34,7 +34,7 @@
 - (void)printRecursiveDescription
 {
     NSString *recursiveDesc = [self performSelector:@selector(recursiveDescription)];
-    NSLog(@"%@", recursiveDesc);
+    DDLogInfo(@"%@", recursiveDesc);
 }
 
 - (void)removeAllSubviews

@@ -64,7 +64,7 @@
     if (imageData){
         dict[@"imageData"] = imageData;
     }
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.matchstic.ReProvision/displayBulletin" object:nil userInfo:dict];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.nito.bulletinh4x/displayBulletin" object:nil userInfo:dict];
    
 }
 

@@ -141,6 +141,18 @@
         self.notificationView.frame = self.contentView.bounds;
     } else {
         self.displayNameLabel.frame = self.contentView.bounds;
+        
+        //not a particular fan of this, but the visual display of this view is really shitty if theres no contents
+        //this hides the weird white box that exists around the label for an empty collection view
+        UIView *visualSubview = [self findFirstSubviewWithClass:NSClassFromString(@"_UIVisualEffectSubview")];
+        UIView *backDrop = [self findFirstSubviewWithClass:NSClassFromString(@"_UIVisualEffectBackdropView")];
+        if (visualSubview){
+            visualSubview.alpha = 0;
+        }
+        if (backDrop){
+            backDrop.alpha = 0;
+        }
+        
     }
 }
 
