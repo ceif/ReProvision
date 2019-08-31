@@ -344,7 +344,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 55.0;
+    return 100.0;
 }
 
 // Override to support editing the table view.
