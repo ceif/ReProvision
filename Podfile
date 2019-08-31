@@ -16,9 +16,6 @@ end
 target 'tvOS' do
 platform :tvos, '9.0'
 pod 'MarqueeLabel', '3.1.4'
-<<<<<<< HEAD
 pod 'PureLayout', '3.1.4'
 pod 'CocoaLumberjack'
-=======
->>>>>>> 178fbf6232a0eea479a826ae0346be19d1423423
 end
