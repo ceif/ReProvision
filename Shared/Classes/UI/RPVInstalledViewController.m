@@ -588,7 +588,7 @@
         RPVApplication *application = [self.expiringSoonDataSource objectAtIndex:indexPath.row];
         NSString *buttonTitle = @"SIGN";
         _aboutToShow = TRUE;
-
+#if TARGET_OS_TV
         self.recentTableView.userInteractionEnabled = FALSE;
         self.otherApplicationsTableView.userInteractionEnabled = FALSE;
         self.expiringCollectionView.userInteractionEnabled = FALSE;
@@ -596,6 +596,7 @@
         self.otherApplicationsSectionHeader.button.enabled = FALSE;
         self.expiringSectionHeader.button.enabled = FALSE;
         [self forceFocusUpdateDelayed:0.1];
+#endif
         [self _showApplicationDetailController:application withButtonTitle:buttonTitle isDestructiveResign:NO];
     }
 }
@@ -1028,10 +1029,12 @@
 //}
 
 - (BOOL)isButtonEnabledForSection:(NSInteger)section {
-    
+
+#if TARGET_OS_TV
     if ([self appViewVisible]){
         return FALSE;
     }
+#endif
     
     switch (section) {
         case 1:
