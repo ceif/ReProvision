@@ -2372,7 +2372,7 @@
 					"${PROJECT_DIR}/tvOS/include",
 					"$(inherited)",
 				);
-				HOST_INSTALL_PATH = bedroom.local;
+				HOST_INSTALL_PATH = 4k.local;
 				INFOPLIST_FILE = "$(SRCROOT)/tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2424,7 +2424,7 @@
 					"${PROJECT_DIR}/tvOS/include",
 					"$(inherited)",
 				);
-				HOST_INSTALL_PATH = bedroom.local;
+				HOST_INSTALL_PATH = 4k.local;
 				INFOPLIST_FILE = "$(SRCROOT)/tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (

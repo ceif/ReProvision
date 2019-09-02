@@ -15,12 +15,32 @@
 #import "RPVIpaBundleApplication.h"
 #import "RPVApplicationDetailController.h"
 
+#import "RPVDaemonProtocol.h"
+#import "RPVApplicationProtocol.h"
+
 #import "SAMKeychain.h"
 
+#import <objc/runtime.h>
 #include <notify.h>
 
 #import "RPVTabBarController.h"
 #import "UIViewController+Additions.h"
+
+typedef enum : NSUInteger {
+    SDAirDropDiscoverableModeOff,
+    SDAirDropDiscoverableModeContactsOnly,
+    SDAirDropDiscoverableModeEveryone,
+} SDAirDropDiscoverableMode;
+
+@interface PSAppDataUsagePolicyCache : NSObject
++ (id)sharedInstance;
+- (bool)setUsagePoliciesForBundle:(id)arg1 cellular:(bool)arg2 wifi:(bool)arg3;
+@end
+
+@interface AppWirelessDataUsageManager : NSObject
++(void)setAppCellularDataEnabled:(id)arg1 forBundleIdentifier:(id)arg2 completionHandler:(/*^block*/ id)arg3 ;
++(void)setAppWirelessDataOption:(id)arg1 forBundleIdentifier:(id)arg2 completionHandler:(/*^block*/ id)arg3 ;
+@end
 
 @interface SFAirDropDiscoveryController: UIViewController
 - (void)setDiscoverableMode:(NSInteger)mode;
@@ -29,7 +49,6 @@
 
 @interface AppDelegate ()
 
-@property (nonatomic, readwrite) int daemonNotificationToken;
 @property (nonatomic, strong) NSXPCConnection *daemonConnection;
 @property (nonatomic, strong) SFAirDropDiscoveryController *discoveryController;
 
@@ -141,7 +160,8 @@
 
 - (void)disableAirDrop {
     
-    [self.discoveryController setDiscoverableMode:0];
+    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:@"com.nito.AirDropper/airDropFileReceived" object:nil];
+    [self.discoveryController setDiscoverableMode:SDAirDropDiscoverableModeOff];
     
 }
 
@@ -149,8 +169,30 @@
     
     [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(airDropReceived:) name:@"com.nito.AirDropper/airDropFileReceived" object:nil];
     self.discoveryController = [[SFAirDropDiscoveryController alloc] init] ;
-    [self.discoveryController setDiscoverableMode:2];
+    [self.discoveryController setDiscoverableMode:SDAirDropDiscoverableModeEveryone];
     
+}
+
+- (void)setupChinaApplicationNetworkAccess {
+    // See: https://github.com/pwn20wndstuff/Undecimus/issues/136
+    
+    NSOperatingSystemVersion version;
+    version.majorVersion = 12;
+    version.minorVersion = 0;
+    version.patchVersion = 0;
+    
+    if (objc_getClass("PSAppDataUsagePolicyCache")) {
+        // iOS 12+
+        PSAppDataUsagePolicyCache *cache = [objc_getClass("PSAppDataUsagePolicyCache") sharedInstance];
+        [cache setUsagePoliciesForBundle:[NSBundle mainBundle].bundleIdentifier cellular:YES wifi:YES];
+    } else if (objc_getClass("AppWirelessDataUsageManager")) {
+        // iOS 10 - 11
+        [objc_getClass("AppWirelessDataUsageManager") setAppWirelessDataOption:[NSNumber numberWithInt:3]
+                                                           forBundleIdentifier:[NSBundle mainBundle].bundleIdentifier completionHandler:nil];
+        [objc_getClass("AppWirelessDataUsageManager") setAppCellularDataEnabled:[NSNumber numberWithInt:1]
+                                                            forBundleIdentifier:[NSBundle mainBundle].bundleIdentifier completionHandler:nil];
+    }
+    // Not required for iOS 9
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -165,7 +207,10 @@
     [[RPVNotificationManager sharedInstance] registerToSendNotifications];
     
     // Register for background signing notifications.
-    [self _registerForDaemonNotifications];
+    [self _setupDameonConnection];
+    
+    // Ensure Chinese devices have internet access
+    [self setupChinaApplicationNetworkAccess];
     
     // Setup Keychain accessibility for when locked.
     // (prevents not being able to correctly read the passcode when the device is locked)
@@ -271,87 +316,55 @@
     }
 }
 
-- (void)requestDebuggingBackgroundSigning {
-    //[[self.daemonConnection remoteObjectProxy] applicationRequestsDebuggingBackgroundSigning];
-}
-
-- (void)requestPreferencesUpdate {
-    //[[self.daemonConnection remoteObjectProxy] applicationRequestsPreferencesUpdate];
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Automatic application signing
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-- (void)_registerForDaemonNotifications {
-    int status;
-    static char first = 0;
+- (void)_setupDameonConnection {
+#if TARGET_OS_SIMULATOR
+    return;
+#endif
     
-    if (!first) {
-        status = notify_register_check("com.matchstic.reprovision.ios/applicationNotification", &_daemonNotificationToken);
-        if (status != NOTIFY_STATUS_OK) {
-            fprintf(stderr, "registration failed (%u)\n", status);
-            return;
-        }
+    self.daemonConnection = [[NSXPCConnection alloc] initWithMachServiceName:@"com.matchstic.reprovisiond"];
+    self.daemonConnection.remoteObjectInterface = [NSXPCInterface interfaceWithProtocol:@protocol(RPVDaemonProtocol)];
+    
+    self.daemonConnection.exportedInterface = [NSXPCInterface interfaceWithProtocol:@protocol(RPVApplicationProtocol)];
+    self.daemonConnection.exportedObject = self;
+    
+    // Handle connection errors
+    __weak AppDelegate *weakSelf = self;
+    self.daemonConnection.interruptionHandler = ^{
+        [weakSelf.daemonConnection invalidate];
+        weakSelf.daemonConnection = nil;
         
-        first = 1;
-    }
-    
-    // Handle when we're open and get a background request come through.
-    status = notify_register_dispatch("com.matchstic.reprovision.ios/applicationNotification", &_daemonNotificationToken, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0l), ^(int info) {
+        // Re-create connection
+        [weakSelf _setupDameonConnection];
+    };
+    self.daemonConnection.invalidationHandler = ^{
+        [weakSelf.daemonConnection invalidate];
+        weakSelf.daemonConnection = nil;
         
-        DDLogInfo(@"*** [ReProvision] :: Got a background signing request when open.");
-        
-        [self _didRecieveDaemonNotification];
-    });
+        // Re-create connection
+        [weakSelf _setupDameonConnection];
+    };
     
-    // And do a check now for if we need to sign.
-    [self _checkForDaemonNotification];
-}
-
-- (void)_checkForDaemonNotification {
-    // Check the daemon's notification state.
+    [self.daemonConnection resume];
     
-    int status, check;
-    status = notify_check(_daemonNotificationToken, &check);
-    if (status == NOTIFY_STATUS_OK && check != 0) {
-        [self _didRecieveDaemonNotification];
-    }
-}
-
-- (void)_didRecieveDaemonNotification {
-    uint64_t incoming = 0;
-    notify_get_state(_daemonNotificationToken, &incoming);
+    // Notify daemon that we've now launched
+    [[self.daemonConnection remoteObjectProxy] applicationDidLaunch];
     
-    DDLogInfo(@"*** [ReProvision] :: daemon notification received. State: %d", (int)incoming);
-    
-    switch (incoming) {
-        case 1:
-            [self daemonDidRequestNewBackgroundSigning];
-            break;
-            
-        case 2:
-            [self daemonDidRequestCredentialsCheck];
-            break;
-            
-        case 3:
-            [self daemonDidRequestQueuedNotification];
-            break;
-            
-        default:
-            break;
-    }
-    
-    // Reset the state so we don't redo anything when exiting the application.
-    notify_set_state(_daemonNotificationToken, 0);
+    DDLogInfo(@"*** [ReProvision] :: Setup daemon connection: %@", self.daemonConnection);
 }
 
 - (void)_notifyDaemonOfMessageHandled {
     // Let the daemon know to release the background assertion.
-    notify_post("com.matchstic.reprovision.ios/didFinishBackgroundTask");
+    [[self.daemonConnection remoteObjectProxy] applicationDidFinishTask];
 }
 
+
 - (void)daemonDidRequestNewBackgroundSigning {
+    DDLogInfo(@"*** [ReProvision] :: daemonDidRequestNewBackgroundSigning");
+    
     // Start a background sign
     UIApplication *application = [UIApplication sharedApplication];
     UIBackgroundTaskIdentifier __block bgTask = [application beginBackgroundTaskWithName:@"ReProvision Background Signing" expirationHandler:^{
@@ -362,21 +375,30 @@
     }];
     
     [[RPVBackgroundSigningManager sharedInstance] attemptBackgroundSigningIfNecessary:^{
-        // Done, so stop this background task.
-        [application endBackgroundTask:bgTask];
-        bgTask = UIBackgroundTaskInvalid;
-        
         // Ask to remove our process assertion 5 seconds later, so that we can assume any notifications
         // have been scheduled.
-        [self performSelector:@selector(_notifyDaemonOfMessageHandled) withObject:nil afterDelay:5];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self _notifyDaemonOfMessageHandled];
+            
+            // Done, so stop this background task.
+            [application endBackgroundTask:bgTask];
+            bgTask = UIBackgroundTaskInvalid;
+        });
     }];
 }
 
 - (void)daemonDidRequestCredentialsCheck {
+    DDLogInfo(@"*** [ReProvision] :: daemonDidRequestCredentialsCheck");
+    
     // Check that user credentials exist, notify if not
     if (![RPVResources getUsername] || [[RPVResources getUsername] isEqualToString:@""] || ![RPVResources getPassword] || [[RPVResources getPassword] isEqualToString:@""]) {
         
         [[RPVNotificationManager sharedInstance] sendNotificationWithTitle:@"Login Required" body:@"Tap to login to ReProvision. This is needed to re-sign applications." isDebugMessage:NO isUrgentMessage:YES andNotificationID:@"login"];
+        
+        // Ask to remove our process assertion 5 seconds later, so that we can assume any notifications
+        // have been scheduled.
+        [self performSelector:@selector(_notifyDaemonOfMessageHandled) withObject:nil afterDelay:5];
     } else {
         // Nothing to do, just notify that we're done.
         [self _notifyDaemonOfMessageHandled];
@@ -384,6 +406,8 @@
 }
 
 - (void)daemonDidRequestQueuedNotification {
+    DDLogInfo(@"*** [ReProvision] :: daemonDidRequestQueuedNotification");
+    
     // Check if any applications need resigning. If they do, show notifications as appropriate.
     
     if ([[RPVBackgroundSigningManager sharedInstance] anyApplicationsNeedingResigning]) {
@@ -391,6 +415,16 @@
     } else {
         [self _sendBackgroundedNotificationWithTitle:@"DEBUG" body:@"Background check has been queued for next unlock." isDebug:YES isUrgent:NO withNotificationID:nil];
     }
+    
+    [self _notifyDaemonOfMessageHandled];
+}
+
+- (void)requestDebuggingBackgroundSigning {
+    [[self.daemonConnection remoteObjectProxy] applicationRequestsDebuggingBackgroundSigning];
+}
+
+- (void)requestPreferencesUpdate {
+    [[self.daemonConnection remoteObjectProxy] applicationRequestsPreferencesUpdate];
 }
 
 - (void)_sendBackgroundedNotificationWithTitle:(NSString*)title body:(NSString*)body isDebug:(BOOL)isDebug isUrgent:(BOOL)isUrgent withNotificationID:(NSString*)notifID {
@@ -415,5 +449,4 @@
     // have been scheduled.
     [self performSelector:@selector(_notifyDaemonOfMessageHandled) withObject:nil afterDelay:5];
 }
-
 @end
