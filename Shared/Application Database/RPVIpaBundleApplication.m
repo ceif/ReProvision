@@ -82,9 +82,15 @@
             } else
                 icons = [infoPlist objectForKey:@"CFBundleIcons"];
         }
+
+#if TARGET_OS_TV
+         NSString *iconFileName = [icons objectForKey:@"CFBundlePrimaryIcon"];
         
+        DDLogInfo(@"iconFileName: %@", iconFileName);
+        
+#else
         NSString *iconFileName = [[[icons objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"] lastObject];
-        
+#endif
         // Add suffix as needed.
         
         // Now load this from the .ipa file

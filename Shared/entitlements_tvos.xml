@@ -58,6 +58,11 @@
 	
 	<key>com.apple.nano.nanoregistry</key>
 	<true/>
+    <key>com.apple.private.airdrop.settings</key>
+    <true/>
+    <key>com.apple.private.airdrop.discovery</key>
+    <true/>
+    
 
 </dict>
 </plist>

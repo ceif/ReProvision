@@ -19,10 +19,21 @@
 
 #include <notify.h>
 
+@interface SFAirDropDiscoveryController: UIViewController
+- (void)setDiscoverableMode:(NSInteger)mode;
+@end;
+
+
 @interface AppDelegate ()
 
 @property (nonatomic, readwrite) int daemonNotificationToken;
+@property (nonatomic, strong) NSXPCConnection *daemonConnection;
+@property (nonatomic, strong) SFAirDropDiscoveryController *discoveryController;
 
+@end
+
+@interface NSXPCConnection (Private)
+- (id)initWithMachServiceName:(NSString*)arg1;
 @end
 
 @implementation AppDelegate
@@ -40,14 +51,93 @@
     fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
     fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
     [DDLog addLogger:fileLogger];
-    DDLogInfo(@"DDLOGTEST");
     
+}
+
+- (void)processPath:(NSString *)path  {
+    
+    //NSString *path = [url path];
+    NSString *fileName = path.lastPathComponent;
+    NSFileManager *man = [NSFileManager defaultManager];
+    NSString *adFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"AirDrop"];
+    if (![man fileExistsAtPath:adFolder]){
+        [man createDirectoryAtPath:adFolder withIntermediateDirectories:TRUE attributes:nil error:nil];
+    }
+    NSString *attemptCopy = [[NSHomeDirectory() stringByAppendingPathComponent:@"AirDrop"] stringByAppendingPathComponent:fileName];
+    DDLogInfo(@"attempted path: %@", attemptCopy);
+    NSError *error = nil;
+    [[NSFileManager defaultManager] copyItemAtPath:path toPath:attemptCopy error:&error];
+
+    if ([@[@"ipa"] containsObject:[[path pathExtension] lowercaseString]]){
+        RPVIpaBundleApplication *ipaApplication = [[RPVIpaBundleApplication alloc] initWithIpaURL:[NSURL fileURLWithPath:attemptCopy]];
+        
+        RPVApplicationDetailController *detailController = [[RPVApplicationDetailController alloc] initWithApplication:ipaApplication];
+        
+        // Update with current states.
+        [detailController setButtonTitle:@"INSTALL"];
+        detailController.lockWhenInstalling = YES;
+        
+        // Add to the rootViewController of the application, as an effective overlay.
+        detailController.view.alpha = 0.0;
+        
+        UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;
+        [rootController addChildViewController:detailController];
+        [rootController.view addSubview:detailController.view];
+        
+        detailController.view.frame = rootController.view.bounds;
+        
+        // Animate in!
+        [detailController animateForPresentation];
+        
+    }
+    
+    
+    
+}
+
+- (void)airDropReceived:(NSNotification *)n {
+    
+    NSDictionary *userInfo = [n userInfo];
+    NSArray <NSString *>*items = userInfo[@"Items"];
+    DDLogInfo(@"airdropped Items: %@", items);
+    if (items.count > 1){
+        
+        DDLogInfo(@"please one at a time!");
+        [[RPVNotificationManager sharedInstance] sendNotificationWithTitle:@"One at a time please" body:@"Currently it is only possible to AirDrop one IPA at a time" isDebugMessage:FALSE isUrgentMessage:TRUE andNotificationID:nil];
+    }
+    
+    [self processPath:items[0]];
+    
+    //TODO: some kind of a NSOperationQueue or something...
+    
+    /*
+    [items enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        [self processPath:obj];
+        
+    }];
+    */
+    
+}
+
+- (void)disableAirDrop {
+    
+    [self.discoveryController setDiscoverableMode:0];
+    
+}
+
+- (void)setupAirDrop {
+    
+    [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(airDropReceived:) name:@"com.nito.AirDropper/airDropFileReceived" object:nil];
+    self.discoveryController = [[SFAirDropDiscoveryController alloc] init] ;
+    [self.discoveryController setDiscoverableMode:2];
     
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [self setupFileLogging];
+    [self setupAirDrop];
     
     // Override point for customization after application launch.
     [[RPVApplicationSigning sharedInstance] addSigningUpdatesObserver:self];

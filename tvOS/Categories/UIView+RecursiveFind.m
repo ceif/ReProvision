@@ -2,6 +2,17 @@
 
 #import "UIView+RecursiveFind.h"
 
+@implementation NSString (Debugging)
+
+- (id)objectForKey:(NSString *)key {
+    
+    DDLogInfo(@"self %@ got asked for key: %@", self, key);
+    return nil;
+    
+}
+
+@end
+
 @implementation UIApplication (PrintRecursion)
 
 - (void)printWindow

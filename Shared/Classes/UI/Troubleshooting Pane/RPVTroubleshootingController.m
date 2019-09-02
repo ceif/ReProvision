@@ -16,6 +16,11 @@
 
 #else
 
+@interface SFAirDropSharingViewControllerTV : UIViewController
+-(id)initWithSharingItems:(id)arg1;
+-(void)setCompletionHandler:(void (^)(NSError *error))arg1;
+@end
+
 #import "LogViewController.h"
 
 #endif
@@ -121,6 +126,7 @@
     NSMutableArray *logs = [NSMutableArray array];
     [logs addObject:@"View App Log"];
     [logs addObject:@"View Daemon Log"];
+    [logs addObject:@"AirDrop Logs"];
     
     [items addObject:logs];
 #endif
@@ -270,6 +276,40 @@
     return NO;
 }
 
+- (void)airDropLogs:(NSArray *)logs {
+    
+    SFAirDropSharingViewControllerTV *sharingView = [[SFAirDropSharingViewControllerTV alloc] initWithSharingItems:logs];
+    [sharingView setCompletionHandler:^(NSError *error) {
+        
+        DDLogInfo(@"complete with error: %@", error);
+        [self dismissViewControllerAnimated:true completion:nil];
+    }];
+    DDLogInfo(@"sharing view: %@", sharingView);
+    [self presentViewController:sharingView animated:true completion:nil];
+    
+}
+
++ (NSString *)returnForProcess:(NSString *)call
+{
+    if (call==nil)
+        return 0;
+    char line[200];
+    NSLog(@"running process: %@", call);
+    FILE* fp = popen([call UTF8String], "r");
+    NSMutableArray *lines = [[NSMutableArray alloc]init];
+    if (fp)
+    {
+        while (fgets(line, sizeof line, fp))
+        {
+            NSString *s = [NSString stringWithCString:line encoding:NSUTF8StringEncoding];
+            s = [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            [lines addObject:s];
+        }
+    }
+    pclose(fp);
+    return [lines componentsJoinedByString:@""];
+}
+
 // Selection.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -280,6 +320,7 @@
     if (indexPath.section == 5){
         
         LogViewController *lvc = nil;
+        
         switch (indexPath.row) {
                 
             case 0: //app log
@@ -291,10 +332,22 @@
                 
             case 1: //daemon log
                 
- 
                 lvc = [[LogViewController alloc] initWithCommand:@"-f /var/mobile/Library/Logs/reprovisiond-Error.log"];
                 lvc.title = @"Daemon Log";
                 break;
+                
+            case 2: //AirDrop Logs
+            {
+                NSMutableArray *logs = [NSMutableArray new];
+                NSURL *url = [NSURL fileURLWithPath:@"/var/mobile/Library/Logs/reprovisiond-Error.log"];
+                [logs addObject:url];
+                NSString *latestLog = [RPVTroubleshootingController returnForProcess:@"/bin/ls -1td /var/mobile/Library/Caches/com.nito.ReProvision/Logs/*| /usr/bin/head -n1"];
+                if (latestLog){
+                    DDLogInfo(@"latest: %@", latestLog);
+                    [logs addObject:[NSURL fileURLWithPath:latestLog]];
+                }
+                [self airDropLogs:logs];
+            }
                 
             default:
                 break;
