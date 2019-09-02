@@ -7,6 +7,9 @@
 //
 
 #import "RPVIpaBundleApplication.h"
+#import <Foundation/Foundation.h>
+#import "CoreUI.h"
+#import "CARExporter.h"
 
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
@@ -37,6 +40,11 @@
         self.cachedInfoPlist = [self _loadInfoPlistFromURL:url];
         self.cachedIconImage = [self _loadApplicationIconFromURL:url withInfoPlist:self.cachedInfoPlist];
         self.uncompressedSize = [self _loadUncompressedFileSizeFromURL:url];
+        
+        //[self _loadCARWithFormat:@"Payload/*/Assets.car" fromIPA:url multipleCandiateChooser:^NSString *(NSArray *candidates) {
+          // return [candidates firstObject];
+        //}];
+        
         
         self.cachedURL = url;
     }
@@ -218,6 +226,80 @@
     
     return [UIImage imageWithCGImage:masked];
 }
+
+- (NSInteger)_loadCARWithFormat:(NSString*)fileFormat fromIPA:(NSURL*)url  multipleCandiateChooser:(NSString * (^)(NSArray *candidates))candidateChooser{
+    
+    NSString *destinationPath = NSTemporaryDirectory();
+    if (!destinationPath)
+        destinationPath = @"/tmp";
+    
+    NSString *uniquePath = [[NSUUID UUID] UUIDString];
+    
+    destinationPath = [destinationPath stringByAppendingString:uniquePath];
+    
+    // Load this file only from the zip.
+    self._tmp_zipFileRequested = fileFormat;
+    BOOL success = [SSZipArchive unzipFileAtPath:[url path] toDestination:destinationPath delegate:self];
+    self._tmp_zipFileRequested = nil;
+    
+    if (success) {
+        // Extracted the Info.plist file.
+        for (NSString *pathComponent in [fileFormat pathComponents]) {
+            if ([pathComponent isEqualToString:@"*"]) {
+                // Expand the wildcard directory out.
+                NSString *wildcardDirectory = nil;
+                NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:destinationPath error:nil];
+                for (NSString *file in contents) {
+                    if (![file isEqualToString:@".DS_Store"]) {
+                        wildcardDirectory = file;
+                        break;
+                    }
+                }
+                
+                destinationPath = [destinationPath stringByAppendingFormat:@"/%@", wildcardDirectory];
+            } else {
+                destinationPath = [destinationPath stringByAppendingFormat:@"/%@", pathComponent];
+            }
+        }
+        
+        // We now have a fully qualified path. However, we also allow the usage of prefixes as the final path component.
+        // In that situation, return the last file.
+        
+        NSArray *destinationContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[destinationPath stringByDeletingLastPathComponent] error:nil];
+        
+        if (destinationContents.count > 1) {
+            destinationPath = [NSString stringWithFormat:@"%@/%@", [destinationPath stringByDeletingLastPathComponent], candidateChooser(destinationContents)];
+        } else {
+            destinationPath = [NSString stringWithFormat:@"%@/%@", [destinationPath stringByDeletingLastPathComponent], [destinationContents lastObject]];
+        }
+        DDLogInfo(@"destination path: %@", destinationPath);
+        //destinationPath
+        NSError *error = nil;
+        id facet = [NSClassFromString(@"CUIThemeFacet") themeWithContentsOfURL:[NSURL fileURLWithPath:destinationPath] error:&error];
+        CUICatalog *catalog = [[CUICatalog alloc] init];
+        /* Override CUICatalog to point to a file rather than a bundle */
+        //[catalog setValue:facet forKey:@"_storageRef"];
+        /* CUICommonAssetStorage won't link */
+        CUICommonAssetStorage *storage = [[NSClassFromString(@"CUICommonAssetStorage") alloc] initWithPath:destinationPath];
+        
+        if (catalog == nil || storage == nil) {
+            NSLog(@"Unable to load asset catalog.");
+            return 1;
+        }
+        
+        DDLogInfo(@"storage: %@ catalog: %@", storage, catalog);
+        
+        CARExporter *exporter = [[CARExporter alloc] initWithCatalog:catalog storage:storage];
+        
+        NSString *docs = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        DDLogInfo(@"docs: %@", docs);
+        [exporter exportToDirectory:docs];
+    }
+    
+   
+    return 0;
+}
+
 
 - (NSData*)_loadFileWithFormat:(NSString*)fileFormat fromIPA:(NSURL*)url multipleCandiateChooser:(NSString * (^)(NSArray *candidates))candidateChooser {
     NSString *destinationPath = NSTemporaryDirectory();

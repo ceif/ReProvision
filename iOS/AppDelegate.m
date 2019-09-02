@@ -101,6 +101,9 @@
 
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     
+    if (![[[url pathExtension] lowercaseString] isEqualToString:@"ipa"]) {
+        return NO;
+    }
     // Incoming URL is a fileURL!
     
     // Create an RPVApplication for this incoming .ipa, and display the installation popup.

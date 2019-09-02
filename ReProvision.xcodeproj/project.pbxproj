@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		324843FC231D1F10002CF343 /* Sharing.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 324843FB231D1F10002CF343 /* Sharing.tbd */; };
+		324843FE231D4550002CF343 /* CoreUI.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 324843FD231D4550002CF343 /* CoreUI.tbd */; };
+		32484425231D47D8002CF343 /* CARExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3248440B231D47D7002CF343 /* CARExporter.m */; };
+		32484428231D480A002CF343 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32484427231D480A002CF343 /* CoreServices.framework */; };
 		329EE77D23166925004E9461 /* Preferences.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C96CCE56211A33B0008A249A /* Preferences.tbd */; };
 		32B779892314617C00828355 /* RPVResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779882314617B00828355 /* RPVResources.m */; };
 		32B7798A2314617C00828355 /* RPVResources.m in Sources */ = {isa = PBXBuildFile; fileRef = 32B779882314617B00828355 /* RPVResources.m */; };
@@ -300,6 +303,45 @@
 		1BED720855DAA03FC578B695 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		1C46832E058CCB73D45E85EB /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		324843FB231D1F10002CF343 /* Sharing.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; path = Sharing.tbd; sourceTree = "<group>"; };
+		324843FD231D4550002CF343 /* CoreUI.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; path = CoreUI.tbd; sourceTree = "<group>"; };
+		32484400231D47D7002CF343 /* _CSIRenditionBlockData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CSIRenditionBlockData.h; sourceTree = "<group>"; };
+		32484401231D47D7002CF343 /* _CUIExternalLinkRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIExternalLinkRendition.h; sourceTree = "<group>"; };
+		32484402231D47D7002CF343 /* _CUIInternalLinkRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIInternalLinkRendition.h; sourceTree = "<group>"; };
+		32484403231D47D7002CF343 /* _CUILayerStackRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUILayerStackRendition.h; sourceTree = "<group>"; };
+		32484404231D47D7002CF343 /* _CUIPDFRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIPDFRendition.h; sourceTree = "<group>"; };
+		32484405231D47D7002CF343 /* _CUIRawDataRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIRawDataRendition.h; sourceTree = "<group>"; };
+		32484406231D47D7002CF343 /* _CUIRawPixelRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIRawPixelRendition.h; sourceTree = "<group>"; };
+		32484407231D47D7002CF343 /* _CUIThemeEffectRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIThemeEffectRendition.h; sourceTree = "<group>"; };
+		32484408231D47D7002CF343 /* _CUIThemeGradientRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIThemeGradientRendition.h; sourceTree = "<group>"; };
+		32484409231D47D7002CF343 /* _CUIThemePixelRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CUIThemePixelRendition.h; sourceTree = "<group>"; };
+		3248440A231D47D7002CF343 /* CARExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARExporter.h; sourceTree = "<group>"; };
+		3248440B231D47D7002CF343 /* CARExporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CARExporter.m; sourceTree = "<group>"; };
+		3248440C231D47D7002CF343 /* CDStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDStructures.h; sourceTree = "<group>"; };
+		3248440D231D47D7002CF343 /* CGImage+Export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGImage+Export.h"; sourceTree = "<group>"; };
+		3248440E231D47D7002CF343 /* CoreUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreUI.h; sourceTree = "<group>"; };
+		3248440F231D47D7002CF343 /* CUICatalog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICatalog.h; sourceTree = "<group>"; };
+		32484410231D47D7002CF343 /* CUICommonAssetStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICommonAssetStorage.h; sourceTree = "<group>"; };
+		32484411231D47D7002CF343 /* CUIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIImage.h; sourceTree = "<group>"; };
+		32484412231D47D7002CF343 /* CUINamedData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedData.h; sourceTree = "<group>"; };
+		32484413231D47D7002CF343 /* CUINamedExternalLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedExternalLink.h; sourceTree = "<group>"; };
+		32484414231D47D7002CF343 /* CUINamedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedImage.h; sourceTree = "<group>"; };
+		32484415231D47D7002CF343 /* CUINamedImageAtlas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedImageAtlas.h; sourceTree = "<group>"; };
+		32484416231D47D7002CF343 /* CUINamedImageDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedImageDescription.h; sourceTree = "<group>"; };
+		32484417231D47D7002CF343 /* CUINamedLayerImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedLayerImage.h; sourceTree = "<group>"; };
+		32484418231D47D7002CF343 /* CUINamedLayerStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedLayerStack.h; sourceTree = "<group>"; };
+		32484419231D47D7002CF343 /* CUINamedLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUINamedLookup.h; sourceTree = "<group>"; };
+		3248441A231D47D7002CF343 /* CUIRenditionKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIRenditionKey.h; sourceTree = "<group>"; };
+		3248441B231D47D7002CF343 /* CUIRenditionLayerReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIRenditionLayerReference.h; sourceTree = "<group>"; };
+		3248441C231D47D7002CF343 /* CUIRenditionMetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIRenditionMetrics.h; sourceTree = "<group>"; };
+		3248441D231D47D7002CF343 /* CUIRenditionSliceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIRenditionSliceInformation.h; sourceTree = "<group>"; };
+		3248441E231D47D7002CF343 /* CUIStructuredThemeStorage-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUIStructuredThemeStorage-Protocol.h"; sourceTree = "<group>"; };
+		3248441F231D47D7002CF343 /* CUIStructuredThemeStorage2-Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUIStructuredThemeStorage2-Protocol.h"; sourceTree = "<group>"; };
+		32484420231D47D7002CF343 /* CUIStructuredThemeStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIStructuredThemeStore.h; sourceTree = "<group>"; };
+		32484421231D47D7002CF343 /* CUIThemeFacet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIThemeFacet.h; sourceTree = "<group>"; };
+		32484422231D47D7002CF343 /* CUIThemeImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIThemeImageSource.h; sourceTree = "<group>"; };
+		32484423231D47D7002CF343 /* CUIThemeRendition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIThemeRendition.h; sourceTree = "<group>"; };
+		32484424231D47D7002CF343 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		32484427231D480A002CF343 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.1.sdk/System/Library/Frameworks/CoreServices.framework; sourceTree = DEVELOPER_DIR; };
 		32B779872314617B00828355 /* RPVResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RPVResources.h; path = iOS/RPVResources.h; sourceTree = SOURCE_ROOT; };
 		32B779882314617B00828355 /* RPVResources.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RPVResources.m; path = iOS/RPVResources.m; sourceTree = SOURCE_ROOT; };
 		32B779922314D6A600828355 /* RPVAccount2FAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPVAccount2FAViewController.h; sourceTree = "<group>"; };
@@ -617,7 +659,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32484428231D480A002CF343 /* CoreServices.framework in Frameworks */,
 				324843FC231D1F10002CF343 /* Sharing.tbd in Frameworks */,
+				324843FE231D4550002CF343 /* CoreUI.tbd in Frameworks */,
 				C964EA2C212085A200AC98E6 /* libssl_tvOS.a in Frameworks */,
 				329EE77D23166925004E9461 /* Preferences.tbd in Frameworks */,
 				C964EA2E212085A400AC98E6 /* libcrypto_tvOS.a in Frameworks */,
@@ -665,6 +709,7 @@
 		25B27802FF2D573B29DEC669 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				32484427231D480A002CF343 /* CoreServices.framework */,
 				C9A9446A2215F72700F5C556 /* Security.framework */,
 				C964EA2D212085A400AC98E6 /* libcrypto_tvOS.a */,
 				C964EA2B212085A200AC98E6 /* libssl_tvOS.a */,
@@ -692,6 +737,50 @@
 				DF76467802713F8A7F1F8A4E /* libPods-tvOS.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		324843FF231D47D7002CF343 /* CARExtractor */ = {
+			isa = PBXGroup;
+			children = (
+				32484400231D47D7002CF343 /* _CSIRenditionBlockData.h */,
+				32484401231D47D7002CF343 /* _CUIExternalLinkRendition.h */,
+				32484402231D47D7002CF343 /* _CUIInternalLinkRendition.h */,
+				32484403231D47D7002CF343 /* _CUILayerStackRendition.h */,
+				32484404231D47D7002CF343 /* _CUIPDFRendition.h */,
+				32484405231D47D7002CF343 /* _CUIRawDataRendition.h */,
+				32484406231D47D7002CF343 /* _CUIRawPixelRendition.h */,
+				32484407231D47D7002CF343 /* _CUIThemeEffectRendition.h */,
+				32484408231D47D7002CF343 /* _CUIThemeGradientRendition.h */,
+				32484409231D47D7002CF343 /* _CUIThemePixelRendition.h */,
+				3248440A231D47D7002CF343 /* CARExporter.h */,
+				3248440B231D47D7002CF343 /* CARExporter.m */,
+				3248440C231D47D7002CF343 /* CDStructures.h */,
+				3248440D231D47D7002CF343 /* CGImage+Export.h */,
+				3248440E231D47D7002CF343 /* CoreUI.h */,
+				3248440F231D47D7002CF343 /* CUICatalog.h */,
+				32484410231D47D7002CF343 /* CUICommonAssetStorage.h */,
+				32484411231D47D7002CF343 /* CUIImage.h */,
+				32484412231D47D7002CF343 /* CUINamedData.h */,
+				32484413231D47D7002CF343 /* CUINamedExternalLink.h */,
+				32484414231D47D7002CF343 /* CUINamedImage.h */,
+				32484415231D47D7002CF343 /* CUINamedImageAtlas.h */,
+				32484416231D47D7002CF343 /* CUINamedImageDescription.h */,
+				32484417231D47D7002CF343 /* CUINamedLayerImage.h */,
+				32484418231D47D7002CF343 /* CUINamedLayerStack.h */,
+				32484419231D47D7002CF343 /* CUINamedLookup.h */,
+				3248441A231D47D7002CF343 /* CUIRenditionKey.h */,
+				3248441B231D47D7002CF343 /* CUIRenditionLayerReference.h */,
+				3248441C231D47D7002CF343 /* CUIRenditionMetrics.h */,
+				3248441D231D47D7002CF343 /* CUIRenditionSliceInformation.h */,
+				3248441E231D47D7002CF343 /* CUIStructuredThemeStorage-Protocol.h */,
+				3248441F231D47D7002CF343 /* CUIStructuredThemeStorage2-Protocol.h */,
+				32484420231D47D7002CF343 /* CUIStructuredThemeStore.h */,
+				32484421231D47D7002CF343 /* CUIThemeFacet.h */,
+				32484422231D47D7002CF343 /* CUIThemeImageSource.h */,
+				32484423231D47D7002CF343 /* CUIThemeRendition.h */,
+				32484424231D47D7002CF343 /* main.m */,
+			);
+			path = CARExtractor;
 			sourceTree = "<group>";
 		};
 		32B779912314D6A600828355 /* Account */ = {
@@ -899,6 +988,7 @@
 				C96CCE34211A2838008A249A /* AppDelegate.m */,
 				C96CCE3F211A2839008A249A /* Assets.xcassets */,
 				C96CCE3C211A2838008A249A /* Main.storyboard */,
+				324843FF231D47D7002CF343 /* CARExtractor */,
 				32B779912314D6A600828355 /* Account */,
 				32B779A62315066500828355 /* Categories */,
 				32B779A22314DD8100828355 /* Root Controllers */,
@@ -940,6 +1030,7 @@
 		C96CCE5B211A33D6008A249A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				324843FD231D4550002CF343 /* CoreUI.tbd */,
 				324843FB231D1F10002CF343 /* Sharing.tbd */,
 				C96CCE42211A2839008A249A /* main.m */,
 				C96CCE41211A2839008A249A /* Info.plist */,
@@ -1944,6 +2035,7 @@
 				32B7799D2314D6A600828355 /* RPVAccountFinalController.m in Sources */,
 				32B7798A2314617C00828355 /* RPVResources.m in Sources */,
 				C96CCE90211A3482008A249A /* pwd2key.c in Sources */,
+				32484425231D47D8002CF343 /* CARExporter.m in Sources */,
 				C96CCE91211A3482008A249A /* sha1.c in Sources */,
 				C96CCE92211A3482008A249A /* crypt.c in Sources */,
 				C96CCE93211A3482008A249A /* ioapi.c in Sources */,
@@ -2280,7 +2372,7 @@
 					"${PROJECT_DIR}/tvOS/include",
 					"$(inherited)",
 				);
-				HOST_INSTALL_PATH = twelve.local;
+				HOST_INSTALL_PATH = bedroom.local;
 				INFOPLIST_FILE = "$(SRCROOT)/tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2332,7 +2424,7 @@
 					"${PROJECT_DIR}/tvOS/include",
 					"$(inherited)",
 				);
-				HOST_INSTALL_PATH = twelve.local;
+				HOST_INSTALL_PATH = bedroom.local;
 				INFOPLIST_FILE = "$(SRCROOT)/tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (

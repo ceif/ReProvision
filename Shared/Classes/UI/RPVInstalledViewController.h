@@ -18,4 +18,8 @@
 
 @interface RPVInstalledViewController : UIViewController <RPVInstalledSectionHeaderDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITableViewDelegate, UITableViewDataSource, RPVApplicationSigningProtocol>
 
+#if TARGET_OS_TV
+- (void)disableViewAndRefocus;
+#endif
+
 @end

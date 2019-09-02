@@ -583,6 +583,22 @@
     return 1;
 }
 
+#if TARGET_OS_TV
+- (void)disableViewAndRefocus {
+    
+    DDLogInfo(@"- [RPVInstalledViewController disableViewAndRefocus]");
+    self.recentTableView.userInteractionEnabled = FALSE;
+    self.otherApplicationsTableView.userInteractionEnabled = FALSE;
+    self.expiringCollectionView.userInteractionEnabled = FALSE;
+    self.recentSectionHeader.button.enabled = FALSE;
+    self.otherApplicationsSectionHeader.button.enabled = FALSE;
+    self.expiringSectionHeader.button.enabled = FALSE;
+    [self forceFocusUpdateDelayed:0.1];
+}
+
+
+#endif
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     [collectionView deselectItemAtIndexPath:indexPath animated:YES];
     
