@@ -1,10 +1,10 @@
 Package: com.matchstic.reprovision
 Name: ReProvision
-Version: 0.4.0
+Version: 0.4.1
 Description: Re-sign applications on your Apple TV.
 Section: System
 Pre-Depends: cy+model.appletv
-Depends: firmware (>= 9.0), com.nito.bulletinh4x (>=1.0-4), com.nito.breezy
+Depends: firmware (>= 9.0), com.nito.bulletinh4x (>=1.0-4), com.nito.breezy (>=1.0-17)
 Priority: optional
 Architecture: appletvos-arm64
 Author: Matt Clarke <matt@incendo.ws>

@@ -21,5 +21,5 @@
 - (void)forceFocusUpdateDelayed:(CGFloat)delay;
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message ;
 - (BOOL)darkMode;
-
+- (void)disableViewAndRefocus;
 @end

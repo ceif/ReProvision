@@ -42,6 +42,10 @@
 
 @implementation UIViewController (Additions)
 
+- (void)disableViewAndRefocus {
+    
+}
+
 - (void)forceFocusUpdateDelayed:(CGFloat)delay {
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

@@ -19,6 +19,9 @@
 
 #include <notify.h>
 
+#import "RPVTabBarController.h"
+#import "UIViewController+Additions.h"
+
 @interface SFAirDropDiscoveryController: UIViewController
 - (void)setDiscoverableMode:(NSInteger)mode;
 @end;
@@ -81,6 +84,22 @@
         detailController.view.alpha = 0.0;
         
         UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;
+        
+        
+        
+        if ([rootController isKindOfClass:RPVTabBarController.class]){
+            RPVTabBarController *tbc = (RPVTabBarController *)rootController;
+            NSArray *vcs = [tbc viewControllers];
+            if (vcs.count > 0){
+                UIViewController *vc = vcs[0];
+                if ([vc respondsToSelector:@selector(disableViewAndRefocus)]){
+                    [vc disableViewAndRefocus];
+                }
+            }
+        }
+        
+        DDLogInfo(@"ROOT VIEW CONTROLLER: %@", rootController);
+        
         [rootController addChildViewController:detailController];
         [rootController.view addSubview:detailController.view];
         
