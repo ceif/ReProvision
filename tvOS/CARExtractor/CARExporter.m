@@ -75,6 +75,9 @@
 }
 
 - (void)exportThemeRendition:(CUIThemeRendition *)rendition fileName:(NSString *)fileName {
+    
+    DDLogInfo(@"exportThemeRendition: %@ fileName: %@", rendition, fileName);
+    
     // Set the file name if necessary
     if (fileName == nil) {
         fileName = rendition.name;
@@ -199,6 +202,7 @@
         CUIRenditionKey *layerKey = [layerRef referenceKey];
         const struct _renditionkeytoken *layerToken = layerKey.keyList;
         CUIThemeRendition *layerRendition = [[_catalog _themeStore] renditionWithKey:layerToken];
+        DDLogInfo(@"layerRendition: %@", layerRendition);
         // TODO: Layer rendition is nil. Why?
     }
 }

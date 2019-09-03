@@ -24,6 +24,10 @@
 @property (nonatomic, strong) UIImage *cachedIconImage;
 @property (nonatomic, strong) NSNumber *uncompressedSize;
 
+#if TARGET_OS_TV
+@property (nonatomic, strong) NSString *iconName;
+#endif
+
 @property (nonatomic, strong) NSString *_tmp_zipFileRequested;
 @property (nonatomic, readwrite) BOOL _tmp_zipUncompressedSizeRequested;
 @property (nonatomic, readwrite) int _tmp_zipUncompressedSize;
@@ -40,11 +44,9 @@
         self.cachedInfoPlist = [self _loadInfoPlistFromURL:url];
         self.cachedIconImage = [self _loadApplicationIconFromURL:url withInfoPlist:self.cachedInfoPlist];
         self.uncompressedSize = [self _loadUncompressedFileSizeFromURL:url];
+#if TARGET_OS_TV
         
-        //[self _loadCARWithFormat:@"Payload/*/Assets.car" fromIPA:url multipleCandiateChooser:^NSString *(NSArray *candidates) {
-          // return [candidates firstObject];
-        //}];
-        
+#endif
         
         self.cachedURL = url;
     }
@@ -93,9 +95,12 @@
 
 #if TARGET_OS_TV
          NSString *iconFileName = [icons objectForKey:@"CFBundlePrimaryIcon"];
-        
-        DDLogInfo(@"iconFileName: %@", iconFileName);
-        
+        self.iconName = iconFileName;
+        DDLogInfo(@"iconFileName: %@", self.iconName);
+        return [self _loadTVOSIconFromCAR:@"Payload/*/Assets.car" fromIPA:url multipleCandiateChooser:^NSString *(NSArray *candidates) {
+            return [candidates firstObject];
+        }];
+
 #else
         NSString *iconFileName = [[[icons objectForKey:@"CFBundlePrimaryIcon"] objectForKey:@"CFBundleIconFiles"] lastObject];
 #endif
@@ -227,7 +232,9 @@
     return [UIImage imageWithCGImage:masked];
 }
 
-- (NSInteger)_loadCARWithFormat:(NSString*)fileFormat fromIPA:(NSURL*)url  multipleCandiateChooser:(NSString * (^)(NSArray *candidates))candidateChooser{
+#if TARGET_OS_TV
+
+- (UIImage *)_loadTVOSIconFromCAR:(NSString*)fileFormat fromIPA:(NSURL*)url  multipleCandiateChooser:(NSString * (^)(NSArray *candidates))candidateChooser{
     
     NSString *destinationPath = NSTemporaryDirectory();
     if (!destinationPath)
@@ -275,31 +282,35 @@
         DDLogInfo(@"destination path: %@", destinationPath);
         //destinationPath
         NSError *error = nil;
-        id facet = [NSClassFromString(@"CUIThemeFacet") themeWithContentsOfURL:[NSURL fileURLWithPath:destinationPath] error:&error];
+        int facet = [NSClassFromString(@"CUIThemeFacet") themeWithContentsOfURL:[NSURL fileURLWithPath:destinationPath] error:&error];
         CUICatalog *catalog = [[CUICatalog alloc] init];
         /* Override CUICatalog to point to a file rather than a bundle */
-        //[catalog setValue:facet forKey:@"_storageRef"];
-        /* CUICommonAssetStorage won't link */
-        CUICommonAssetStorage *storage = [[NSClassFromString(@"CUICommonAssetStorage") alloc] initWithPath:destinationPath];
+        [catalog setValue:[NSNumber numberWithInt:facet] forKey:@"_storageRef"];
+    
+        //NSArray *imageNames = [[catalog _themeStore] allImageNames];
+        //DDLogInfo(@"all image names: %@", imageNames);
+        NSArray *assets = [[catalog _themeStore] imagesWithName: self.iconName];
         
-        if (catalog == nil || storage == nil) {
-            NSLog(@"Unable to load asset catalog.");
-            return 1;
+        if (assets.count > 1){ //first is a layered image i cant use
+            CUINamedImage *asset = assets[1];
+            DDLogInfo(@"image %@ from name: %@", asset, self.iconName);
+            
+            UIImage *image = [UIImage imageWithCGImage:asset.image];
+            DDLogInfo(@"image: %@", image);
+            self.cachedIconImage = image;
+            return image;
         }
         
-        DDLogInfo(@"storage: %@ catalog: %@", storage, catalog);
-        
-        CARExporter *exporter = [[CARExporter alloc] initWithCatalog:catalog storage:storage];
-        
-        NSString *docs = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-        DDLogInfo(@"docs: %@", docs);
-        [exporter exportToDirectory:docs];
+        //NSString *docs = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+        //DDLogInfo(@"docs: %@", docs);
+        //[exporter exportToDirectory:docs];
     }
     
    
-    return 0;
+    return nil;
 }
 
+#endif
 
 - (NSData*)_loadFileWithFormat:(NSString*)fileFormat fromIPA:(NSURL*)url multipleCandiateChooser:(NSString * (^)(NSArray *candidates))candidateChooser {
     NSString *destinationPath = NSTemporaryDirectory();

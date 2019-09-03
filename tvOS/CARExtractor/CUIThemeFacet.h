@@ -33,7 +33,8 @@
 + (id)debug_bundleIdentifierForThemeRef:(unsigned long long)arg1;
 + (void)themeUnregisterThemeRef:(unsigned long long)arg1;
 + (unsigned long long)themeWithBytes:(const void *)arg1 length:(unsigned long long)arg2 error:(id *)arg3;
-+ (CUIThemeFacet *)themeWithContentsOfURL:(id)arg1 error:(id *)arg2;
++ (int)themeWithContentsOfURL:(id)arg1 error:(id *)arg2;
+//+ (CUIThemeFacet *)themeWithContentsOfURL:(id)arg1 error:(id *)arg2;
 + (unsigned long long)themeForBundleIdentifier:(id)arg1 error:(id *)arg2;
 + (unsigned long long)themeNamed:(id)arg1 forBundleIdentifier:(id)arg2 error:(id *)arg3;
 + (void)initialize;

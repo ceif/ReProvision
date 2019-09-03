@@ -444,8 +444,8 @@
     CGFloat calendarOffset = 0;
 #if TARGET_OS_TV
     itemInsetY *= 2;
-    innerItemInsetY *=2;
-    self.applicationIconView.frame=  CGRectMake(15, y, 210, 160);
+    innerItemInsetY *=2;//400,240
+    self.applicationIconView.frame=  CGRectMake(15, y, 200, 120);
     buttonHeight = 40;
     titleHeight = 30;
     titleAdjustment = 10;
