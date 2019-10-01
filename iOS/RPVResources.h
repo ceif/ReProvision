@@ -23,6 +23,9 @@
 + (BOOL)shouldAutoRevokeIfNeeded;
 + (NSTimeInterval)heartbeatTimerInterval;
 
++ (void)setHasDismissedAccountView:(BOOL)dismissedView;
++ (BOOL)hasDismissedAccountView;
+
 + (id)preferenceValueForKey:(NSString*)key;
 + (void)setPreferenceValue:(id)value forKey:(NSString*)key withNotification:(NSString*)notification;
 

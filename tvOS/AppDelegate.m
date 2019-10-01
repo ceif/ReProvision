@@ -32,6 +32,10 @@ typedef enum : NSUInteger {
     SDAirDropDiscoverableModeEveryone,
 } SDAirDropDiscoverableMode;
 
+@interface SFAirDropDiscoveryController: UIViewController
+- (void)setDiscoverableMode:(NSInteger)mode;
+@end;
+
 @interface PSAppDataUsagePolicyCache : NSObject
 + (id)sharedInstance;
 - (bool)setUsagePoliciesForBundle:(id)arg1 cellular:(bool)arg2 wifi:(bool)arg3;
@@ -41,11 +45,6 @@ typedef enum : NSUInteger {
 +(void)setAppCellularDataEnabled:(id)arg1 forBundleIdentifier:(id)arg2 completionHandler:(/*^block*/ id)arg3 ;
 +(void)setAppWirelessDataOption:(id)arg1 forBundleIdentifier:(id)arg2 completionHandler:(/*^block*/ id)arg3 ;
 @end
-
-@interface SFAirDropDiscoveryController: UIViewController
-- (void)setDiscoverableMode:(NSInteger)mode;
-@end;
-
 
 @interface AppDelegate ()
 
@@ -166,7 +165,6 @@ typedef enum : NSUInteger {
 }
 
 - (void)setupAirDrop {
-    
     [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(airDropReceived:) name:@"com.nito.AirDropper/airDropFileReceived" object:nil];
     self.discoveryController = [[SFAirDropDiscoveryController alloc] init] ;
     [self.discoveryController setDiscoverableMode:SDAirDropDiscoverableModeEveryone];
@@ -307,7 +305,7 @@ typedef enum : NSUInteger {
     if (error) {
         switch (error.code) {
             case RPVErrorNoSigningRequired:
-                [[RPVNotificationManager sharedInstance] sendNotificationWithTitle:@"Success" body:@"No applications require signing at this time" isDebugMessage:NO isUrgentMessage:YES andNotificationID:nil];
+                [[RPVNotificationManager sharedInstance] sendNotificationWithTitle:@"Success" body:@"No applications require signing at this time" isDebugMessage:NO isUrgentMessage:NO andNotificationID:nil];
                 break;
             default:
                 [[RPVNotificationManager sharedInstance] sendNotificationWithTitle:@"Error" body:error.localizedDescription isDebugMessage:NO isUrgentMessage:YES andNotificationID:nil];

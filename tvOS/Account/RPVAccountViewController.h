@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface RPVAccountViewController : UIViewController <UITextFieldDelegate>
-
+{
+    UITapGestureRecognizer *menuTapRecognizer;
+}
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *subtitleLabel;
 @property (strong, nonatomic) UILabel *appleOnlyLabel;

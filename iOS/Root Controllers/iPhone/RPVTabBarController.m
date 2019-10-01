@@ -10,8 +10,9 @@
 #import "RPVAccountViewController.h"
 #import "RPVResources.h"
 
-@interface RPVTabBarController ()
-
+@interface RPVTabBarController (){
+    BOOL _dontAutoShow;
+}
 @end
 
 @implementation RPVTabBarController

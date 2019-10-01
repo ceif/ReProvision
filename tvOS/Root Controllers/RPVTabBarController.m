@@ -55,7 +55,9 @@
     
     // Check if we need to present the account view based upon settings.
     if (![RPVResources getUsername] || [[RPVResources getUsername] isEqualToString:@""])
-        [self presentAccountViewControllerAnimated:YES];
+        if (![RPVResources hasDismissedAccountView]){
+            [self presentAccountViewControllerAnimated:YES];
+        }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

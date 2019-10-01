@@ -11,6 +11,7 @@
 #import "RPVAccountTeamIDViewController.h"
 #import "RPVAccountFinalController.h"
 #import "RPVAccountChecker.h"
+#import "RPVResources.h"
 
 @interface RPVAccountViewController (){
     BOOL _viewBuilt;
@@ -23,6 +24,7 @@
 @end
 
 @implementation RPVAccountViewController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -144,6 +146,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    menuTapRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleMenuTap:)];
+    menuTapRecognizer.numberOfTapsRequired = 1;
+    menuTapRecognizer.allowedPressTypes = @[[NSNumber numberWithInteger:UIPressTypeMenu]];
+    [self.view addGestureRecognizer:menuTapRecognizer];
+    
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 }
@@ -179,6 +186,14 @@
             
         });
     }
+}
+
+- (void)handleMenuTap:(id)sender
+{
+    //LOG_SELF;
+    [RPVResources setHasDismissedAccountView:TRUE];
+    [self dismissViewControllerAnimated:true completion:nil];
+    
 }
 
 - (void)presentFinalController {

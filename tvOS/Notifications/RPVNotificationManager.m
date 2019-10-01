@@ -44,7 +44,7 @@
     }
     
      // TODO: Display notification via in-app library < -- do this properly.
-    
+ 
     DDLogInfo(@"send notification with title: %@", title);
     NSMutableDictionary *dict = [NSMutableDictionary new];
     dict[@"message"] = body;

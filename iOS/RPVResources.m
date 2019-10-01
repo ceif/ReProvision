@@ -121,11 +121,28 @@ static dispatch_once_t nanoRegistryOnceToken;
 }
 
 + (void)storeUsername:(NSString*)username password:(NSString*)password andTeamID:(NSString*)teamId {
-    [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"cachedUsername"];
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    
+    [ud setObject:username forKey:@"cachedUsername"];
     
     [SAMKeychain setPassword:password forService:SERVICENAME account:username];
     
-    [[NSUserDefaults standardUserDefaults] setObject:teamId forKey:@"cachedTeamID"];
+    [ud setObject:teamId forKey:@"cachedTeamID"];
+    
+    [ud synchronize];
+    
+}
+
++ (BOOL)hasDismissedAccountView {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hasDismissedAccountView"];
+}
+
++ (void)setHasDismissedAccountView:(BOOL)accoutViewDisplay {
+    
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    [ud setBool:accoutViewDisplay forKey:@"hasDismissedAccountView"];
+    [ud synchronize];
 }
 
 + (void)userDidRequestAccountSignIn {
