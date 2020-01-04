@@ -30,8 +30,13 @@ typedef enum : NSUInteger {
 /**
  * TODO: Docs!
  */
-- (void)signInWithUsername:(NSString*)altDSID password:(NSString*)GSToken andCompletionHandler:(void (^)(NSError*, NSDictionary*, NSURLCredential*))completionHandler;
+- (void)signInWithUsername:(NSString*)email password:(NSString*)password andCompletionHandler:(void (^)(NSError*, NSDictionary*, NSURLCredential*))completionHandler;
 
+- (void)requestTwoFactorLoginCodeWithCompletionHandler:(void (^)(NSError*))completion;
+
+- (void)validateLoginCode:(NSString*)code andCompletionHandler:(void (^)(NSError*, NSDictionary*, NSURLCredential*))completionHandler;
+
+- (void)fallback2FACodeRequest:(void(^)(NSError *, NSDictionary *, NSURLCredential *))completionHandler;
 
 /**
  * TODO: Docs!

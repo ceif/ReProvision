@@ -14,6 +14,12 @@
 
 - (void)checkUsername:(NSString*)username withPassword:(NSString*)password andCompletionHandler:(void (^)(NSString*, NSString*, NSArray*, NSURLCredential*))completionHandler;
 
+- (void)requestLoginCodeWithCompletionHandler:(void (^)(NSError *error))completion;
+
+- (void)request2FAFallbackWithCompletionHandler:(void (^)(NSString*, NSString*, NSArray*, NSURLCredential*))completionHandler;
+
+- (void)validateLoginCode:(NSString*)code withCompletionHandler:(void (^)(NSString*, NSString*, NSArray*, NSURLCredential*))completionHandler;
+
 - (void)registerCurrentDeviceForTeamID:(NSString*)teamID withIdentity:(NSString*)username gsToken:(NSString*)password andCompletionHandler:(void (^)(NSError*))completionHandler;
 
 - (void)registerCurrentWatchForTeamID:(NSString*)teamID withIdentity:(NSString*)username gsToken:(NSString*)password andCompletionHandler:(void (^)(NSError*))completionHandler;

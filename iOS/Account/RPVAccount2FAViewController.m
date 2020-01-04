@@ -26,6 +26,18 @@
     // Do any additional setup after loading the view.
     
     [self.passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    
+    // Handle colour
+    
+    if (@available(iOS 13.0, *)) {
+        //self.view.backgroundColor = [UIColor systemBackgroundColor];
+        //self.titleLabel.textColor = [UIColor labelColor];
+        //self.subtitleLabel.textColor = [UIColor labelColor];
+    } else {
+        self.view.backgroundColor = [UIColor whiteColor];
+        self.titleLabel.textColor = [UIColor blackColor];
+        self.subtitleLabel.textColor = [UIColor blackColor];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -33,6 +45,19 @@
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    
+    // Set right bar item to a spinning wheel
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.hidesWhenStopped = YES;
+    if (@available(iOS 13.0, *)) {
+        //spinner.color = [UIColor labelColor];
+    }
+    [spinner startAnimating];
+    
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:spinner]];
+    
+    // Redirect user to Settings
+    [self didTapFallbackButton:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,20 +79,9 @@
     [self performSegueWithIdentifier:@"presentFinalController" sender:nil];
 }
 
-- (IBAction)didTapConfirmButton:(id)sender {
-    // Check with Apple whether this email/password combo is correct.
-    //  -- from output status, handle. i.e., show incorrect, or success handler.
+- (IBAction)didTapFallbackButton:(id)sender {
     
-    // Set right bar item to a spinning wheel
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    spinner.hidesWhenStopped = YES;
-    [spinner startAnimating];
-    
-    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:spinner]];
-
-    /*
-     // TODO: Handle 2FA login code for the given credentials
-    [[RPVAccountChecker sharedInstance] checkUsername:self.emailAddress withPassword:self.passwordTextField.text andCompletionHandler:^(NSString *failureReason, NSString *resultCode, NSArray *teamIDArray, NSURLCredential *credential) {
+    [[RPVAccountChecker sharedInstance] request2FAFallbackWithCompletionHandler:^(NSString *failureReason, NSString *resultCode, NSArray *teamIDArray, NSURLCredential *credential) {
         
         if (teamIDArray) {
             // Present the Team ID controller if necessary!
@@ -79,26 +93,11 @@
                 [self changeUIToIncorrectStatus:failureReason];
             });
         }
-        
-        // Stop using a spinner.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.navigationItem setRightBarButtonItem:self.confirmBarButtonItem];
-        });
     }];
-     */
 }
 
 - (void)changeUIToIncorrectStatus:(NSString*)statusString {
-    self.titleLabel.text = @"Failure";
-    self.titleLabel.textColor = [UIColor redColor];
-    
-    self.subtitleLabel.text = statusString;
-
-    // Reset
-    self.passwordTextField.text = @"";
-    
-    // And disable button
-    self.confirmBarButtonItem.enabled = NO;
+    self.subtitleLabel.text = @"Tap 'Continue Authentication' below to redirect to Settings";
 }
 
 - (void)setupWithEmailAddress:(NSString*)emailAddress {

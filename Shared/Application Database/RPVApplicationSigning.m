@@ -324,7 +324,7 @@ static RPVApplicationSigning *sharedInstance;
             NSString *errorMessage = [NSString stringWithFormat:@"%@, (code: %ld)", error.localizedDescription, (long)error.code];
             if ([errorMessage containsString:@"invalid entitlements"]) {
                 errorMessage = @"Incorrect entitlements for this application. This is likely caused by ReProvision not supporting a capability this application needs.";
-                DDLogInfo(@"errorMessage: %@", errorMessage);
+                NSLog(@"errorMessage: %@", errorMessage);
             } else if ([errorMessage containsString:@"valid provisioning profile"]) {
                 errorMessage = @"This application hasn't been signed correctly for this device. This may occur if this device is not registered to the account used to sign with - try logging out then in again";
             } else if (error.code == 13) {

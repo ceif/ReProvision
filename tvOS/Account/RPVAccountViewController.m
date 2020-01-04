@@ -177,7 +177,15 @@
     if ([teamids count] == 1) {
         [self presentFinalController];
     } else {
-        [self performSegueWithIdentifier:@"presentTeamIDController" sender:nil];
+        RPVAccountTeamIDViewController *teamidController = [RPVAccountTeamIDViewController new];
+        [teamidController setupWithDataSource:self._interimTeamIDArray username:credential.user andPassword:credential.password];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self.navigationController pushViewController:teamidController animated:true];
+            
+        });
+        //[self performSegueWithIdentifier:@"presentTeamIDController" sender:nil];
     }
 }
 - (void)handleMenuTap:(id)sender

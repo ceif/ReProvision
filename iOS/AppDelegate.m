@@ -110,9 +110,22 @@
 
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     
-    if (![[[url pathExtension] lowercaseString] isEqualToString:@"ipa"]) {
+    // Guard case
+    if (![[[url pathExtension] lowercaseString] isEqualToString:@"ipa"] &&
+        ![[url scheme] isEqualToString:@"reprovision"]) {
         return NO;
     }
+    
+    // Handle opening from URL scheme
+    if ([[url scheme] isEqualToString:@"reprovision"] && [[url host] containsString:@"share"]) {
+        NSString *path = [url path];
+        path = [path substringFromIndex:1]; // strip preceeding /
+        
+        url = [NSURL fileURLWithPath:path];
+        
+        NSLog(@"ReProvision :: trying to load from %@", path);
+    }
+    
     // Incoming URL is a fileURL!
     
     // Create an RPVApplication for this incoming .ipa, and display the installation popup.
@@ -362,7 +375,11 @@
     NSLog(@"*** [ReProvision] :: daemonDidRequestCredentialsCheck");
     
     // Check that user credentials exist, notify if not
-    if (![RPVResources getUsername] || [[RPVResources getUsername] isEqualToString:@""] || ![RPVResources getPassword] || [[RPVResources getPassword] isEqualToString:@""]) {
+    if (![RPVResources getUsername] ||
+        [[RPVResources getUsername] isEqualToString:@""] ||
+        ![RPVResources getPassword] ||
+        [[RPVResources getPassword] isEqualToString:@""] ||
+        ![[RPVResources getCredentialsVersion] isEqualToString:CURRENT_CREDENTIALS_VERSION]) {
         
         [[RPVNotificationManager sharedInstance] sendNotificationWithTitle:@"Login Required" body:@"Tap to login to ReProvision. This is needed to re-sign applications." isDebugMessage:NO isUrgentMessage:YES andNotificationID:@"login"];
         

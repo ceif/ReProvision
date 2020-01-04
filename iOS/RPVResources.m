@@ -110,8 +110,8 @@ static dispatch_once_t nanoRegistryOnceToken;
 
 + (NSString*)getUsername {
     NSString* username = [[NSUserDefaults standardUserDefaults] objectForKey:@"cachedUsername"];
-    NSArray* components = [username componentsSeparatedByString:@"|"];
-    if([components count]<2) return nil;
+    //NSArray* components = [username componentsSeparatedByString:@"|"];
+    //if([components count] < 2) return nil;
     return username;
 }
 
@@ -123,18 +123,9 @@ static dispatch_once_t nanoRegistryOnceToken;
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"cachedTeamID"];
 }
 
-+ (void)storeUsername:(NSString*)username password:(NSString*)password andTeamID:(NSString*)teamId {
-    
-    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-    
-    [ud setObject:username forKey:@"cachedUsername"];
-    
-    [SAMKeychain setPassword:password forService:SERVICENAME account:username];
-    
-    [ud setObject:teamId forKey:@"cachedTeamID"];
-    
-    [ud synchronize];
-    
++ (NSString*)getCredentialsVersion {
+    NSString* version = [[NSUserDefaults standardUserDefaults] objectForKey:@"credentialsVersion"];
+    return version ? version : @"0";
 }
 
 + (BOOL)hasDismissedAccountView {
@@ -146,6 +137,15 @@ static dispatch_once_t nanoRegistryOnceToken;
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     [ud setBool:accoutViewDisplay forKey:@"hasDismissedAccountView"];
     [ud synchronize];
+}
+
++ (void)storeUsername:(NSString*)username password:(NSString*)password andTeamID:(NSString*)teamId {
+    [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"cachedUsername"];
+    
+    [SAMKeychain setPassword:password forService:SERVICENAME account:username];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:teamId forKey:@"cachedTeamID"];
+    [[NSUserDefaults standardUserDefaults] setObject:CURRENT_CREDENTIALS_VERSION forKey:@"credentialsVersion"];
 }
 
 + (void)userDidRequestAccountSignIn {

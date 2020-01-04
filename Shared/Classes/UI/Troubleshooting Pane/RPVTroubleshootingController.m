@@ -172,7 +172,13 @@
 #if TARGET_OS_TV
     cell.textLabel.textColor = isBold ? [UIColor darkGrayColor] : [UIColor grayColor];
 #else
-    cell.textLabel.textColor = isBold ? [UIColor darkTextColor] : [UIColor grayColor];
+    
+    if (@available(iOS 13.0, *)) {
+        //cell.textLabel.textColor = isBold ? [UIColor labelColor] : [UIColor secondaryLabelColor];
+    } else {
+        cell.textLabel.textColor = isBold ? [UIColor darkTextColor] : [UIColor grayColor];
+    }
+    
 #endif
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -224,7 +230,13 @@
     }
     
     cell.textLabel.opaque = YES;
-    cell.textLabel.backgroundColor = [UIColor whiteColor];
+    
+    if (@available(iOS 13.0, *)) {
+        //cell.textLabel.backgroundColor = [UIColor secondarySystemGroupedBackgroundColor];
+    } else {
+        // Fallback on earlier versions
+        cell.textLabel.backgroundColor = [UIColor whiteColor];
+    }
     
     return cell;
 }
@@ -276,7 +288,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return NO;
 }
-
+#if TARGET_OS_TV
 - (void)airDropLogs:(NSArray *)logs {
     
     UIViewController *sharingView = [[NSClassFromString(@"SFAirDropSharingViewControllerTV") alloc] initWithSharingItems:logs];
@@ -289,7 +301,7 @@
     [self presentViewController:sharingView animated:true completion:nil];
     
 }
-
+#endif
 + (NSString *)returnForProcess:(NSString *)call
 {
     if (call==nil)
@@ -348,6 +360,7 @@
                     [logs addObject:[NSURL fileURLWithPath:latestLog]];
                 }
                 [self airDropLogs:logs];
+
             }
                 
             default:

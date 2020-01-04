@@ -1,6 +1,6 @@
 ---
 archs:                 [ armv7, armv7s, arm64, x86_64 ]
-platform:              tvos, ios, macOS
+platform:              ios
 install-name:          /System/Library/PrivateFrameworks/AuthKit.framework/AuthKit
 current-version:       1
 compatibility-version: 1

@@ -50,7 +50,7 @@ static auto dummy([](double) {});
     
     NSMutableDictionary* plist = [NSMutableDictionary dictionary];
     
-    DDLogInfo(@"Loading entitlements for: '%@'", binaryLocation);
+    NSLog(@"Loading entitlements for: '%@'", binaryLocation);
     
     // Make sure to pass in the entitlements already present, updating as needed.
     NSData *binaryData = [NSData dataWithContentsOfFile:binaryLocation];
@@ -72,8 +72,8 @@ static auto dummy([](double) {});
         NSPropertyListFormat format;
         plist = [[NSPropertyListSerialization propertyListWithData:plistData options:0 format:&format error:&error] mutableCopy];
     }
-    DDLogInfo(@"og plist: %@", plist);
-    DDLogInfo(@"bundleId: %@", bundleIdentifier);
+    NSLog(@"og plist: %@", plist);
+    NSLog(@"bundleId: %@", bundleIdentifier);
     //com.apple.developer.ubiquity-kvstore-identifier
     NSString *teamBundleId = [NSString stringWithFormat:@"%@.%@", teamid, bundleIdentifier];
     
@@ -89,7 +89,7 @@ static auto dummy([](double) {});
     [plist setValue:keychainAccessGroups forKey:@"keychain-access-groups"];
     [plist removeObjectForKey:@"get-task-allow"];
     [plist removeObjectForKey:@"com.apple.developer.icloud-container-identifiers"];
-    DDLogInfo(@"new plist: %@", plist);
+    NSLog(@"new plist: %@", plist);
     //[plist setValue:@YES forKey:@"get-task-allow"];
     
     return plist;

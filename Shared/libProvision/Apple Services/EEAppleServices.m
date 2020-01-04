@@ -51,18 +51,16 @@
     NSDictionary<NSString *, NSString *> *appleHeaders = [self.authentication appleIDHeadersForRequest:request];
     AKDevice* currentDevice = [AKDevice currentDevice];
     NSDictionary<NSString *, NSString *> *httpHeaders = @{
-                                                          @"Content-Type": @"text/x-xml-plist",
-                                                          @"User-Agent": @"Xcode",
-                                                          @"Accept": @"text/x-xml-plist",
-                                                          @"Accept-Language": @"en-us",
-                                                          @"Connection": @"keep-alive",
-                                                          @"X-Xcode-Version": @"11.2 (11B52)",
-                                                          @"X-Apple-I-Identity-Id": [[self.credentials user] componentsSeparatedByString:@"|"][0],
-                                                          @"X-Apple-GS-Token": [self.credentials password],
-                                                          @"X-Apple-App-Info": @"com.apple.gs.xcode.auth",
-                                                          @"X-Mme-Device-Id": [currentDevice uniqueDeviceIdentifier],
-                                                          @"X-MMe-Client-Info":[currentDevice serverFriendlyDescription]
-                                                          };
+        @"Content-Type": @"text/x-xml-plist",
+        @"User-Agent": @"Xcode",
+        @"Accept": @"text/x-xml-plist",
+        @"Accept-Language": @"en-us",
+        @"Connection": @"keep-alive",
+        @"X-Xcode-Version": @"11.2 (11B52)",
+        @"X-Apple-I-Identity-Id": [[self.credentials user] componentsSeparatedByString:@"|"][0],
+        @"X-Apple-GS-Token": [self.credentials password],
+        @"X-Mme-Device-Id": [currentDevice uniqueDeviceIdentifier],
+    };
     
     [httpHeaders enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop) {
         [request setValue:value forHTTPHeaderField:key];
@@ -72,6 +70,10 @@
         [request setValue:value forHTTPHeaderField:key];
     }];
     
+    [request.allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop) {
+        NSLog(@"%@: %@", key, value);
+    }];
+    
     return request;
 }
 
@@ -79,9 +81,16 @@
     
     // watchOS is treated as iOS
     // this check is not necessary, if tvos is in that URL it doesn't work
+    /*
     NSString *os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios" : @"tvos";
     NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@/%@?clientId=XABBG36SBA", @"ios", action];
+    */
+    NSString *os = @"";
     
+    if (systemType != EESystemTypeUndefined)
+        os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios/" : @"tvos/";
+    
+    NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@%@?clientId=XABBG36SBA", os,action];
     DDLogInfo(@"Request to URL: %@", urlStr);
     
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlStr]];
@@ -117,7 +126,7 @@
             break;
         case EESystemTypetvOS:
             [dict setObject:@"tvos" forKey:@"DTDK_Platform"];
-            [dict setObject:@"tvOS" forKey:@"subPlatform"];
+            //[dict setObject:@"tvOS" forKey:@"subPlatform"];
             break;
         default:
             break;
@@ -143,7 +152,8 @@
         } else {
             NSData* unpacked = [data isGzippedData] ? [data gunzippedData] : data;
             NSDictionary *plist = [NSPropertyListSerialization propertyListWithData:unpacked options:NSPropertyListImmutable format:nil error:nil];
-            
+            DDLogInfo(@"plist: %@", plist);
+            //DDLogInfo(@"data: %@", unpacked);
             if (!plist)
                 completionHandler(error,nil);
             else
@@ -160,8 +170,7 @@
 
 - (void)ensureSessionWithIdentity:(NSString*)identity gsToken:(NSString*)token andCompletionHandler:(void (^)(NSError *error, NSDictionary *plist))completionHandler {
     
-    if (!self.credentials)
-        self.credentials = [[NSURLCredential alloc] initWithUser:identity password:token persistence:NSURLCredentialPersistencePermanent];
+    self.credentials = [[NSURLCredential alloc] initWithUser:identity password:token persistence:NSURLCredentialPersistencePermanent];
     
     // TODO: Validate credentials
     
@@ -179,11 +188,22 @@
         if (error) {
             NSMutableDictionary *resultDictionary = [NSMutableDictionary dictionary];
             
-            if (error.code == -7006 || error.code == -7027) {
-                [resultDictionary setObject:@"Your Apple ID or password is incorrect" forKey:@"userString"];
+            if (error.code == -22406) {
+                [resultDictionary setObject:@"Your Apple ID or password is incorrect. App-specific passwords are not supported." forKey:@"userString"];
                 [resultDictionary setObject:@"incorrectCredentials" forKey:@"reason"];
+            } else if (error.code == 5000) { // Internal error
+                [resultDictionary setObject:error.localizedDescription forKey:@"userString"];
+                [resultDictionary setObject:@"incorrectCredentials" forKey:@"reason"];
+            } else if (error.code == 4010 || error.code == 4011) {
+                [resultDictionary setObject:@"2FA code is required" forKey:@"userString"];
+                [resultDictionary setObject:@"appSpecificRequired" forKey:@"reason"];
             } else {
-                [resultDictionary setObject:@"Unknown error occurred" forKey:@"userString"];
+                if (![error.localizedDescription isEqualToString:@""]) {
+                    [resultDictionary setObject:[NSString stringWithFormat:@"%@ (%ld)", error.localizedDescription, (long)error.code] forKey:@"userString"];
+                } else {
+                    [resultDictionary setObject:[NSString stringWithFormat:@"Unknown error occurred (%ld)", (long)error.code] forKey:@"userString"];
+                }
+                
                 [resultDictionary setObject:@"incorrectCredentials" forKey:@"reason"];
             }
             
@@ -192,8 +212,7 @@
             return;
         }
         
-        if (!self.credentials)
-            self.credentials = [[NSURLCredential alloc] initWithUser:userIdentity password:gsToken persistence:NSURLCredentialPersistencePermanent];
+        self.credentials = [[NSURLCredential alloc] initWithUser:userIdentity password:gsToken persistence:NSURLCredentialPersistencePermanent];
         
         // Do a request to listTeams.action to check that the user is a member of a team
         [self listTeamsWithCompletionHandler:^(NSError *error, NSDictionary *plist) {
@@ -207,40 +226,115 @@
                 return;
             }
             
-            NSString *userString = [plist objectForKey:@"userString" ];
-            NSString *reason = @"";
-            
             NSMutableDictionary *resultDictionary = [NSMutableDictionary dictionary];
             
-            if ((!userString || [userString isEqualToString:@""]) && plist) {
-                // We now have been authenticated most likely.
-                reason = @"authenticated";
-                userString = @"";
-            } else if (plist) {
-                // Failure, but we have something useful.
-                
-                // -22938 => App Specific Pwd?
-                // -20101 => incorrect credentials.
-                
-                NSString *resultCode = [plist objectForKey:@"resultCode"];
-                
-                if ([resultCode isEqualToString:@"-22938"] || [userString containsString:@"app-specific"]) {
-                    reason = @"appSpecificRequired";
-                } else if ([resultCode isEqualToString:@"-20101"] || [resultCode isEqualToString:@"-1"]) {
-                    reason = @"incorrectCredentials";
-                } else {
-                    reason = resultCode;
-                }
-            }
-            
-            [resultDictionary setObject:userString forKey:@"userString"];
-            [resultDictionary setObject:reason forKey:@"reason"];
+            [resultDictionary setObject:@"" forKey:@"userString"];
+            [resultDictionary setObject:@"authenticated" forKey:@"reason"];
             
             completionHandler(nil, resultDictionary, self.credentials);
         }];
     }];
 }
 
+- (void)requestTwoFactorLoginCodeWithCompletionHandler:(void (^)(NSError*))completion {
+    [self.authentication requestLoginCodeWithCompletion:completion];
+}
+
+- (void)validateLoginCode:(NSString*)code andCompletionHandler:(void (^)(NSError*, NSDictionary*, NSURLCredential*))completionHandler {
+    
+    [self.authentication validateLoginCode:code withCompletion:^(NSError *error, NSString *userIdentity, NSString *gsToken) {
+        
+        if (error) {
+            NSMutableDictionary *resultDictionary = [NSMutableDictionary dictionary];
+            
+            if (error.code == 4012) {
+                [resultDictionary setObject:@"2FA code is incorrect" forKey:@"userString"];
+                [resultDictionary setObject:@"incorrectCredentials" forKey:@"reason"];
+            } else {
+                if (![error.localizedDescription isEqualToString:@""]) {
+                    [resultDictionary setObject:[NSString stringWithFormat:@"%@ (%ld)", error.localizedDescription, (long)error.code] forKey:@"userString"];
+                } else {
+                    [resultDictionary setObject:[NSString stringWithFormat:@"Unknown error occurred (%ld)", (long)error.code] forKey:@"userString"];
+                }
+                
+                [resultDictionary setObject:@"incorrectCredentials" forKey:@"reason"];
+            }
+            
+            completionHandler(nil, resultDictionary, nil);
+            
+            return;
+        }
+        
+        self.credentials = [[NSURLCredential alloc] initWithUser:userIdentity password:gsToken persistence:NSURLCredentialPersistencePermanent];
+        
+        // Do a request to listTeams.action to check that the user is a member of a team
+        [self listTeamsWithCompletionHandler:^(NSError *error, NSDictionary *plist) {
+            NSArray *teams = [plist objectForKey:@"teams"];
+            
+            if (!teams) {
+                // Error of some kind?
+                // TODO: HANDLE ME
+                
+                completionHandler(error, plist, nil);
+                return;
+            }
+            
+            NSMutableDictionary *resultDictionary = [NSMutableDictionary dictionary];
+            
+            [resultDictionary setObject:@"" forKey:@"userString"];
+            [resultDictionary setObject:@"authenticated" forKey:@"reason"];
+            
+            completionHandler(nil, resultDictionary, self.credentials);
+        }];
+    }];
+}
+
+- (void)fallback2FACodeRequest:(void(^)(NSError *, NSDictionary *, NSURLCredential *))completionHandler {
+    [self.authentication fallback2FACodeRequest:^(NSError *error, NSString *userIdentity, NSString *gsToken) {
+        if (error) {
+            NSMutableDictionary *resultDictionary = [NSMutableDictionary dictionary];
+            
+            if (error.code == 4012) {
+                [resultDictionary setObject:@"2FA code is incorrect" forKey:@"userString"];
+                [resultDictionary setObject:@"incorrectCredentials" forKey:@"reason"];
+            } else {
+                if (![error.localizedDescription isEqualToString:@""]) {
+                    [resultDictionary setObject:[NSString stringWithFormat:@"%@ (%ld)", error.localizedDescription, (long)error.code] forKey:@"userString"];
+                } else {
+                    [resultDictionary setObject:[NSString stringWithFormat:@"Unknown error occurred (%ld)", (long)error.code] forKey:@"userString"];
+                }
+                
+                [resultDictionary setObject:@"incorrectCredentials" forKey:@"reason"];
+            }
+            
+            completionHandler(nil, resultDictionary, nil);
+            
+            return;
+        }
+        
+        self.credentials = [[NSURLCredential alloc] initWithUser:userIdentity password:gsToken persistence:NSURLCredentialPersistencePermanent];
+        
+        // Do a request to listTeams.action to check that the user is a member of a team
+        [self listTeamsWithCompletionHandler:^(NSError *error, NSDictionary *plist) {
+            NSArray *teams = [plist objectForKey:@"teams"];
+            
+            if (!teams) {
+                // Error of some kind?
+                // TODO: HANDLE ME
+                
+                completionHandler(error, plist, nil);
+                return;
+            }
+            
+            NSMutableDictionary *resultDictionary = [NSMutableDictionary dictionary];
+            
+            [resultDictionary setObject:@"" forKey:@"userString"];
+            [resultDictionary setObject:@"authenticated" forKey:@"reason"];
+            
+            completionHandler(nil, resultDictionary, self.credentials);
+        }];
+    }];
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Team ID methods.
@@ -253,6 +347,9 @@
 - (void)updateCurrentTeamIDWithTeamIDCheck:(NSString* (^)(NSArray*))teamIDCallback andCallback:(void (^)(NSError*, NSString *))completionHandler {
     // We also want to pull the Team ID for this user, rather than find it on installation.
     [self listTeamsWithCompletionHandler:^(NSError *error, NSDictionary *plist) {
+        
+        DDLogInfo(@"plist: %@", plist);
+        
         if (error) {
             
             // XXX: It is possible for a user to never have signed up for a development
