@@ -110,8 +110,8 @@ static dispatch_once_t nanoRegistryOnceToken;
 
 + (NSString*)getUsername {
     NSString* username = [[NSUserDefaults standardUserDefaults] objectForKey:@"cachedUsername"];
-    //NSArray* components = [username componentsSeparatedByString:@"|"];
-    //if([components count] < 2) return nil;
+    NSArray* components = [username componentsSeparatedByString:@"|"];
+    if([components count] < 2) return nil;
     return username;
 }
 

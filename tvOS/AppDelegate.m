@@ -26,6 +26,8 @@
 #import "RPVTabBarController.h"
 #import "UIViewController+Additions.h"
 
+#define FM [NSFileManager defaultManager]
+
 typedef enum : NSUInteger {
     SDAirDropDiscoverableModeOff,
     SDAirDropDiscoverableModeContactsOnly,
@@ -77,6 +79,71 @@ typedef enum : NSUInteger {
     [DDLog addLogger:fileLogger];
     
 }
+
+- (NSString *)ipaPath {
+    
+    NSFileManager *man = [NSFileManager defaultManager];
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cache = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Packages"];
+    if (![man fileExistsAtPath:cache]){
+        NSLog(@"this path wasnt found; %@",cache );
+        NSDictionary *folderAttrs = @{NSFileGroupOwnerAccountName: @"staff",NSFileOwnerAccountName: @"mobile"};
+        NSError *error = nil;
+        [man createDirectoryAtPath:cache withIntermediateDirectories:YES attributes:folderAttrs error:&error];
+        if (error){
+            NSLog(@"error: %@", error);
+        }
+    }
+    return cache;
+}
+
+- (NSString *)legacyAirdropCacheFolder {
+    
+    NSString *thePath = [NSString stringWithFormat:@"/Library/Caches/%@", [NSBundle mainBundle].bundleIdentifier];
+    if (![FM fileExistsAtPath:thePath]){
+        [FM createDirectoryAtPath:thePath withIntermediateDirectories:TRUE attributes:nil error:nil];
+    }
+    return thePath;
+}
+
+- (NSString *)movedFileToCache:(NSString *)fileName {
+    
+    NSFileManager *man = [NSFileManager defaultManager];
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cache = [self ipaPath];
+    NSString *newPath = [cache stringByAppendingPathComponent:fileName.lastPathComponent];
+    NSError *error = nil;
+    
+    if ([man fileExistsAtPath:newPath]){
+        return newPath;
+    }
+    if ([man copyItemAtPath:fileName toPath:newPath error:&error]){
+        if(!error){
+            //[man removeItemAtPath:fileName error:nil];
+            return newPath;
+        }
+    }
+    return nil;
+}
+
+- (void)handleLegacyAirdropFile:(NSString *)adFile {
+    
+    NSFileManager *man = [NSFileManager defaultManager];
+    NSArray *fileArray = [NSArray arrayWithContentsOfFile:adFile];
+    NSLog(@"airdropper array: %@", fileArray);
+    [fileArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        [self processPath:obj];
+        //NSString *newFile = [self movedFileToCache:obj];
+        //if (newFile){
+            //[processArray addObject:newFile];
+        //}
+    }];
+    
+    
+    [FM removeItemAtPath:adFile error:nil];
+}
+
 
 - (void)processPath:(NSString *)path  {
     
@@ -166,7 +233,7 @@ typedef enum : NSUInteger {
     [self.discoveryController setDiscoverableMode:SDAirDropDiscoverableModeOff];
     
 }
-
+//com.apple.itunes.ipa
 - (void)setupAirDrop {
     [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(airDropReceived:) name:@"com.nito.AirDropper/airDropFileReceived" object:nil];
     self.discoveryController = [[NSClassFromString(@"SFAirDropDiscoveryController") alloc] init] ;
@@ -265,7 +332,10 @@ typedef enum : NSUInteger {
         [self _notifyDaemonFailedToConnect];
         self.pendingDaemonConnectionAlert = NO;
     }
-
+    NSString *airDropFile = [[self legacyAirdropCacheFolder] stringByAppendingPathComponent:@"AirDrop.plist"];
+    if ([FM fileExistsAtPath:airDropFile]){
+        [self handleLegacyAirdropFile:airDropFile];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
