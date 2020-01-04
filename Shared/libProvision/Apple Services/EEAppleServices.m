@@ -86,10 +86,9 @@
     NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@/%@?clientId=XABBG36SBA", @"ios", action];
     */
     NSString *os = @"";
-    
     if (systemType != EESystemTypeUndefined)
-        os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios/" : @"tvos/";
-    
+        os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios/" : @"ios/";
+ 
     DDLogInfo(@"os: %@", os);
     
     NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@%@?clientId=XABBG36SBA", os,action];
@@ -133,9 +132,10 @@
 #elif TARGET_OS_TV
     stype = EESystemTypetvOS;
 #endif
+    
     DDLogInfo(@"systemType: %lu", stype);
     
-    switch (systemType) {
+    switch (stype) {
         case EESystemTypeiOS:
             [dict setObject:@"ios" forKey:@"DTDK_Platform"];
             //[dict setObject:@"ios" forKey:@"subPlatform"];
@@ -146,11 +146,13 @@
             break;
         case EESystemTypetvOS:
             [dict setObject:@"tvos" forKey:@"DTDK_Platform"];
-            [dict setObject:@"tvOS" forKey:@"subPlatform"];
+            //[dict setObject:@"tvOS" forKey:@"subPlatform"];
             break;
         default:
             break;
     }
+    
+    DDLogInfo(@"dict: %@", dict);
     
     if (extra) {
         for (NSString *key in extra.allKeys) {

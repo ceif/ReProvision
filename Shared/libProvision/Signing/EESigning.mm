@@ -50,7 +50,7 @@ static auto dummy([](double) {});
     
     NSMutableDictionary* plist = [NSMutableDictionary dictionary];
     
-    NSLog(@"Loading entitlements for: '%@'", binaryLocation);
+    DDLogInfo(@"Loading entitlements for: '%@'", binaryLocation);
     
     // Make sure to pass in the entitlements already present, updating as needed.
     NSData *binaryData = [NSData dataWithContentsOfFile:binaryLocation];
@@ -65,15 +65,15 @@ static auto dummy([](double) {});
     
     std::string entitlements = ldid::Analyze([binaryData bytes], (size_t)[binaryData length]);
     if (entitlements.length() > 0) {
-        NSLog(@"Has entitlements in binary, so loading existing!");
+        DDLogInfo(@"Has entitlements in binary, so loading existing!");
         NSData* plistData = [NSData dataWithBytes:entitlements.data() length:entitlements.length()];
         
         NSError *error;
         NSPropertyListFormat format;
         plist = [[NSPropertyListSerialization propertyListWithData:plistData options:0 format:&format error:&error] mutableCopy];
     }
-    NSLog(@"og plist: %@", plist);
-    NSLog(@"bundleId: %@", bundleIdentifier);
+    DDLogInfo(@"og plist: %@", plist);
+    DDLogInfo(@"bundleId: %@", bundleIdentifier);
     //com.apple.developer.ubiquity-kvstore-identifier
     NSString *teamBundleId = [NSString stringWithFormat:@"%@.%@", teamid, bundleIdentifier];
     
@@ -89,7 +89,7 @@ static auto dummy([](double) {});
     [plist setValue:keychainAccessGroups forKey:@"keychain-access-groups"];
     [plist removeObjectForKey:@"get-task-allow"];
     [plist removeObjectForKey:@"com.apple.developer.icloud-container-identifiers"];
-    NSLog(@"new plist: %@", plist);
+    DDLogInfo(@"new plist: %@", plist);
     //[plist setValue:@YES forKey:@"get-task-allow"];
     
     return plist;
@@ -108,7 +108,7 @@ static auto dummy([](double) {});
     [exportedPlist appendBytes:"\x0" length:1];
     
     std::string entitlementsString = (char*)[exportedPlist bytes];
-    NSLog(@"Entitlements are:\n%s", entitlementsString.c_str());
+    DDLogInfo(@"Entitlements are:\n%s", entitlementsString.c_str());
     
     std::string requirementsString = [self _createRequirementsBlobWithKey:_privateKey certificate:(NSData *)_certificate andBundleIdentifier:bundleIdentifier];
     //std::string requirementsString = "";
@@ -127,7 +127,7 @@ static auto dummy([](double) {});
 - (X509 *)_loadCAChainFromDisk {
     NSString *filepath = [[NSBundle mainBundle] pathForResource:@"apple-ios" ofType:@"pem"];
     
-    NSLog(@"Loading CA chain from '%@'", filepath);
+    DDLogInfo(@"Loading CA chain from '%@'", filepath);
     
     NSString *contents = [NSString stringWithContentsOfFile:filepath encoding:NSUTF8StringEncoding error:nil];
     
@@ -136,7 +136,7 @@ static auto dummy([](double) {});
     
     X509 *cert = PEM_read_bio_X509(bio, NULL, NULL, NULL);
     if (!cert) {
-        NSLog(@"Failed to load CA chain.");
+        DDLogInfo(@"Failed to load CA chain.");
         @throw [NSException exceptionWithName:@"libProvisionSigningException" reason:@"Could not load CA chain from disk!" userInfo:nil];
     }
     
@@ -155,7 +155,7 @@ static auto dummy([](double) {});
     
     X509 *rootCA = PEM_read_bio_X509(rootCABio, NULL, NULL, NULL);
     if (!rootCA) {
-        NSLog(@"Failed to load root CA.");
+        DDLogInfo(@"Failed to load root CA.");
         @throw [NSException exceptionWithName:@"libProvisionSigningException" reason:@"Could not load CA root from disk!" userInfo:nil];
     }
     
@@ -187,7 +187,7 @@ static auto dummy([](double) {});
     BIO_puts(bio_privkey, [key cStringUsingEncoding:NSUTF8StringEncoding]);
     
     if (!(cert_privkey = PEM_read_bio_PrivateKey(bio_privkey, NULL, NULL, NULL))) {
-        NSLog(@"Error loading certificate private key content.");
+        DDLogInfo(@"Error loading certificate private key content.");
         error = -1;
     }
     
@@ -198,7 +198,7 @@ static auto dummy([](double) {});
     const unsigned char *input = (unsigned char*)[certificate bytes];
     cert = d2i_X509(NULL, &input, (int)[certificate length]);
     if (!cert) {
-        NSLog(@"Error loading cert into memory.");
+        DDLogInfo(@"Error loading cert into memory.");
         error = -1;
     }
     
@@ -213,7 +213,7 @@ static auto dummy([](double) {});
      *--------------------------------------------------------------*/
     
     if ((cacertstack = sk_X509_new_null()) == NULL) {
-        NSLog(@"Error creating STACK_OF(X509) structure.");
+        DDLogInfo(@"Error creating STACK_OF(X509) structure.");
         error = -1;
     }
     
@@ -225,7 +225,7 @@ static auto dummy([](double) {});
      *--------------------------------------------------------------*/
     
     if ((pkcs12bundle = PKCS12_new()) == NULL) {
-        NSLog(@"Error creating PKCS12 structure.");
+        DDLogInfo(@"Error creating PKCS12 structure.");
         error = -1;
     }
     
@@ -243,7 +243,7 @@ static auto dummy([](double) {});
                                  0            // int keytype (default no flag)
                                  );
     if (pkcs12bundle == NULL) {
-        NSLog(@"Error generating a valid PKCS12 certificate.");
+        DDLogInfo(@"Error generating a valid PKCS12 certificate.");
         error = -1;
     }
     
@@ -255,7 +255,7 @@ static auto dummy([](double) {});
     bytes = i2d_PKCS12_bio(bio_pkcs12, pkcs12bundle);
     
     if (bytes <= 0) {
-        NSLog(@"Error writing PKCS12 certificate.");
+        DDLogInfo(@"Error writing PKCS12 certificate.");
         error = -1;
     }
     
@@ -302,14 +302,14 @@ static auto dummy([](double) {});
     BIO_puts(bio_privkey, [key cStringUsingEncoding:NSUTF8StringEncoding]);
     
     if (!(cert_privkey = PEM_read_bio_PrivateKey(bio_privkey, NULL, NULL, NULL))) {
-        NSLog(@"Error loading certificate private key content.");
+        DDLogInfo(@"Error loading certificate private key content.");
         return "";
     }
     
     const unsigned char *input = (unsigned char*)[certificate bytes];
     cert = d2i_X509(NULL, &input, (int)[certificate length]);
     if (!cert) {
-        NSLog(@"Error loading cert into memory.");
+        DDLogInfo(@"Error loading cert into memory.");
         return "";
     }
     
@@ -322,7 +322,7 @@ static auto dummy([](double) {});
     OSStatus status = SecRequirementCreateWithString((__bridge CFStringRef)requirementsString, kSecCSDefaultFlags, &requirementRef);
     
     if (status != noErr) {
-        NSLog(@"Error: Failed to create requirements! %d", (int)status);
+        DDLogInfo(@"Error: Failed to create requirements! %d", (int)status);
         
         return "";
     }
@@ -332,7 +332,7 @@ static auto dummy([](double) {});
     status = SecRequirementCopyData(requirementRef, kSecCSDefaultFlags, &data);
     
     if (status != noErr) {
-        NSLog(@"Error: Failed to copy requirements! %d", (int)status);
+        DDLogInfo(@"Error: Failed to copy requirements! %d", (int)status);
         
         return "";
     }

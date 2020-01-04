@@ -239,6 +239,7 @@
         self.subtitleLabel.text = @"Verifying...";
     
         [[RPVAccountChecker sharedInstance] registerCurrentDeviceForTeamID:self.teamId withIdentity:self.identity gsToken:self.gsToken andCompletionHandler:^(NSError *error) {
+            DDLogInfo(@"error: %@", error);
             // Error only happens if user already has registered this device!
             [self _checkAppleWatchRegistration];
         }];
@@ -361,8 +362,10 @@
         self.tableView.hidden = YES;
         self.certificatesExplanation.hidden = YES;
         self.activityIndicatorView.hidden = NO;
-        
-        [self _revokeCertificate:[self.dataSource objectAtIndex:indexPath.row] withCompletion:^(NSError *error) {
+        DDLogInfo(@"self.dataSource: %@", self.dataSource);;
+        id object = [self.dataSource objectAtIndex:indexPath.row];
+        DDLogInfo(@"removing item: %@", object);
+        [self _revokeCertificate:object withCompletion:^(NSError *error) {
             if (!error) {
                 // Delete the row from the data source
                 dispatch_async(dispatch_get_main_queue(), ^{
