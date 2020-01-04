@@ -90,6 +90,8 @@
     if (systemType != EESystemTypeUndefined)
         os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios/" : @"tvos/";
     
+    DDLogInfo(@"os: %@", os);
+    
     NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@%@?clientId=XABBG36SBA", os,action];
     DDLogInfo(@"Request to URL: %@", urlStr);
     
@@ -115,6 +117,24 @@
      * watchos
      *
      */
+    
+    /*
+     
+     This was one thing breaking signing on tvOS - systemType is always passed in as
+     EESystemTypeiOS- and the section belong being right is *VERY* important
+     
+     */
+    
+    EESystemType stype = EESystemTypeiOS;
+#if TARGET_OS_IOS
+    stype = EESystemTypeiOS;
+#elif TARGET_OS_WATCHOS
+    stype = EESystemTypewatchOS;
+#elif TARGET_OS_TV
+    stype = EESystemTypetvOS;
+#endif
+    DDLogInfo(@"systemType: %lu", stype);
+    
     switch (systemType) {
         case EESystemTypeiOS:
             [dict setObject:@"ios" forKey:@"DTDK_Platform"];
@@ -126,7 +146,7 @@
             break;
         case EESystemTypetvOS:
             [dict setObject:@"tvos" forKey:@"DTDK_Platform"];
-            //[dict setObject:@"tvOS" forKey:@"subPlatform"];
+            [dict setObject:@"tvOS" forKey:@"subPlatform"];
             break;
         default:
             break;

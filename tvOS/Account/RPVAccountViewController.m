@@ -199,8 +199,8 @@
 - (void)presentFinalController {
     
     NSString *teamID = [[self._interimTeamIDArray firstObject] objectForKey:@"teamId"];
-    NSString *username = self.emailTextField.text;
-    NSString *password = self.passwordTextField.text;
+    NSString *username = self.credentials.user;
+    NSString *password = self.credentials.password;
     
     RPVAccountFinalController *finalController = [RPVAccountFinalController new];
     [finalController setupWithUsername:username password:password andTeamID:teamID];

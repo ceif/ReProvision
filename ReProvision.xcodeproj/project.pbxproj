@@ -2839,7 +2839,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9EUFEA5U7G;
+				DEVELOPMENT_TEAM = G82MZ6G2L3;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/iOS/Headers/**",
 					"$(inherited)",
@@ -2873,7 +2873,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9EUFEA5U7G;
+				DEVELOPMENT_TEAM = G82MZ6G2L3;
 				HEADER_SEARCH_PATHS = (
 					"${PROJECT_DIR}/iOS/Headers/**",
 					"$(inherited)",
