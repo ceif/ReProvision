@@ -66,14 +66,14 @@
             // Enter the dispatch group
             dispatch_group_enter(dispatch_group);
             
-            NSLog(@"Handling sub-bundle: %@", subBundlePath);
+            DDLogInfo(@"Handling sub-bundle: %@", subBundlePath);
             
             // Sign the bundle
             [self signBundleAtPath:subBundlePath identity:identity gsToken:gsToken priorChosenTeamID:teamId withCompletionHandler:^(NSError *error) {
                 if (error)
                     [subBundleErrors addObject:error];
                 
-                NSLog(@"Finished sub-bundle: %@", subBundlePath);
+                DDLogInfo(@"Finished sub-bundle: %@", subBundlePath);
                 dispatch_group_leave(dispatch_group);
             }];
         }
@@ -88,14 +88,14 @@
             // Enter the dispatch group
             dispatch_group_enter(dispatch_group);
             
-            NSLog(@"Handling sub-bundle: %@", subBundlePath);
+            DDLogInfo(@"Handling sub-bundle: %@", subBundlePath);
             
             // Sign the bundle
             [self signBundleAtPath:subBundlePath identity:identity gsToken:gsToken priorChosenTeamID:teamId withCompletionHandler:^(NSError *error) {
                 if (error)
                     [subBundleErrors addObject:error];
                 
-                NSLog(@"Handled sub-bundle: %@", subBundlePath);
+                DDLogInfo(@"Handled sub-bundle: %@", subBundlePath);
                 dispatch_group_leave(dispatch_group);
             }];
         }
@@ -107,7 +107,7 @@
     if (subBundleErrors.count > 0) {
         // Errors when handling sub-bundles!
         for (NSError *err in subBundleErrors) {
-            NSLog(@"Error: %@", err.localizedDescription);
+            DDLogInfo(@"Error: %@", err.localizedDescription);
         }
         
         completionHandler([subBundleErrors lastObject]);
@@ -133,14 +133,14 @@
         systemType = EESystemTypeiOS;
     } else if ([platformName isEqualToString:@"watchos"]) {
         systemType = EESystemTypewatchOS;
-    } else if ([platformName isEqualToString:@"tvos"]) {
+    } else if ([platformName isEqualToString:@"appletvos"]) {
         systemType = EESystemTypetvOS;
     } else {
         // Base case, assume iOS.
         systemType = EESystemTypeiOS;
     }
     
-    NSLog(@"Platform: %@ for bundle: %@", platformName, [path lastPathComponent]);
+    DDLogInfo(@"Platform: %@ for bundle: %@", platformName, [path lastPathComponent]);
     
     NSString *applicationId = [infoplist objectForKey:@"CFBundleIdentifier"];
     NSString *binaryLocation = [path stringByAppendingFormat:@"/%@", [infoplist objectForKey:@"CFBundleExecutable"]];
@@ -174,7 +174,7 @@
             [[NSFileManager defaultManager] removeItemAtPath:embeddedPath error:&fileIOError];
             
             if (fileIOError) {
-                NSLog(@"%@", fileIOError);
+                DDLogInfo(@"%@", fileIOError);
                 return;
             }
         }
@@ -182,9 +182,9 @@
         if (![(NSData*)embeddedMobileProvision writeToFile:embeddedPath options:NSDataWritingAtomic error:&fileIOError]) {
         
             if (fileIOError) {
-                NSLog(@"%@", fileIOError);
+                DDLogInfo(@"%@", fileIOError);
             } else {
-                NSLog(@"Failed to write '%@'.", embeddedPath);
+                DDLogInfo(@"Failed to write '%@'.", embeddedPath);
             }
             
             return;
@@ -251,7 +251,7 @@
     
     NSString *bundleDirectory = [NSString stringWithFormat:@"%@/%@", payloadDirectory, dotAppDirectory];
     
-    NSLog(@"Signing bundle at path '%@'", bundleDirectory);
+    DDLogInfo(@"Signing bundle at path '%@'", bundleDirectory);
     
     [self signBundleAtPath:bundleDirectory identity:identity gsToken:gsToken priorChosenTeamID:teamId withCompletionHandler:^(NSError *err) {
         if (err) {
@@ -290,7 +290,7 @@
     
     *outputDirectory = [NSString stringWithFormat:@"%@/%@", [self applicationTemporaryDirectory], zipFilename];
     
-    NSLog(@"Unpacking '%@' into directory '%@'", ipaPath, *outputDirectory);
+    DDLogInfo(@"Unpacking '%@' into directory '%@'", ipaPath, *outputDirectory);
     
     if (![SSZipArchive unzipFileAtPath:ipaPath toDestination:*outputDirectory]) {
         if (error)
@@ -310,7 +310,7 @@
         return NO;
     }
     
-    NSLog(@"Creating IPA from contents of '%@", extractedPath);
+    DDLogInfo(@"Creating IPA from contents of '%@", extractedPath);
     
     // Ensure permissions are at least read on everyone.
     

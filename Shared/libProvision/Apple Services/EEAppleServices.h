@@ -24,6 +24,10 @@ typedef enum : NSUInteger {
  * TODO: Docs!
  */
 - (NSString*)currentTeamID;
+- (NSString*)currentCertID;
+- (void)updateCertID:(NSString *)certID;
+- (NSString*)currentDeviceID;
+- (void)updateDeviceID:(NSString *)deviceID;
 
 - (void)ensureSessionWithIdentity:(NSString*)identity gsToken:(NSString*)token andCompletionHandler:(void (^)(NSError *error, NSDictionary *plist))completionHandler;
 
@@ -52,6 +56,12 @@ typedef enum : NSUInteger {
  * TODO: Docs!
  */
 - (void)addDevice:(NSString*)udid deviceName:(NSString*)name forTeamID:(NSString*)teamID systemType:(EESystemType)systemType withCompletionHandler:(void (^)(NSError*, NSDictionary *))completionHandler;
+
+/**
+ * TODO: Docs!
+ */
+
+- (void)deleteDevice:(NSString *)deviceID forTeamID:(NSString *)teamID systemType:(EESystemType)systemType withCompletionHandler:(void (^)(NSError* error, NSDictionary *dict))completionHandler;
 
 /**
  * TODO: Docs!
@@ -107,6 +117,12 @@ typedef enum : NSUInteger {
  * TODO: Docs!
  */
 - (void)listAllProvisioningProfilesForTeamID:(NSString*)teamID systemType:(EESystemType)systemType withCompletionHandler:(void (^)(NSError*, NSDictionary *))completionHandler;
+
+/**
+ * TODO: Docs!
+ */
+
+- (void)createProvisioningProfileWithName:(NSString *)profileName withAppIdId:(NSString *)appIdId certID:(NSString *)certID deviceID:(NSString *)deviceID withTeamID:(NSString*)teamID systemType:(EESystemType)systemType andCompletionHandler:(void (^)(NSError*, NSDictionary *))completionHandler;
 
 /**
  * TODO: Docs!

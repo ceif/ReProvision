@@ -89,6 +89,30 @@
                 return;
             }
             
+            /*
+             
+             creationTimestamp = "2020-01-05T17:28:09Z";
+             device =     {
+             deviceClass = tvOS;
+             deviceId = 2AS958ND7M;
+             deviceNumber = 16033cd9814bb4ea7575fc72cfd4f077352cba6b;
+             devicePlatform = ios;
+             model = "Apple TV 4K";
+             name = 4K;
+             status = c;
+             };
+             protocolVersion = QH65B2;
+             requestId = "9E9896E1-B077-472F-800B-6DBA43922E28";
+             requestUrl = "https://developerservices2.apple.com:443/services/QH65B2/ios/addDevice.action?clientId=XABBG36SBA";
+             responseId = "9b5072aa-73f5-4def-824d-e805706b2197";
+             resultCode = 0;
+             userLocale = "en_US";
+             
+             */
+            
+            NSDictionary *device = plist[@"device"];
+            DDLogInfo(@"added device with return details: %@", device);
+            [[EEAppleServices sharedInstance] updateDeviceID:device[@"deviceId"]];
             completionHandler(nil);
             
         }];
@@ -212,7 +236,7 @@
     [self _signIn:_identity gsToken:_gsToken withCallback:^(NSError *error) {
         if (!error) {
             // Only continue if authenticated!
-            NSLog(@"Authenticated!");
+            DDLogInfo(@"Authenticated!");
             
             [[EEAppleServices sharedInstance] updateCurrentTeamIDWithTeamIDCheck:teamIDCallback andCallback:^(NSError *error, NSString *teamid) {
                 if (error) {
@@ -223,7 +247,7 @@
                 
                 // TODO: Check plist for errors.
                 
-                NSLog(@"Team ID: %@", teamid);
+                DDLogInfo(@"Team ID: %@", teamid);
                 
                 if ([teamid isEqualToString:@""]) {
                     // We shouldn't ever reach this, but the logic is present just in case.
@@ -273,7 +297,10 @@
     
     [self _handleDevelopmentCodesigningRequestIfNecessary:^(NSError *error, NSString *privateKey, NSDictionary *certificate) {
         if (!error) {
-            NSLog(@"We have a development certificate that can be used!");
+            DDLogInfo(@"We have a development certificate that can be used! %@", certificate);
+            
+            [[EEAppleServices sharedInstance] updateCertID:certificate[@"certificateId"]];
+            
         }
         
         completionHandler(error, privateKey, certificate);
@@ -357,7 +384,7 @@
                 else
                     reason = @"this certificate being expired.";
                 
-                NSLog(@"Revoking certificate with serial number '%@', due to %@", serialNumber, reason);
+                DDLogInfo(@"Revoking certificate with serial number '%@', due to %@", serialNumber, reason);
                 
                 [[EEAppleServices sharedInstance] revokeCertificateForSerialNumber:serialNumber andTeamID:[[EEAppleServices sharedInstance] currentTeamID] systemType:systemType withCompletionHandler:^(NSError *error, NSDictionary *plist) {
                     
@@ -455,7 +482,7 @@
         return;
     }
     
-    NSLog(@"Generated a codesigning request, submitting...");
+    DDLogInfo(@"Generated a codesigning request, submitting...");
     
     // Going to add a prefix to the machine name.
     machineName = [NSString stringWithFormat:@"RPV- %@", machineName];
@@ -867,7 +894,7 @@ free_all:
             
             if (!appIdExists) {
                 // /addAppId
-                NSLog(@"This appId doesn't exist yet, so making a new one.");
+                DDLogInfo(@"This appId doesn't exist yet, so making a new one.");
                 
                 [[EEAppleServices sharedInstance] addApplicationId:identifier name:name enabledFeatures:enabledFeatures teamID:[[EEAppleServices sharedInstance] currentTeamID] entitlements:entitlements systemType:systemType withCompletionHandler:^(NSError *error, NSDictionary *plist) {
                     if (error) {
@@ -912,7 +939,7 @@ free_all:
                 }];
             } else {
                 // /updateAppId
-                NSLog(@"This appId already exists, so updating it.");
+                DDLogInfo(@"This appId already exists, so updating it.");
                 
                 [[EEAppleServices sharedInstance] updateApplicationIdId:appIdIdIfExists enabledFeatures:enabledFeatures teamID:[[EEAppleServices sharedInstance] currentTeamID] entitlements:entitlements systemType:systemType withCompletionHandler:^(NSError *error, NSDictionary *plist) {
                     if (error) {
@@ -1095,7 +1122,7 @@ free_all:
 - (void)_assignAppIdId:(NSString*)appIdId toApplicationGroupIdentifier:(NSString*)groupIdentifier systemType:(EESystemType)systemType withCompletionHandler:(void (^)(NSError *))completionHandler {
     
     // Assign to application group.
-    NSLog(@"Assigning appIdId '%@' to application group '%@'", appIdId, groupIdentifier);
+    DDLogInfo(@"Assigning appIdId '%@' to application group '%@'", appIdId, groupIdentifier);
     
     [[EEAppleServices sharedInstance] assignApplicationGroup:groupIdentifier toApplicationIdId:appIdId teamID:[[EEAppleServices sharedInstance] currentTeamID] systemType:systemType withCompletionHandler:^(NSError *error, NSDictionary *plist) {
         if (error) {
@@ -1128,9 +1155,19 @@ free_all:
     [self _removeExistingProvisioningProfileForApplication:identifier
                                                 systemType:systemType
                                               withCallback:^(NSError *error) {
-        // No need to worry if this actually succeeded or not.
-        
-        NSLog(@"Fetching new provisioning profile for '%@'", identifier);
+        // No need to worry if this actually succeeded or not
+                                                  
+                                                  DDLogInfo(@"remove profile returned with error: %@", error);
+                                                  
+                                                  EEAppleServices *services = [EEAppleServices sharedInstance];
+                                                  
+                                                  [services createProvisioningProfileWithName:@"EE Test Profile" withAppIdId:appIdId certID:services.currentCertID deviceID:services.currentDeviceID withTeamID:services.currentTeamID systemType:systemType andCompletionHandler:^(NSError *createError, NSDictionary *createDict) {
+                                                      
+                                                      DDLogInfo(@"created profile %@ error: %@", createError, createDict);
+                                                      
+                                                  }];
+                                                  
+        DDLogInfo(@"Fetching new provisioning profile for '%@'", identifier);
         
         [self _downloadTeamProvisioningProfileForAppIdId:appIdId
                                               systemType:systemType
@@ -1171,7 +1208,7 @@ free_all:
 // Returns NO to the callback if no profile was deleted, YES if one was.
 - (void)_removeExistingProvisioningProfileForApplication:(NSString*)bundleIdentifier systemType:(EESystemType)systemType withCallback:(void (^)(NSError*))completionHandler {
     
-    NSLog(@"Revoking old provisioning profile for '%@' if possible", bundleIdentifier);
+    DDLogInfo(@"Revoking old provisioning profile for '%@' if possible", bundleIdentifier);
     
     NSString *_actualIdentifier = [NSString stringWithFormat:@"%@.%@", [[EEAppleServices sharedInstance] currentTeamID], bundleIdentifier];
     

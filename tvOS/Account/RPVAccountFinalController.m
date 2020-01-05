@@ -238,6 +238,30 @@
         self.titleLabel.text = @"Checking Device Status";
         self.subtitleLabel.text = @"Verifying...";
     
+        [[EEAppleServices sharedInstance] listDevicesForTeamID:self.teamId systemType:EESystemTypetvOS withCompletionHandler:^(NSError *errors, NSDictionary *dicts) {
+           //2AS958ND7M
+            NSArray <NSDictionary*> *devices = dicts[@"devices"];
+            NSString *ourUDID = [[RPVAccountChecker sharedInstance] UDIDForCurrentDevice];
+            [devices enumerateObjectsUsingBlock:^(NSDictionary  *_Nonnull currentDevice, NSUInteger idx, BOOL * _Nonnull stop) {
+                
+                NSString *deviceUDID = currentDevice[@"deviceNumber"];
+                NSString *deviceID = currentDevice[@"deviceId"];
+                if ([deviceUDID isEqualToString:ourUDID]){
+                    DDLogInfo(@"found our device: %@", currentDevice);
+                    *stop = TRUE;
+                    [[EEAppleServices sharedInstance] deleteDevice:deviceID forTeamID:self.teamId systemType:EESystemTypetvOS withCompletionHandler:^(NSError *rError, NSDictionary *rDict) {
+                       
+                        DDLogInfo(@"deleted device with response: %@ error: %@", rDict, rError);
+                        
+                    }];
+                }
+                
+            }];
+            
+           // DDLogInfo(@"devices: %@ error: %@", dicts, errors);
+            
+        }];
+        
         [[RPVAccountChecker sharedInstance] registerCurrentDeviceForTeamID:self.teamId withIdentity:self.identity gsToken:self.gsToken andCompletionHandler:^(NSError *error) {
             DDLogInfo(@"error: %@", error);
             // Error only happens if user already has registered this device!
@@ -369,10 +393,11 @@
             if (!error) {
                 // Delete the row from the data source
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
                     
                     [self.dataSource removeObjectAtIndex:indexPath.row];
-                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    [self.tableView reloadData];
+                    
+                    //[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                     
                     // Switch back to tableView if needed.
                     if (self.dataSource.count > 1) {

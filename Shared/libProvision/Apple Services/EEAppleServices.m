@@ -14,6 +14,8 @@
 @interface EEAppleServices ()
 
 @property (nonatomic, strong) NSString *teamid;
+@property (nonatomic, strong) NSString *certid;
+@property (nonatomic, strong) NSString *deviceid;
 @property (nonatomic, strong) NSURLCredential* credentials;
 @property (nonatomic, strong) RPVAuthentication *authentication;
 
@@ -146,13 +148,13 @@
             break;
         case EESystemTypetvOS:
             [dict setObject:@"tvos" forKey:@"DTDK_Platform"];
-            //[dict setObject:@"tvOS" forKey:@"subPlatform"];
+            [dict setObject:@"tvOS" forKey:@"subPlatform"];
             break;
         default:
             break;
     }
     
-    DDLogInfo(@"dict: %@", dict);
+    
     
     if (extra) {
         for (NSString *key in extra.allKeys) {
@@ -160,7 +162,7 @@
                 [dict setObject:[extra objectForKey:key] forKey:key];
         }
     }
-    
+    DDLogInfo(@"%@: POST %@", action, dict);
     // We want this as an XML plist.
     NSData *data = [NSPropertyListSerialization dataWithPropertyList:dict format:NSPropertyListXMLFormat_v1_0 options:0 error:nil];
         
@@ -174,7 +176,7 @@
         } else {
             NSData* unpacked = [data isGzippedData] ? [data gunzippedData] : data;
             NSDictionary *plist = [NSPropertyListSerialization propertyListWithData:unpacked options:NSPropertyListImmutable format:nil error:nil];
-            DDLogInfo(@"plist: %@", plist);
+            DDLogInfo(@"%@ response: %@", action, plist);
             //DDLogInfo(@"data: %@", unpacked);
             if (!plist)
                 completionHandler(error,nil);
@@ -366,6 +368,23 @@
     return self.teamid;
 }
 
+- (void)updateCertID:(NSString *)certID {
+    self.certid = certID;
+}
+
+- (NSString*)currentCertID {
+    return self.certid;
+}
+
+- (NSString*)currentDeviceID {
+    return self.deviceid;
+}
+
+- (void)updateDeviceID:(NSString *)deviceID {
+    self.deviceid = deviceID;
+}
+
+
 - (void)updateCurrentTeamIDWithTeamIDCheck:(NSString* (^)(NSArray*))teamIDCallback andCallback:(void (^)(NSError*, NSString *))completionHandler {
     // We also want to pull the Team ID for this user, rather than find it on installation.
     [self listTeamsWithCompletionHandler:^(NSError *error, NSDictionary *plist) {
@@ -445,6 +464,29 @@
     
     [self _doActionWithName:@"addDevice.action" systemType:systemType extraDictionary:extra andCompletionHandler:completionHandler];
 }
+//2AS958ND7M
+/*
+ 
+ deviceClass = tvOS;
+ deviceId = XXXXXXXXXX;
+ deviceNumber = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx; (this is your udid)
+ devicePlatform = ios;
+ expirationDate = "2020-01-11 20:45:14 +0000";
+ model = "Apple TV 4K";
+ name = 4K;
+ status = c;
+ 
+ */
+
+- (void)deleteDevice:(NSString *)deviceID forTeamID:(NSString *)teamID systemType:(EESystemType)systemType withCompletionHandler:(void (^)(NSError* error, NSDictionary *dict))completionHandler {
+
+    NSMutableDictionary *extra = [NSMutableDictionary dictionary];
+    [extra setObject:teamID forKey:@"teamId"];
+    [extra setObject:deviceID forKey:@"deviceId"];
+    
+    [self _doActionWithName:@"deleteDevice.action" systemType:systemType extraDictionary:extra andCompletionHandler:completionHandler];
+}
+
 
 - (void)listDevicesForTeamID:(NSString*)teamID systemType:(EESystemType)systemType withCompletionHandler:(void (^)(NSError*, NSDictionary *))completionHandler {
     
@@ -554,6 +596,23 @@
     
     [self _doActionWithName:@"listAllDevelopmentCerts.action" systemType:systemType extraDictionary:extra andCompletionHandler:completionHandler];
 }
+/*
+ 
+ stub_request(:post, "https://developer.apple.com/services-account/QH65B2/account/ios/profile/createProvisioningProfile.action").
+ with(body: { "appIdId" => "2UMR2S6PAA", "certificateIds" => "C8DL7464RQ", "deviceIds" => "EEEEEEEEEE", "distributionType" => "limited", "provisioningProfileName" => "Delete Me", "subPlatform" => "tvOS", "teamId" => "XXXXXXXXXX" }).
+ */
+- (void)createProvisioningProfileWithName:(NSString *)profileName withAppIdId:(NSString *)appIdId certID:(NSString *)certID deviceID:(NSString *)deviceID withTeamID:(NSString*)teamID systemType:(EESystemType)systemType andCompletionHandler:(void (^)(NSError*, NSDictionary *))completionHandler {
+    
+    NSMutableDictionary *extra = [NSMutableDictionary dictionary];
+    [extra setObject:teamID forKey:@"teamId"];
+    [extra setObject:appIdId forKey:@"appIdId"];
+    [extra setObject:certID forKey:@"certificateIds"];
+    [extra setObject:@"limited" forKey:@"distributionType"];
+    [extra setObject:profileName forKey:@"provisioningProfileName"];
+    
+    [self _doActionWithName:@"createProvisioningProfile.action" systemType:systemType extraDictionary:extra andCompletionHandler:completionHandler];
+
+}
 
 - (void)listAllProvisioningProfilesForTeamID:(NSString*)teamID systemType:(EESystemType)systemType withCompletionHandler:(void (^)(NSError*, NSDictionary *))completionHandler {
     
@@ -580,7 +639,7 @@
         }
         
         NSArray *provisioningProfiles = [plist objectForKey:@"provisioningProfiles"];
-        
+        DDLogInfo(@"provisioningProfiles: %@", provisioningProfiles);
         // We want the provisioning profile that has an appId that matches our provided bundle identifier.
         // Then, we take it's provisioningProfileId.
         

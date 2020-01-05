@@ -70,7 +70,7 @@ static auto dummy([](double) {});
         
         NSError *error;
         NSPropertyListFormat format;
-        plist = [[NSPropertyListSerialization propertyListWithData:plistData options:0 format:&format error:&error] mutableCopy];
+        plist = [[NSPropertyListSerialization propertyListWithData:plistData options:NSPropertyListMutableContainersAndLeaves format:&format error:&error] mutableCopy];
     }
     DDLogInfo(@"og plist: %@", plist);
     DDLogInfo(@"bundleId: %@", bundleIdentifier);
@@ -78,7 +78,7 @@ static auto dummy([](double) {});
     NSString *teamBundleId = [NSString stringWithFormat:@"%@.%@", teamid, bundleIdentifier];
     
     [plist setValue:teamBundleId forKey:@"application-identifier"];
-    [plist setValue:teamBundleId forKey:@"com.apple.developer.ubiquity-kvstore-identifier"];
+    //[plist setValue:teamBundleId forKey:@"com.apple.developer.ubiquity-kvstore-identifier"];
     [plist setValue:teamid forKey:@"com.apple.developer.team-identifier"];
     
     NSMutableArray *keychainAccessGroups = [NSMutableArray array];
@@ -88,7 +88,8 @@ static auto dummy([](double) {});
     
     [plist setValue:keychainAccessGroups forKey:@"keychain-access-groups"];
     [plist removeObjectForKey:@"get-task-allow"];
-    [plist removeObjectForKey:@"com.apple.developer.icloud-container-identifiers"];
+    
+    //[plist removeObjectForKey:@"com.apple.developer.icloud-container-identifiers"];
     DDLogInfo(@"new plist: %@", plist);
     //[plist setValue:@YES forKey:@"get-task-allow"];
     
