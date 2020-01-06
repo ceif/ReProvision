@@ -89,27 +89,6 @@
                 return;
             }
             
-            /*
-             
-             creationTimestamp = "2020-01-05T17:28:09Z";
-             device =     {
-             deviceClass = tvOS;
-             deviceId = 2AS958ND7M;
-             deviceNumber = 16033cd9814bb4ea7575fc72cfd4f077352cba6b;
-             devicePlatform = ios;
-             model = "Apple TV 4K";
-             name = 4K;
-             status = c;
-             };
-             protocolVersion = QH65B2;
-             requestId = "9E9896E1-B077-472F-800B-6DBA43922E28";
-             requestUrl = "https://developerservices2.apple.com:443/services/QH65B2/ios/addDevice.action?clientId=XABBG36SBA";
-             responseId = "9b5072aa-73f5-4def-824d-e805706b2197";
-             resultCode = 0;
-             userLocale = "en_US";
-             
-             */
-            
             NSDictionary *device = plist[@"device"];
             DDLogInfo(@"added device with return details: %@", device);
             [[EEAppleServices sharedInstance] updateDeviceID:device[@"deviceId"]];
@@ -297,7 +276,7 @@
     
     [self _handleDevelopmentCodesigningRequestIfNecessary:^(NSError *error, NSString *privateKey, NSDictionary *certificate) {
         if (!error) {
-            DDLogInfo(@"We have a development certificate that can be used! %@", certificate);
+            DDLogInfo(@"We have a development certificate that can be used!");
             
             [[EEAppleServices sharedInstance] updateCertID:certificate[@"certificateId"]];
             

@@ -83,18 +83,12 @@
     
     // watchOS is treated as iOS
     // this check is not necessary, if tvos is in that URL it doesn't work
-    /*
-    NSString *os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios" : @"tvos";
-    NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@/%@?clientId=XABBG36SBA", @"ios", action];
-    */
     NSString *os = @"";
     if (systemType != EESystemTypeUndefined)
         os = systemType == EESystemTypeiOS || systemType == EESystemTypewatchOS ? @"ios/" : @"ios/";
  
-    DDLogInfo(@"os: %@", os);
-    
     NSString *urlStr = [NSString stringWithFormat:@"https://developerservices2.apple.com/services/QH65B2/%@%@?clientId=XABBG36SBA", os,action];
-    DDLogInfo(@"Request to URL: %@", urlStr);
+    //DDLogInfo(@"Request to URL: %@", urlStr);
     
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlStr]];
     request.HTTPMethod = @"POST";
@@ -135,7 +129,7 @@
     stype = EESystemTypetvOS;
 #endif
     
-    DDLogInfo(@"systemType: %lu", stype);
+    //DDLogInfo(@"systemType: %lu", stype);
     
     switch (stype) {
         case EESystemTypeiOS:
@@ -162,7 +156,7 @@
                 [dict setObject:[extra objectForKey:key] forKey:key];
         }
     }
-    DDLogInfo(@"%@: POST %@", action, dict);
+    //DDLogInfo(@"%@: POST %@", action, dict);
     // We want this as an XML plist.
     NSData *data = [NSPropertyListSerialization dataWithPropertyList:dict format:NSPropertyListXMLFormat_v1_0 options:0 error:nil];
         
@@ -176,8 +170,7 @@
         } else {
             NSData* unpacked = [data isGzippedData] ? [data gunzippedData] : data;
             NSDictionary *plist = [NSPropertyListSerialization propertyListWithData:unpacked options:NSPropertyListImmutable format:nil error:nil];
-            DDLogInfo(@"%@ response: %@", action, plist);
-            //DDLogInfo(@"data: %@", unpacked);
+            //DDLogInfo(@"%@ response: %@", action, plist);
             if (!plist)
                 completionHandler(error,nil);
             else
@@ -399,7 +392,7 @@
     // We also want to pull the Team ID for this user, rather than find it on installation.
     [self listTeamsWithCompletionHandler:^(NSError *error, NSDictionary *plist) {
         
-        DDLogInfo(@"plist: %@", plist);
+        //DDLogInfo(@"plist: %@", plist);
         
         if (error) {
             
@@ -650,7 +643,7 @@
         }
         
         NSArray *provisioningProfiles = [plist objectForKey:@"provisioningProfiles"];
-        DDLogInfo(@"provisioningProfiles: %@", provisioningProfiles);
+        //DDLogInfo(@"provisioningProfiles: %@", provisioningProfiles);
         // We want the provisioning profile that has an appId that matches our provided bundle identifier.
         // Then, we take it's provisioningProfileId.
         
