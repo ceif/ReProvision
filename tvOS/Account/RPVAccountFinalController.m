@@ -14,7 +14,7 @@
 
 @interface RPVAccountFinalController (){
     BOOL _viewBuilt;
-    
+    BOOL _isFreeUser;
 }
 
 
@@ -160,7 +160,7 @@
         // Check to see if the current Team ID is from a free profile.
         NSArray *teams = [dictionary objectForKey:@"teams"];
         
-        BOOL isFreeUser = YES;
+        self->_isFreeUser = YES;
         for (NSDictionary *team in teams) {
             NSString *teamIdToCheck = [team objectForKey:@"teamId"];
             
@@ -171,19 +171,20 @@
                     NSString *name = [membership objectForKey:@"name"];
                     NSString *platform = [membership objectForKey:@"platform"];
                     if ([name containsString:@"Apple Developer Program"] && [platform isEqualToString:@"ios"]) {
-                        isFreeUser = NO;
+                        self->_isFreeUser = NO;
+                         [[NSUserDefaults standardUserDefaults] setBool:FALSE forKey:@"isFreeUser"];
                         break;
                     }
                 }
                 
-                if (!isFreeUser)
+                if (!self->_isFreeUser)
                     break;
             }
         }
         
-        NSLog(@"Is free user? %d", isFreeUser);
-        
-        if (isFreeUser) {
+        NSLog(@"Is free user? %d", self->_isFreeUser);
+        [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"isFreeUser"];
+        if (self->_isFreeUser) {
             [[EEAppleServices sharedInstance] listAllDevelopmentCertificatesForTeamID:self.teamId systemType:EESystemTypeiOS withCompletionHandler:^(NSError *error, NSDictionary *dictionary) {
                 if (error) {
                     // TODO: Handle error!
@@ -238,30 +239,31 @@
         self.titleLabel.text = @"Checking Device Status";
         self.subtitleLabel.text = @"Verifying...";
     
-        [[EEAppleServices sharedInstance] listDevicesForTeamID:self.teamId systemType:EESystemTypetvOS withCompletionHandler:^(NSError *errors, NSDictionary *dicts) {
-           //2AS958ND7M
-            NSArray <NSDictionary*> *devices = dicts[@"devices"];
-            NSString *ourUDID = [[RPVAccountChecker sharedInstance] UDIDForCurrentDevice];
-            [devices enumerateObjectsUsingBlock:^(NSDictionary  *_Nonnull currentDevice, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (self->_isFreeUser){ //should only need to delete devices if the account is a free user.
+            [[EEAppleServices sharedInstance] listDevicesForTeamID:self.teamId systemType:EESystemTypetvOS withCompletionHandler:^(NSError *errors, NSDictionary *dicts) {
+                //2AS958ND7M
+                NSArray <NSDictionary*> *devices = dicts[@"devices"];
+                NSString *ourUDID = [[RPVAccountChecker sharedInstance] UDIDForCurrentDevice];
+                [devices enumerateObjectsUsingBlock:^(NSDictionary  *_Nonnull currentDevice, NSUInteger idx, BOOL * _Nonnull stop) {
+                    
+                    NSString *deviceUDID = currentDevice[@"deviceNumber"];
+                    NSString *deviceID = currentDevice[@"deviceId"];
+                    if ([deviceUDID isEqualToString:ourUDID]){
+                        DDLogInfo(@"found our device: %@", currentDevice);
+                        *stop = TRUE;
+                        [[EEAppleServices sharedInstance] deleteDevice:deviceID forTeamID:self.teamId systemType:EESystemTypetvOS withCompletionHandler:^(NSError *rError, NSDictionary *rDict) {
+                            
+                            DDLogInfo(@"deleted device with response: %@ error: %@", rDict, rError);
+                            
+                        }];
+                    }
+                    
+                }];
                 
-                NSString *deviceUDID = currentDevice[@"deviceNumber"];
-                NSString *deviceID = currentDevice[@"deviceId"];
-                if ([deviceUDID isEqualToString:ourUDID]){
-                    DDLogInfo(@"found our device: %@", currentDevice);
-                    *stop = TRUE;
-                    [[EEAppleServices sharedInstance] deleteDevice:deviceID forTeamID:self.teamId systemType:EESystemTypetvOS withCompletionHandler:^(NSError *rError, NSDictionary *rDict) {
-                       
-                        DDLogInfo(@"deleted device with response: %@ error: %@", rDict, rError);
-                        
-                    }];
-                }
+                // DDLogInfo(@"devices: %@ error: %@", dicts, errors);
                 
             }];
-            
-           // DDLogInfo(@"devices: %@ error: %@", dicts, errors);
-            
-        }];
-        
+        }
         [[RPVAccountChecker sharedInstance] registerCurrentDeviceForTeamID:self.teamId withIdentity:self.identity gsToken:self.gsToken andCompletionHandler:^(NSError *error) {
             DDLogInfo(@"error: %@", error);
             // Error only happens if user already has registered this device!

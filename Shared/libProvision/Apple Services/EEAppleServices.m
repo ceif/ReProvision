@@ -370,18 +370,28 @@
 
 - (void)updateCertID:(NSString *)certID {
     self.certid = certID;
+    [[NSUserDefaults standardUserDefaults] setObject:certID forKey:@"certID"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSString*)currentCertID {
+    if (self.certid == nil){
+        self.certid = [[NSUserDefaults standardUserDefaults] valueForKey:@"certID"];
+    }
     return self.certid;
 }
 
 - (NSString*)currentDeviceID {
+    if (self.deviceid == nil){
+        self.deviceid = [[NSUserDefaults standardUserDefaults] valueForKey:@"deviceID"];
+    }
     return self.deviceid;
 }
 
 - (void)updateDeviceID:(NSString *)deviceID {
     self.deviceid = deviceID;
+    [[NSUserDefaults standardUserDefaults] setObject:deviceID forKey:@"deviceID"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 
@@ -609,6 +619,7 @@
     [extra setObject:certID forKey:@"certificateIds"];
     [extra setObject:@"limited" forKey:@"distributionType"];
     [extra setObject:profileName forKey:@"provisioningProfileName"];
+    [extra setObject:deviceID forKey:@"deviceId"];
     
     [self _doActionWithName:@"createProvisioningProfile.action" systemType:systemType extraDictionary:extra andCompletionHandler:completionHandler];
 

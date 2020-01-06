@@ -1158,7 +1158,7 @@ free_all:
         // No need to worry if this actually succeeded or not
                                                   
                                                   DDLogInfo(@"remove profile returned with error: %@", error);
-                                                  
+                                                /*
                                                   EEAppleServices *services = [EEAppleServices sharedInstance];
                                                   
                                                   [services createProvisioningProfileWithName:@"EE Test Profile" withAppIdId:appIdId certID:services.currentCertID deviceID:services.currentDeviceID withTeamID:services.currentTeamID systemType:systemType andCompletionHandler:^(NSError *createError, NSDictionary *createDict) {
@@ -1166,6 +1166,7 @@ free_all:
                                                       DDLogInfo(@"created profile %@ error: %@", createError, createDict);
                                                       
                                                   }];
+                                                 */
                                                   
         DDLogInfo(@"Fetching new provisioning profile for '%@'", identifier);
         

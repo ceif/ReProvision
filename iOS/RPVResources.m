@@ -119,6 +119,15 @@ static dispatch_once_t nanoRegistryOnceToken;
     return [SAMKeychain passwordForService:SERVICENAME account:[self getUsername]];
 }
 
++ (NSString*)getCertID {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"certID"];
+}
+
++ (NSString*)getDeviceID {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"deviceID"];
+}
+
+
 + (NSString*)getTeamID {
     return [[NSUserDefaults standardUserDefaults] objectForKey:@"cachedTeamID"];
 }

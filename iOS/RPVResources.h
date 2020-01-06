@@ -39,6 +39,8 @@
 + (NSString*)getPassword;
 + (NSString*)getTeamID;
 + (NSString*)getCredentialsVersion;
++ (NSString*)getCertID;
++ (NSString*)getDeviceID;
 + (void)storeUsername:(NSString*)username password:(NSString*)password andTeamID:(NSString*)teamId;
 
 + (void)userDidRequestAccountSignIn;
