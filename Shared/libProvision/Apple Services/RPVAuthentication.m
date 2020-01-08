@@ -38,7 +38,7 @@
 }
 
 - (void)authenticateWithUsername:(NSString*)username password:(NSString*)password withCompletion:(void(^)(NSError *error, NSString *userIdentity, NSString *gsToken))completion {
-    
+    LOG_SELF;
     // Use fallback impl on iOS 9 only, due to missing corecrypto functionality
     NSOperatingSystemVersion version;
     version.majorVersion = 10;
@@ -73,6 +73,7 @@
 }
 
 - (void)requestLoginCodeWithCompletion:(void(^)(NSError*))completionHandler {
+    LOG_SELF;
     [self.loginImpl requestTwoFactorCodeWithUserIdentity:self.cachedUserIdentityFor2FA
                                        idmsToken:self.cachedIdmsTokenFor2FA
                                         mode:self.requested2FAMode
@@ -80,7 +81,7 @@
 }
 
 - (void)validateLoginCode:(NSString*)code withCompletion:(void(^)(NSError *error, NSString *userIdentity, NSString *gsToken))completion {
-    
+    LOG_SELF;
     // First, validate the code.
     [self.loginImpl submitTwoFactorCode:code
                        withUserIdentity:self.cachedUserIdentityFor2FA
@@ -111,7 +112,7 @@
 - (void)fallback2FACodeRequest:(void(^)(NSError *error, NSString *userIdentity, NSString *gsToken))completionHandler {
 
     NSString *username = [self.cachedUserIdentityFor2FA componentsSeparatedByString:@"|"].lastObject;
-    
+    LOG_SELF;
     [self.fallbackImpl loginWithUsername:username password:self.cachedUserPasswordFor2FA completion:^(NSError *error, NSString *userIdentity, NSString *gsToken) {
         if (!error) {
             // Do real login again now that 2FA is dealt with

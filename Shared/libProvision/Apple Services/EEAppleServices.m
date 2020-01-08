@@ -199,7 +199,7 @@
 }
 
 - (void)signInWithUsername:(NSString *)username password:(NSString *)password andCompletionHandler:(void (^)(NSError *, NSDictionary *, NSURLCredential*))completionHandler {
-    
+    LOG_SELF;
     [self.authentication authenticateWithUsername:username password:password withCompletion:^(NSError *error, NSString *userIdentity, NSString *gsToken) {
         
         if (error) {

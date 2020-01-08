@@ -48,7 +48,9 @@ typedef enum : NSUInteger {
 +(void)setAppWirelessDataOption:(id)arg1 forBundleIdentifier:(id)arg2 completionHandler:(/*^block*/ id)arg3 ;
 @end
 
-@interface AppDelegate ()
+@interface AppDelegate (){
+    NSMutableArray <NSString *> *_airDropArray;
+}
 
 @property (nonatomic, strong) NSXPCConnection *daemonConnection;
 @property (nonatomic, strong) id discoveryController;
@@ -97,6 +99,41 @@ typedef enum : NSUInteger {
     return cache;
 }
 
+
+- (void)processIPAs:(NSArray *)ipas {
+    
+    //for now just do the first
+    [ipas enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self presentDetailControllerForFile:obj];
+    }];
+    
+}
+
+- (void)handleAirdroppedFile:(NSString *)path options:(NSDictionary *)options {
+    
+    NSInteger docCount = [options[@"LSDocumentDropCount"] integerValue];
+    NSInteger docIndex = [options[@"LSDocumentDropIndex"] integerValue];
+    DDLogInfo(@"processing %li of %li", docIndex+1, (long)docCount);
+    if (_airDropArray == nil){
+        _airDropArray = [NSMutableArray new];
+    }
+    NSString *movedPath = [self movedFileToCache:path];
+    DDLogInfo(@"adding file: %@ to array", movedPath);
+    if (movedPath != nil){
+        [_airDropArray addObject:movedPath];
+    }
+    if (docIndex == (docCount-1)){
+        if (_airDropArray.count > 0){
+         
+            [self processIPAs:_airDropArray];
+            [_airDropArray removeAllObjects];
+            //[self promptForInstallingDebs:_airDropArray];
+        } else {
+            DDLogInfo(@"error processing airdropped files");
+        }
+    }
+}
+
 - (NSString *)legacyAirdropCacheFolder {
     
     NSString *thePath = [NSString stringWithFormat:@"/Library/Caches/%@", [NSBundle mainBundle].bundleIdentifier];
@@ -128,7 +165,6 @@ typedef enum : NSUInteger {
 
 - (void)handleLegacyAirdropFile:(NSString *)adFile {
     
-    NSFileManager *man = [NSFileManager defaultManager];
     NSArray *fileArray = [NSArray arrayWithContentsOfFile:adFile];
     NSLog(@"airdropper array: %@", fileArray);
     [fileArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -144,6 +180,38 @@ typedef enum : NSUInteger {
     [FM removeItemAtPath:adFile error:nil];
 }
 
+- (void)presentDetailControllerForFile:(NSString *)file {
+    RPVIpaBundleApplication *ipaApplication = [[RPVIpaBundleApplication alloc] initWithIpaURL:[NSURL fileURLWithPath:file]];
+    
+    RPVApplicationDetailController *detailController = [[RPVApplicationDetailController alloc] initWithApplication:ipaApplication];
+    // Update with current states.
+    [detailController setButtonTitle:@"INSTALL"];
+    detailController.lockWhenInstalling = YES;
+    // Add to the rootViewController of the application, as an effective overlay.
+    detailController.view.alpha = 0.0;
+    UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    if ([rootController isKindOfClass:RPVTabBarController.class]){
+        RPVTabBarController *tbc = (RPVTabBarController *)rootController;
+        NSArray *vcs = [tbc viewControllers];
+        if (vcs.count > 0){
+            UIViewController *vc = vcs[0];
+            if ([vc respondsToSelector:@selector(disableViewAndRefocus)]){
+                [vc disableViewAndRefocus];
+            }
+        }
+    }
+    
+    DDLogInfo(@"ROOT VIEW CONTROLLER: %@", rootController);
+    
+    [rootController addChildViewController:detailController];
+    [rootController.view addSubview:detailController.view];
+    
+    detailController.view.frame = rootController.view.bounds;
+    
+    // Animate in!
+    [detailController animateForPresentation];
+    
+}
 
 - (void)processPath:(NSString *)path  {
     
@@ -159,86 +227,32 @@ typedef enum : NSUInteger {
     NSError *error = nil;
     [[NSFileManager defaultManager] copyItemAtPath:path toPath:attemptCopy error:&error];
 
-    if ([@[@"ipa"] containsObject:[[path pathExtension] lowercaseString]]){
-        RPVIpaBundleApplication *ipaApplication = [[RPVIpaBundleApplication alloc] initWithIpaURL:[NSURL fileURLWithPath:attemptCopy]];
-        
-        RPVApplicationDetailController *detailController = [[RPVApplicationDetailController alloc] initWithApplication:ipaApplication];
-        
-        // Update with current states.
-        [detailController setButtonTitle:@"INSTALL"];
-        detailController.lockWhenInstalling = YES;
-        
-        // Add to the rootViewController of the application, as an effective overlay.
-        detailController.view.alpha = 0.0;
-        
-        UIViewController *rootController = [UIApplication sharedApplication].keyWindow.rootViewController;
-        
-        
-        
-        if ([rootController isKindOfClass:RPVTabBarController.class]){
-            RPVTabBarController *tbc = (RPVTabBarController *)rootController;
-            NSArray *vcs = [tbc viewControllers];
-            if (vcs.count > 0){
-                UIViewController *vc = vcs[0];
-                if ([vc respondsToSelector:@selector(disableViewAndRefocus)]){
-                    [vc disableViewAndRefocus];
-                }
-            }
-        }
-        
-        DDLogInfo(@"ROOT VIEW CONTROLLER: %@", rootController);
-        
-        [rootController addChildViewController:detailController];
-        [rootController.view addSubview:detailController.view];
-        
-        detailController.view.frame = rootController.view.bounds;
-        
-        // Animate in!
-        [detailController animateForPresentation];
-        
-    }
+    if ([@[@"ipa", @"zip"] containsObject:[[path pathExtension] lowercaseString]]){
     
+        [self presentDetailControllerForFile:attemptCopy];
+    }
     
     
 }
 
-- (void)airDropReceived:(NSNotification *)n {
-    
-    NSDictionary *userInfo = [n userInfo];
-    NSArray <NSString *>*items = userInfo[@"Items"];
-    DDLogInfo(@"airdropped Items: %@", items);
-    if (items.count > 1){
-        
-        DDLogInfo(@"please one at a time!");
-        [[RPVNotificationManager sharedInstance] sendNotificationWithTitle:@"One at a time please" body:@"Currently it is only possible to AirDrop one IPA at a time" isDebugMessage:FALSE isUrgentMessage:TRUE andNotificationID:nil];
-    }
-    
-    [self processPath:items[0]];
-    
-    //TODO: some kind of a NSOperationQueue or something...
-    
-    /*
-    [items enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        [self processPath:obj];
-        
-    }];
-    */
-    
-}
 
-- (void)disableAirDrop {
-    
-    [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:@"com.nito.AirDropper/airDropFileReceived" object:nil];
-    [self.discoveryController setDiscoverableMode:SDAirDropDiscoverableModeOff];
-    
-}
 //com.apple.itunes.ipa
-- (void)setupAirDrop {
-    [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(airDropReceived:) name:@"com.nito.AirDropper/airDropFileReceived" object:nil];
-    self.discoveryController = [[NSClassFromString(@"SFAirDropDiscoveryController") alloc] init] ;
-    [self.discoveryController setDiscoverableMode:SDAirDropDiscoverableModeEveryone];
-    
+
+- (BOOL)application:(UIApplication *)app openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation {
+      LOG_SELF;
+    return TRUE;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    LOG_SELF;
+    return TRUE;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
+
+    LOG_SELF;
+    [self handleAirdroppedFile:url.path options:options[UIApplicationOpenURLOptionsAnnotationKey]];
+    return TRUE;
 }
 
 - (void)setupChinaApplicationNetworkAccess {
@@ -277,7 +291,6 @@ typedef enum : NSUInteger {
     
     [self loadUIFrameworkIfNecessary];
     [self setupFileLogging];
-    [self setupAirDrop];
     
     // Override point for customization after application launch.
     [[RPVApplicationSigning sharedInstance] addSigningUpdatesObserver:self];
