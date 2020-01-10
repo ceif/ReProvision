@@ -127,26 +127,17 @@ typedef enum : NSUInteger {
          
             [self processIPAs:_airDropArray];
             [_airDropArray removeAllObjects];
-            //[self promptForInstallingDebs:_airDropArray];
         } else {
             DDLogInfo(@"error processing airdropped files");
         }
     }
 }
 
-- (NSString *)legacyAirdropCacheFolder {
-    
-    NSString *thePath = [NSString stringWithFormat:@"/Library/Caches/%@", [NSBundle mainBundle].bundleIdentifier];
-    if (![FM fileExistsAtPath:thePath]){
-        [FM createDirectoryAtPath:thePath withIntermediateDirectories:TRUE attributes:nil error:nil];
-    }
-    return thePath;
-}
 
 - (NSString *)movedFileToCache:(NSString *)fileName {
     
     NSFileManager *man = [NSFileManager defaultManager];
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    //NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cache = [self ipaPath];
     NSString *newPath = [cache stringByAppendingPathComponent:fileName.lastPathComponent];
     NSError *error = nil;
@@ -163,22 +154,6 @@ typedef enum : NSUInteger {
     return nil;
 }
 
-- (void)handleLegacyAirdropFile:(NSString *)adFile {
-    
-    NSArray *fileArray = [NSArray arrayWithContentsOfFile:adFile];
-    NSLog(@"airdropper array: %@", fileArray);
-    [fileArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        [self processPath:obj];
-        //NSString *newFile = [self movedFileToCache:obj];
-        //if (newFile){
-            //[processArray addObject:newFile];
-        //}
-    }];
-    
-    
-    [FM removeItemAtPath:adFile error:nil];
-}
 
 - (void)presentDetailControllerForFile:(NSString *)file {
     RPVIpaBundleApplication *ipaApplication = [[RPVIpaBundleApplication alloc] initWithIpaURL:[NSURL fileURLWithPath:file]];
@@ -211,41 +186,6 @@ typedef enum : NSUInteger {
     // Animate in!
     [detailController animateForPresentation];
     
-}
-
-- (void)processPath:(NSString *)path  {
-    
-    //NSString *path = [url path];
-    NSString *fileName = path.lastPathComponent;
-    NSFileManager *man = [NSFileManager defaultManager];
-    NSString *adFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"AirDrop"];
-    if (![man fileExistsAtPath:adFolder]){
-        [man createDirectoryAtPath:adFolder withIntermediateDirectories:TRUE attributes:nil error:nil];
-    }
-    NSString *attemptCopy = [[NSHomeDirectory() stringByAppendingPathComponent:@"AirDrop"] stringByAppendingPathComponent:fileName];
-    DDLogInfo(@"attempted path: %@", attemptCopy);
-    NSError *error = nil;
-    [[NSFileManager defaultManager] copyItemAtPath:path toPath:attemptCopy error:&error];
-
-    if ([@[@"ipa", @"zip"] containsObject:[[path pathExtension] lowercaseString]]){
-    
-        [self presentDetailControllerForFile:attemptCopy];
-    }
-    
-    
-}
-
-
-//com.apple.itunes.ipa
-
-- (BOOL)application:(UIApplication *)app openURL:(nonnull NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(nonnull id)annotation {
-      LOG_SELF;
-    return TRUE;
-}
-
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    LOG_SELF;
-    return TRUE;
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options {
@@ -344,10 +284,6 @@ typedef enum : NSUInteger {
     if (self.pendingDaemonConnectionAlert) {
         [self _notifyDaemonFailedToConnect];
         self.pendingDaemonConnectionAlert = NO;
-    }
-    NSString *airDropFile = [[self legacyAirdropCacheFolder] stringByAppendingPathComponent:@"AirDrop.plist"];
-    if ([FM fileExistsAtPath:airDropFile]){
-        [self handleLegacyAirdropFile:airDropFile];
     }
 }
 
